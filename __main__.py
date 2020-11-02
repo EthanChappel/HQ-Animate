@@ -225,7 +225,14 @@ class MainWindow(tk.Tk):
 
         t = threading.Thread(
             target=save,
-            args=(self.files, f'{self.out_entry.get()}/{self.out_name_entry.get()}', int(self.duration_spinbox.get()), bool(self.gifvar.get()), bool(self.webpvar.get()), bool(self.apngvar.get()))
+            args=(
+                self.files,
+                f'{self.out_entry.get()}/{self.out_name_entry.get()}',
+                int(self.duration_spinbox.get()),
+                bool(self.gifvar.get()),
+                bool(self.webpvar.get()),
+                bool(self.apngvar.get())
+            ),
         )
         t.dameon = True
 
