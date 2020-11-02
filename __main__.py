@@ -29,7 +29,6 @@ import pathlib
 import threading
 import platform
 import tkinter as tk
-import pkg_resources
 from tkinter import filedialog
 from _tkinter import TclError
 import tkinter.ttk as ttk
