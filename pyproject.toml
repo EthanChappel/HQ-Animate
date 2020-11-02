@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "HQ-Animate"
 version = "0.1.0"
+license = "MIT"
 description = "Create high quality APNG and WebP animations from a sequence of images."
 authors = ["Ethan Chappel <EthanChappel@users.noreply.github.com>"]
 
