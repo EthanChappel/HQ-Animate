@@ -99,7 +99,7 @@ def save(tar, o: str, d: int, gif: bool, webp: bool, apng: bool):
 class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.gifvar = tk.IntVar(value=1)
+        self.gifvar = tk.IntVar(value=0)
         self.webpvar = tk.IntVar(value=1)
         self.apngvar = tk.IntVar(value=1)
         self.spinnervar = tk.IntVar(value=20)
