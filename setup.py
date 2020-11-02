@@ -1,15 +1,13 @@
-import sys
+import platform
 from cx_Freeze import setup, Executable
 
-base = None
-if sys.platform == 'win32':
-    base = 'Win32GUI'
+base = 'Win32GUI' if platform.system() == 'Windows' else None
 
 options = {
     'build_exe': {
         'includes': ['atexit'],
-        'packages': ['PIL', 'tkinter', 'sys', 'threading'],
-        'include_files': ['__main__.py', 'LICENSE', 'dep-licenses.json']
+        'packages': ['json', 'ctypes', 'pathlib', 'threading', 'platform', 'tkinter', 'PIL'],
+        'include_files': ['__main__.py', 'LICENSE', 'dep-terms.json']
     },
 }
 
