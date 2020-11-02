@@ -36,6 +36,8 @@ import tkinter.ttk as ttk
 from PIL import Image
 
 
+__version__ = '0.1.0'
+
 SYSTEM = platform.system()
 
 if SYSTEM == 'Windows':
@@ -286,7 +288,7 @@ class AboutDialog(tk.Toplevel):
         self.about_frame.grid_rowconfigure(3, weight=1)
         self.about_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.title = ttk.Label(self.about_frame, text=NAME)
+        self.title = ttk.Label(self.about_frame, text=f'{NAME} {__version__}')
         self.title.grid(row=0, column=0, padx=(9, 9), pady=(9, 3), sticky=tk.N)
 
         self.copyright_label = ttk.Label(self.about_frame, text='©2020 Ethan Chappel')
@@ -303,7 +305,7 @@ class AboutDialog(tk.Toplevel):
         self.licenses_text = tk.Text(self.licenses_frame, wrap=tk.WORD, borderwidth=0, highlightthickness=0, font=('Courier New', 9))
         self.licenses_text.grid(row=0, column=0, padx=(2, 0), pady=(2, 2), sticky=tk.NSEW)
 
-        self.licenses_content = f'{NAME}\n{pathlib.Path("LICENSE").read_text()}\n'
+        self.licenses_content = f'{NAME}\n{__version__}\n{pathlib.Path("LICENSE").read_text()}\n'
         with open('dep-terms.json', 'r') as f:
             j = json.load(f)
         
