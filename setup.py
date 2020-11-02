@@ -37,7 +37,7 @@ options = {
 }
 
 executables = [
-    Executable('__main__.py', base=base, targetName='hqan')
+    Executable('__main__.py', base=base, targetName='hqa')
 ]
 
 setup(
