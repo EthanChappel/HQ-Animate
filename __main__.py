@@ -302,7 +302,7 @@ class AboutDialog(tk.Toplevel):
         self.licenses_text = tk.Text(self.licenses_frame, wrap=tk.WORD, borderwidth=0, highlightthickness=0, font=('Courier New', 9))
         self.licenses_text.grid(row=0, column=0, padx=(2, 0), pady=(2, 2), sticky=tk.NSEW)
 
-        self.licenses_content = f'{NAME}\n{__version__}\n{pathlib.Path("LICENSE").read_text()}\n'
+        self.licenses_content = f'{NAME}\n{__version__}\n{pathlib.Path("LICENSE").read_text()}'
         with open('dep-terms.json', 'r') as f:
             j = json.load(f)
         
