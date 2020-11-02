@@ -69,19 +69,6 @@ def save(tar, o: str, d: int, gif: bool, webp: bool, apng: bool):
 
     p = 1
 
-    if gif:
-        image.save(
-            f"{o}.gif",
-            format='GIF',
-            save_all=True,
-            append_images=frames[1:],
-            duration=d,
-            loop=0,
-            optimize=True
-        )
-
-    p = 2
-
     if webp:
         image.save(
             f"{o}.webp",
@@ -92,6 +79,19 @@ def save(tar, o: str, d: int, gif: bool, webp: bool, apng: bool):
             loop=0,
             lossless=True,
             quality=100
+        )
+
+    p = 2
+
+    if gif:
+        image.save(
+            f"{o}.gif",
+            format='GIF',
+            save_all=True,
+            append_images=frames[1:],
+            duration=d,
+            loop=0,
+            optimize=True
         )
 
     p = 3
@@ -163,11 +163,11 @@ class MainWindow(tk.Tk):
         self.apng_checkbutton = ttk.Checkbutton(self.checkbutton_frame, variable=self.apngvar, text='APNG', offvalue=0, onvalue=1, command=self.set_convert_button_state)
         self.apng_checkbutton.grid(row=0, column=0, padx=(3, 3), pady=(3, 3), sticky=tk.W)
 
-        self.gif_checkbutton = ttk.Checkbutton(self.checkbutton_frame, variable=self.gifvar, text='GIF', offvalue=0, onvalue=1, command=self.set_convert_button_state)
-        self.gif_checkbutton.grid(row=0, column=1, padx=(3, 3), pady=(3, 3), sticky=tk.W)
-
         self.webp_checkbutton = ttk.Checkbutton(self.checkbutton_frame, variable=self.webpvar, text='WebP', offvalue=0, onvalue=1, command=self.set_convert_button_state)
-        self.webp_checkbutton.grid(row=0, column=2, padx=(3, 3), pady=(3, 3), sticky=tk.W)
+        self.webp_checkbutton.grid(row=0, column=1, padx=(3, 3), pady=(3, 3), sticky=tk.W)
+
+        self.gif_checkbutton = ttk.Checkbutton(self.checkbutton_frame, variable=self.gifvar, text='GIF', offvalue=0, onvalue=1, command=self.set_convert_button_state)
+        self.gif_checkbutton.grid(row=0, column=2, padx=(3, 3), pady=(3, 3), sticky=tk.W)
 
         self.separator = ttk.Separator(self.checkbutton_frame, orient=tk.VERTICAL)
         self.separator.grid(row=0, column=3, padx=(3, 3), pady=(3, 3), sticky=tk.NS)
