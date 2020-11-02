@@ -199,7 +199,7 @@ class MainWindow(tk.Tk):
         self.start.grid(row=0, column=2, padx=(3, 9), pady=(3, 9))
     
     def set_input(self):
-        self.files = filedialog.askopenfilenames(title='Select input file', filetypes=(('Images', '*.jpeg *.jpg *.png'),))
+        self.files = filedialog.askopenfilenames(title='Select input file', filetypes=(('Images', '*.bmp *.jp2 *.jpeg *.jpg *.png *.tif *.tiff *.webp'),))
         self.in_listbox.delete(0, tk.END)
         for f in self.files:
             self.in_listbox.insert(tk.END, f)
