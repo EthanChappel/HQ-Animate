@@ -285,7 +285,7 @@ class AboutDialog(tk.Toplevel):
 
         self.about_frame = ttk.Frame(self)
         self.about_frame.grid_columnconfigure(0, weight=1)
-        self.about_frame.grid_rowconfigure(3, weight=1)
+        self.about_frame.grid_rowconfigure(2, weight=1)
         self.about_frame.pack(fill=tk.BOTH, expand=True)
 
         self.title = ttk.Label(self.about_frame, text=f'{NAME} {__version__}')
@@ -294,13 +294,10 @@ class AboutDialog(tk.Toplevel):
         self.copyright_label = ttk.Label(self.about_frame, text='©2020 Ethan Chappel')
         self.copyright_label.grid(row=1, column=0, padx=(9, 9), pady=(3, 3), sticky=tk.N)
 
-        self.license_label = ttk.Label(self.about_frame, text='Released under the MIT License.')
-        self.license_label.grid(row=2, column=0, padx=(9, 9), pady=(3, 3), sticky=tk.N)
-
         self.licenses_frame = ttk.Frame(self.about_frame, relief=tk.SUNKEN)
         self.licenses_frame.grid_rowconfigure(0, weight=1)
         self.licenses_frame.grid_columnconfigure(0, weight=1)
-        self.licenses_frame.grid(row=3, column=0, padx=(9, 9), pady=(3, 3), sticky=tk.NSEW)
+        self.licenses_frame.grid(row=2, column=0, padx=(9, 9), pady=(3, 3), sticky=tk.NSEW)
 
         self.licenses_text = tk.Text(self.licenses_frame, wrap=tk.WORD, borderwidth=0, highlightthickness=0, font=('Courier New', 9))
         self.licenses_text.grid(row=0, column=0, padx=(2, 0), pady=(2, 2), sticky=tk.NSEW)
@@ -321,7 +318,7 @@ class AboutDialog(tk.Toplevel):
 
         self.close_button = ttk.Button(self.about_frame, text='Close', command=self.ok)
         self.close_button.config(default=tk.ACTIVE)
-        self.close_button.grid(row=4, column=0, padx=(9, 9), pady=(3, 9), sticky=tk.E)
+        self.close_button.grid(row=3, column=0, padx=(9, 9), pady=(3, 9), sticky=tk.E)
 
     def ok(self):
         self.destroy()
