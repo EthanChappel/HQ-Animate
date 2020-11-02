@@ -291,7 +291,7 @@ class AboutDialog(tk.Toplevel):
         self.licenses_text.grid(row=0, column=0, padx=(2, 0), pady=(2, 2), sticky=tk.NSEW)
 
         self.licenses_content = f'{NAME}\n{pathlib.Path("LICENSE").read_text()}\n'
-        with open('dep-licenses.json', 'r') as f:
+        with open('dep-terms.json', 'r') as f:
             j = json.load(f)
         
         for d in j:
