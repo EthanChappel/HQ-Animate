@@ -29,6 +29,7 @@ import pathlib
 import threading
 import platform
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import filedialog
 from _tkinter import TclError
 import tkinter.ttk as ttk
@@ -216,6 +217,12 @@ class MainWindow(tk.Tk):
         AboutDialog(self)
     
     def convert(self):
+        if (self.apngvar.get() and pathlib.Path(f'{self.out_entry.get()}/{self.out_name_entry.get()}.apng').exists()) \
+                or (self.webpvar.get() and pathlib.Path(f'{self.out_entry.get()}/{self.out_name_entry.get()}.webp').exists()) \
+                or (self.gifvar.get() and pathlib.Path(f'{self.out_entry.get()}/{self.out_name_entry.get()}.gif').exists()):
+            if not messagebox.askyesno(f'Overwite - {NAME}', 'Creating animations will overwrite some files. Continue?', parent=self):
+                return
+
         t = threading.Thread(
             target=save,
             args=(self.files, f'{self.out_entry.get()}/{self.out_name_entry.get()}', int(self.duration_spinbox.get()), bool(self.gifvar.get()), bool(self.webpvar.get()), bool(self.apngvar.get()))
