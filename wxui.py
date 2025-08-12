@@ -58,6 +58,8 @@ class MainFrame(wx.Frame):
     def __init__(self):
         super().__init__(None, title="HQ Animate", size=(600, 500))
 
+        spacing = 6
+
         self.paths = []
 
         self.wildcards = "; ".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
@@ -70,9 +72,9 @@ class MainFrame(wx.Frame):
         longitude_width = dc.GetTextExtent("-180.00").Width + 30
 
         self.panel = wx.Panel(self, wx.ID_ANY)
-        self.grid_sizer = wx.GridBagSizer(hgap=9, vgap=9)
+        self.grid_sizer = wx.GridBagSizer(hgap=spacing, vgap=spacing)
         self.wrapper_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.wrapper_sizer.Add(self.grid_sizer, 1, wx.EXPAND | wx.ALL, 9)
+        self.wrapper_sizer.Add(self.grid_sizer, 1, wx.EXPAND | wx.ALL, spacing)
 
         self.in_label = wx.StaticText(self.panel, label="Frames")
         self.grid_sizer.Add(self.in_label, pos=(0, 0))
@@ -95,39 +97,48 @@ class MainFrame(wx.Frame):
         self.field_derotation_checkbox.Enable(False)
         self.field_derotation_checkbox.Bind(wx.EVT_CHECKBOX, self.on_field_derotation_checkbox_toggle)
         self.altaz_sizer.Add(self.field_derotation_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
+
+        self.altaz_sizer.Add(wx.StaticLine(self.panel, style=wx.LI_VERTICAL), flag=wx.EXPAND)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.latitude_label = wx.StaticText(self.panel, label="Latitude")
         self.altaz_sizer.Add(self.latitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.latitude_spinctrl = wx.SpinCtrlDouble(self.panel, min=-90, max=90, initial=0)
         self.latitude_spinctrl.SetDigits(2)
         self.latitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.latitude_spinctrl.GetMinHeight())) 
         self.altaz_sizer.Add(self.latitude_spinctrl, flag=wx.EXPAND)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing // 2)
 
         self.lat_deg_label = wx.StaticText(self.panel, label="°")
         self.altaz_sizer.Add(self.lat_deg_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
+
+        self.altaz_sizer.Add(wx.StaticLine(self.panel, style=wx.LI_VERTICAL), flag=wx.EXPAND)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.longitude_label = wx.StaticText(self.panel, label="Longitude")
         self.altaz_sizer.Add(self.longitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.longitude_spinctrl = wx.SpinCtrlDouble(self.panel, min=-180, max=180, initial=0)
         self.longitude_spinctrl.SetDigits(2)
         self.longitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.longitude_spinctrl.GetMinHeight())) 
         self.altaz_sizer.Add(self.longitude_spinctrl, flag=wx.EXPAND)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing // 2)
 
         self.lon_deg_label = wx.StaticText(self.panel, label="°")
         self.altaz_sizer.Add(self.lon_deg_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
+
+        self.altaz_sizer.Add(wx.StaticLine(self.panel, style=wx.LI_VERTICAL), flag=wx.EXPAND)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.target_label = wx.StaticText(self.panel, label="Target")
         self.altaz_sizer.Add(self.target_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.altaz_sizer.AddSpacer(9)
+        self.altaz_sizer.AddSpacer(spacing)
 
         self.target_combobox = wx.ComboBox(self.panel, choices=list(convert.TARGETS.keys()), style=wx.CB_READONLY)
         self.target_combobox.Bind(wx.EVT_COMBOBOX, self.on_target_combobox_selection)
@@ -142,12 +153,12 @@ class MainFrame(wx.Frame):
         self.out_dir_textctrl = wx.TextCtrl(self.panel)
         self.out_dir_textctrl.Bind(wx.EVT_TEXT, self.on_output_text_changed_event)
         self.out_sizer.Add(self.out_dir_textctrl, proportion=1, flag=wx.EXPAND | wx.ALL)
-        self.out_sizer.AddSpacer(9)
+        self.out_sizer.AddSpacer(spacing)
         
         self.out_name_textctrl = wx.TextCtrl(self.panel)
         self.out_name_textctrl.Bind(wx.EVT_TEXT, self.on_output_text_changed_event)
         self.out_sizer.Add(self.out_name_textctrl)
-        self.out_sizer.AddSpacer(9)
+        self.out_sizer.AddSpacer(spacing)
 
         self.out_browse_button = wx.Button(self.panel, label="Browse...")
         self.out_browse_button.Bind(wx.EVT_BUTTON, self.set_output)
@@ -162,34 +173,32 @@ class MainFrame(wx.Frame):
         self.apng_checkbox = wx.CheckBox(self.panel, label="APNG")
         self.apng_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.apng_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.AddSpacer(spacing)
 
         self.avif_checkbox = wx.CheckBox(self.panel, label="AVIF")
         self.avif_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.avif_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.AddSpacer(spacing)
 
         self.webp_checkbox = wx.CheckBox(self.panel, label="WebP")
         self.webp_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.webp_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.AddSpacer(spacing)
 
         self.gif_checkbox = wx.CheckBox(self.panel, label="GIF")
         self.gif_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.gif_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.checkbox_sizer.AddSpacer(9)
 
-        self.seperator = wx.StaticLine(self.panel, style=wx.LI_VERTICAL)
-        self.checkbox_sizer.Add(self.seperator, flag=wx.EXPAND)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.Add(wx.StaticLine(self.panel, style=wx.LI_VERTICAL), flag=wx.EXPAND)
+        self.checkbox_sizer.AddSpacer(spacing)
 
-        self.frame_duration_label = wx.StaticText(self.panel, label="Frame duration")
+        self.frame_duration_label = wx.StaticText(self.panel, label="Frame length")
         self.checkbox_sizer.Add(self.frame_duration_label, flag=wx.ALIGN_CENTER_VERTICAL)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.AddSpacer(spacing)
 
         self.frame_duration_spinctrl = wx.SpinCtrl(self.panel, min=1, max=100000, initial=100)
         self.checkbox_sizer.Add(self.frame_duration_spinctrl, proportion=1, flag=wx.EXPAND)
-        self.checkbox_sizer.AddSpacer(9)
+        self.checkbox_sizer.AddSpacer(spacing // 2)
 
         self.ms_label = wx.StaticText(self.panel, label="ms")
         self.checkbox_sizer.Add(self.ms_label, flag=wx.ALIGN_CENTER_VERTICAL)
