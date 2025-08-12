@@ -210,13 +210,15 @@ class MainFrame(wx.Frame):
         self.bottom_sizer.Add(self.about_button)
         self.bottom_sizer.AddStretchSpacer(1)
 
-        self.activity_indicator = wx.ActivityIndicator(self.panel)
-        self.bottom_sizer.Add(self.activity_indicator)
-        self.bottom_sizer.AddSpacer(9)
+        self.convert_book = wx.Simplebook(self.panel)
+        self.bottom_sizer.Add(self.convert_book)
 
-        self.convert_button = wx.Button(self.panel, label="Convert")
+        self.convert_button = wx.Button(self.convert_book, label="Convert")
         self.convert_button.Bind(wx.EVT_BUTTON, self.on_convert_start)
-        self.bottom_sizer.Add(self.convert_button)
+        self.convert_book.AddPage(self.convert_button, "")
+
+        self.activity_indicator = wx.ActivityIndicator(self.convert_book)
+        self.convert_book.AddPage(self.activity_indicator, "")
 
         self.grid_sizer.AddGrowableRow(0, 1)
         self.grid_sizer.AddGrowableCol(1, 1)
@@ -225,9 +227,6 @@ class MainFrame(wx.Frame):
         self.set_convert_button_state()
         self.set_field_derotation_state()
 
-        self.Layout()
-        self.activity_indicator.Hide()
-        self.Layout()
         self.Show()
         self.in_listbox.PostSizeEventToParent()
 
@@ -287,9 +286,10 @@ class MainFrame(wx.Frame):
         self.convert_button.Enable((do_apng or do_avif or do_webp or do_gif) and has_input and has_output_dir and has_output_name and derotate_and_target)
 
     def on_convert_start(self, event):
+        self.SetCursor(wx.Cursor(wx.CURSOR_WAIT))
         self.panel.Enable(False)
         self.activity_indicator.Start()
-        self.activity_indicator.Show()
+        self.convert_book.ChangeSelection(1)
         t = threading.Thread(target=self.convert)
         t.start()
     
@@ -333,9 +333,10 @@ class MainFrame(wx.Frame):
             subprocess.run(['xdg-open', out_dir])
     
         self.activity_indicator.Stop()
-        self.activity_indicator.Hide()
+        self.convert_book.ChangeSelection(0)
         self.Layout()
         self.panel.Enable(True)
+        self.SetCursor(wx.NullCursor)
 
     def convert(self):
         convert.save(
