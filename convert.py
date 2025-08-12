@@ -73,7 +73,7 @@ class Frame:
         return self.path.name
 
 
-def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, derotate=False, latitude=0, longitude=0, target=None):
+def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, quality: int, derotate=False, latitude=0, longitude=0, target=None):
     frames = []
     observer = planets["Earth"] + wgs84.latlon(latitude, longitude)
     t1 = None
@@ -123,9 +123,8 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             append_images=frames[1:],
             duration=d,
             loop=0,
-            lossless=True,
-            quality=100,
-            speed=0
+            quality=quality,
+            subsampling="4:4:4",
         )
 
     if webp:
@@ -137,8 +136,8 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             duration=d,
             loop=0,
             lossless=True,
-            quality=100,
-            method=6
+            quality=quality,
+            method=3
         )
 
     if gif:

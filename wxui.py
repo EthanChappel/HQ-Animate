@@ -202,6 +202,17 @@ class MainFrame(wx.Frame):
 
         self.ms_label = wx.StaticText(self.panel, label="ms")
         self.checkbox_sizer.Add(self.ms_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.checkbox_sizer.AddSpacer(spacing)
+
+        self.checkbox_sizer.Add(wx.StaticLine(self.panel, style=wx.LI_VERTICAL), flag=wx.EXPAND)
+        self.checkbox_sizer.AddSpacer(spacing)
+
+        self.quality_label = wx.StaticText(self.panel, label="Quality")
+        self.checkbox_sizer.Add(self.quality_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.checkbox_sizer.AddSpacer(spacing)
+
+        self.quality_spinctrl = wx.SpinCtrl(self.panel, min=1, max=100, initial=100)
+        self.checkbox_sizer.Add(self.quality_spinctrl, proportion=1, flag=wx.EXPAND)
 
         self.bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.grid_sizer.Add(self.bottom_sizer, pos=(5, 0), span=(1, 2), flag=wx.EXPAND)
@@ -354,6 +365,7 @@ class MainFrame(wx.Frame):
             self.webp_checkbox.GetValue(),
             self.apng_checkbox.GetValue(),
             self.avif_checkbox.GetValue(),
+            self.quality_spinctrl.GetValue(),
             self.field_derotation_checkbox.GetValue(),
             self.latitude_spinctrl.GetValue(),
             self.longitude_spinctrl.GetValue(),
