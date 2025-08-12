@@ -77,11 +77,13 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
     frames = []
     observer = planets["Earth"] + wgs84.latlon(latitude, longitude)
     t1 = None
-    total_rotation = 0
     for n in tar:
+        rotation = 0
         if derotate:
             t2 = ts.from_datetime(n.date_time)
-            if t1 != None:
+            if t1 == None:
+                t1 = t2
+            else:
                 a1 = observer.at(t1).observe(planets[TARGETS[target]])
                 a2 = observer.at(t2).observe(planets[TARGETS[target]])
 
@@ -91,15 +93,13 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
                 q1 = np.degrees(np.arctan(np.sin(ha1.radians) / (np.tan(np.radians(latitude)) * np.cos(dec1.radians) - np.sin(dec1.radians) * np.cos(ha1.radians))))
                 q2 = np.degrees(np.arctan(np.sin(ha2.radians) / (np.tan(np.radians(latitude)) * np.cos(dec2.radians) - np.sin(dec2.radians) * np.cos(ha2.radians))))
 
-                total_rotation += q2 - q1
-
-            t1 = t2
+                rotation = q2 - q1
 
         image = Image.open(n.path)
         for frame in ImageSequence.Iterator(image):
             f = frame.convert('RGB').copy()
             if derotate:
-                f = f.rotate(total_rotation, resample=Image.BICUBIC)
+                f = f.rotate(rotation, resample=Image.BICUBIC)
             frames.append(f)
 
     image = frames[0]
