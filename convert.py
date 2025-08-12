@@ -52,12 +52,34 @@ ts = load.timescale()
 class Frame:
     def __init__(self, path):
         self.path = pathlib.Path(path)
-
-        match = re.match(r"(.?)(\d{4})-(\d{2})-(\d{2})[-_](\d{2})-?(\d{2})[-_](\d{1,2})", self.path.name)
-
         self.date_time = None
+        self.target = None
+
+        match = re.match(r"(.?)(\d{4})-(\d{2})-(\d{2})[-_](\d{2})-?(\d{2})[-_](\d{1,2})([\s\S]*)\.", self.path.name)
 
         if match:
+            g1 = match.group(1)
+            g8 = match.group(8)
+
+            if g1.startswith("sun") or "Sun" in g8:
+                self.target = "Sun"
+            elif g1.startswith("mercury") or "Mer" in g8:
+                self.target = "Mercury"
+            elif g1.startswith("v") or "Ven" in g8:
+                self.target = "Venus"
+            elif g1.startswith("moon") or "Moon" in g8:
+                self.target = "Moon"
+            elif g1.startswith("mats") or "Mar" in g8:
+                self.target = "Mars"
+            elif g1.startswith("j") or "Jup" in g8:
+                self.target = "Jupiter"
+            elif g1.startswith("s") or "Sat" in g8:
+                self.target = "Saturn"
+            elif g1.startswith("u") or "Ura" in g8:
+                self.target = "Uranus"
+            elif g1.startswith("n") or "Nep" in g8:
+                self.target = "Neptune"            
+
             year = match.group(2)
             month = match.group(3)
             day = match.group(4)

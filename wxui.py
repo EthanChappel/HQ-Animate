@@ -257,8 +257,11 @@ class MainFrame(wx.Frame):
             self.paths = [convert.Frame(p) for p in dialog.GetPaths()]
             self.in_listbox.DeleteAllItems()
             enable_field_rotation_option = True
+            target = None
             for i, p in enumerate(self.paths):
                 self.in_listbox.InsertItem(i, p.path.name)
+                if not target:
+                    target = p.target
                 if p.date_time:
                     self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S %Z"))
                 else:
@@ -266,8 +269,8 @@ class MainFrame(wx.Frame):
                     self.field_derotation_checkbox.SetValue(False)
                     self.set_field_derotation_state()
             self.field_derotation_checkbox.Enable(enable_field_rotation_option)
-            self.in_listbox.Refresh()
-            self.in_listbox.Update()
+            if target:
+                self.target_combobox.SetValue(target)
             self.out_dir_textctrl.SetValue(str(self.paths[0].path.parent))
         dialog.Destroy()
         self.set_convert_button_state()
