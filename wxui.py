@@ -210,6 +210,11 @@ class MainFrame(wx.Frame):
         self.bottom_sizer.Add(self.about_button)
         self.bottom_sizer.AddStretchSpacer(1)
 
+        self.show_folder_checkbox = wx.CheckBox(self.panel, label="Show folder when done")
+        self.show_folder_checkbox.SetValue(True)
+        self.bottom_sizer.Add(self.show_folder_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.bottom_sizer.AddSpacer(spacing)
+
         self.convert_book = wx.Simplebook(self.panel)
         self.bottom_sizer.Add(self.convert_book)
 
@@ -325,12 +330,14 @@ class MainFrame(wx.Frame):
     def on_convert_end(self):
         out_dir = pathlib.Path(self.out_dir_textctrl.GetValue())
 
-        if SYSTEM == 'Darwin':  # macOS
-            subprocess.run(['open', out_dir])
-        elif SYSTEM == 'Windows':  # Windows
-            subprocess.run(['explorer', out_dir])
-        elif SYSTEM.startswith('Linux'):  # Linux
-            subprocess.run(['xdg-open', out_dir])
+        if not self.show_folder_checkbox.GetValue():
+            pass
+        elif SYSTEM == "Darwin":  # macOS
+            subprocess.run(["open", out_dir])
+        elif SYSTEM == "Windows":  # Windows
+            subprocess.run(["explorer", out_dir])
+        else:
+            subprocess.run(["xdg-open", out_dir])
     
         self.activity_indicator.Stop()
         self.convert_book.ChangeSelection(0)
