@@ -27,6 +27,26 @@ import re
 import datetime
 import pathlib
 from PIL import Image, ImageSequence
+from skyfield.api import load, load_file, wgs84
+import numpy as np
+
+
+TARGETS = {
+    "Sun": "SUN",
+    "Mercury": "MERCURY",
+    "Venus": "VENUS",
+    "Moon": "MOON",
+    "Mars": "MARS",
+    "Jupiter": "JUPITER BARYCENTER",
+    "Saturn": "SATURN BARYCENTER",
+    "Uranus": "URANUS BARYCENTER",
+    "Neptune": "NEPTUNE BARYCENTER",
+}
+
+script_path = pathlib.Path(__file__).resolve().parent
+
+planets = load_file(str(pathlib.Path(script_path, 'de423.bsp')))
+ts = load.timescale()
 
 
 class Frame:
@@ -53,14 +73,34 @@ class Frame:
         return self.path.name
 
 
-def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool):
-    global p
-    p = 0
+def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, derotate=False, latitude=0, longitude=0, target=None):
     frames = []
+    observer = planets["Earth"] + wgs84.latlon(latitude, longitude)
+    t1 = None
+    total_rotation = 0
     for n in tar:
+        if derotate:
+            t2 = ts.from_datetime(n.date_time)
+            if t1 != None:
+                a1 = observer.at(t1).observe(planets[TARGETS[target]])
+                a2 = observer.at(t2).observe(planets[TARGETS[target]])
+
+                ha1, dec1, _ = a1.apparent().hadec()
+                ha2, dec2, _ = a2.apparent().hadec()
+
+                q1 = np.degrees(np.arctan(np.sin(ha1.radians) / (np.tan(np.radians(latitude)) * np.cos(dec1.radians) - np.sin(dec1.radians) * np.cos(ha1.radians))))
+                q2 = np.degrees(np.arctan(np.sin(ha2.radians) / (np.tan(np.radians(latitude)) * np.cos(dec2.radians) - np.sin(dec2.radians) * np.cos(ha2.radians))))
+
+                total_rotation += q2 - q1
+
+            t1 = t2
+
         image = Image.open(n.path)
         for frame in ImageSequence.Iterator(image):
-            frames.append(frame.convert('RGB').copy())
+            f = frame.convert('RGB').copy()
+            if derotate:
+                f = f.rotate(total_rotation, resample=Image.BICUBIC)
+            frames.append(f)
 
     image = frames[0]
 

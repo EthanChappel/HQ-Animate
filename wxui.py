@@ -56,7 +56,7 @@ class MyListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        super().__init__(None, title="HQ Animate", size=(600, 400))
+        super().__init__(None, title="HQ Animate", size=(600, 500))
 
         self.paths = []
 
@@ -66,7 +66,8 @@ class MainFrame(wx.Frame):
             self.SetDoubleBuffered(True)
 
         dc = wx.MemoryDC()
-        utc_width, _ = dc.GetTextExtent("0000-00-00 00:00:00 UTC")
+        utc_width = dc.GetTextExtent("0000-00-00 00:00:00 UTC").Width + 20
+        longitude_width = dc.GetTextExtent("-180.00").Width + 30
 
         self.panel = wx.Panel(self, wx.ID_ANY)
         self.grid_sizer = wx.GridBagSizer(hgap=9, vgap=9)
@@ -80,37 +81,83 @@ class MainFrame(wx.Frame):
         self.in_listbox.InsertColumn(0, 'Name')
         self.in_listbox.setResizeColumn(0)
         self.in_listbox.InsertColumn(1, 'Time')
-        self.in_listbox.SetColumnWidth(1, utc_width + 20)
+        self.in_listbox.SetColumnWidth(1, utc_width)
         self.grid_sizer.Add(self.in_listbox, pos=(0, 1), flag=wx.EXPAND)
 
         self.in_browse_button = wx.Button(self.panel, label="Browse...")
         self.in_browse_button.Bind(wx.EVT_BUTTON, self.set_input)
-        self.grid_sizer.Add(self.in_browse_button, pos=(0, 2))
+        self.grid_sizer.Add(self.in_browse_button, pos=(1, 1), flag=wx.ALIGN_RIGHT)
+
+        self.altaz_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.grid_sizer.Add(self.altaz_sizer, pos=(2, 0), span=(1, 2), flag=wx.EXPAND)
+
+        self.field_derotation_checkbox = wx.CheckBox(self.panel, label="Alt-az field derotation")
+        self.field_derotation_checkbox.Enable(False)
+        self.field_derotation_checkbox.Bind(wx.EVT_CHECKBOX, self.on_field_derotation_checkbox_toggle)
+        self.altaz_sizer.Add(self.field_derotation_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.latitude_label = wx.StaticText(self.panel, label="Latitude")
+        self.altaz_sizer.Add(self.latitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.latitude_spinctrl = wx.SpinCtrlDouble(self.panel, min=-90, max=90, initial=0)
+        self.latitude_spinctrl.SetDigits(2)
+        self.latitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.latitude_spinctrl.GetMinHeight())) 
+        self.altaz_sizer.Add(self.latitude_spinctrl, flag=wx.EXPAND)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.lat_deg_label = wx.StaticText(self.panel, label="°")
+        self.altaz_sizer.Add(self.lat_deg_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.longitude_label = wx.StaticText(self.panel, label="Longitude")
+        self.altaz_sizer.Add(self.longitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.longitude_spinctrl = wx.SpinCtrlDouble(self.panel, min=-180, max=180, initial=0)
+        self.longitude_spinctrl.SetDigits(2)
+        self.longitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.longitude_spinctrl.GetMinHeight())) 
+        self.altaz_sizer.Add(self.longitude_spinctrl, flag=wx.EXPAND)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.lon_deg_label = wx.StaticText(self.panel, label="°")
+        self.altaz_sizer.Add(self.lon_deg_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.target_label = wx.StaticText(self.panel, label="Target")
+        self.altaz_sizer.Add(self.target_label, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.altaz_sizer.AddSpacer(9)
+
+        self.target_combobox = wx.ComboBox(self.panel, choices=list(convert.TARGETS.keys()), style=wx.CB_READONLY)
+        self.target_combobox.Bind(wx.EVT_COMBOBOX, self.on_target_combobox_selection)
+        self.altaz_sizer.Add(self.target_combobox, proportion=1, flag=wx.EXPAND)
 
         self.out_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.grid_sizer.Add(self.out_sizer, pos=(1, 1), flag=wx.EXPAND)
+        self.grid_sizer.Add(self.out_sizer, pos=(3, 1), flag=wx.EXPAND)
 
         self.out_label = wx.StaticText(self.panel, label="Output")
-        self.grid_sizer.Add(self.out_label, pos=(1, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        self.grid_sizer.Add(self.out_label, pos=(3, 0), flag=wx.ALIGN_CENTER_VERTICAL)
 
         self.out_dir_textctrl = wx.TextCtrl(self.panel)
         self.out_dir_textctrl.Bind(wx.EVT_TEXT, self.on_output_text_changed_event)
-        self.out_sizer.Add(self.out_dir_textctrl, proportion=1,flag=wx.EXPAND | wx.ALL)
+        self.out_sizer.Add(self.out_dir_textctrl, proportion=1, flag=wx.EXPAND | wx.ALL)
         self.out_sizer.AddSpacer(9)
         
         self.out_name_textctrl = wx.TextCtrl(self.panel)
         self.out_name_textctrl.Bind(wx.EVT_TEXT, self.on_output_text_changed_event)
         self.out_sizer.Add(self.out_name_textctrl)
+        self.out_sizer.AddSpacer(9)
 
         self.out_browse_button = wx.Button(self.panel, label="Browse...")
         self.out_browse_button.Bind(wx.EVT_BUTTON, self.set_output)
-        self.grid_sizer.Add(self.out_browse_button, pos=(1, 2))
+        self.out_sizer.Add(self.out_browse_button)
 
         self.format_label = wx.StaticText(self.panel, label="Formats")
-        self.grid_sizer.Add(self.format_label, pos=(2, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+        self.grid_sizer.Add(self.format_label, pos=(4, 0), flag=wx.ALIGN_CENTER_VERTICAL)
 
         self.checkbox_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.grid_sizer.Add(self.checkbox_sizer, pos=(2, 1), flag=wx.EXPAND)
+        self.grid_sizer.Add(self.checkbox_sizer, pos=(4, 1), flag=wx.EXPAND)
 
         self.apng_checkbox = wx.CheckBox(self.panel, label="APNG")
         self.apng_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
@@ -140,14 +187,15 @@ class MainFrame(wx.Frame):
         self.checkbox_sizer.Add(self.frame_duration_label, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(9)
 
-        self.frame_duration_spinctrl = wx.SpinCtrl(self.panel, min=1, max=100000, initial=20)
+        self.frame_duration_spinctrl = wx.SpinCtrl(self.panel, min=1, max=100000, initial=100)
         self.checkbox_sizer.Add(self.frame_duration_spinctrl, proportion=1, flag=wx.EXPAND)
+        self.checkbox_sizer.AddSpacer(9)
 
         self.ms_label = wx.StaticText(self.panel, label="ms")
-        self.grid_sizer.Add(self.ms_label, pos=(2, 2), flag=wx.ALIGN_CENTER_VERTICAL)
+        self.checkbox_sizer.Add(self.ms_label, flag=wx.ALIGN_CENTER_VERTICAL)
 
         self.bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.grid_sizer.Add(self.bottom_sizer, pos=(3, 0), span=(1, 3), flag=wx.EXPAND)
+        self.grid_sizer.Add(self.bottom_sizer, pos=(5, 0), span=(1, 2), flag=wx.EXPAND)
 
         self.about_button = wx.Button(self.panel, label="About...")
         self.bottom_sizer.Add(self.about_button)
@@ -166,6 +214,7 @@ class MainFrame(wx.Frame):
         self.panel.SetSizerAndFit(self.wrapper_sizer)
 
         self.set_convert_button_state()
+        self.set_field_derotation_state()
 
         self.Layout()
         self.activity_indicator.Hide()
@@ -183,9 +232,16 @@ class MainFrame(wx.Frame):
         if dialog.ShowModal() == wx.ID_OK:
             self.paths = [convert.Frame(p) for p in dialog.GetPaths()]
             self.in_listbox.DeleteAllItems()
+            enable_field_rotation_option = True
             for i, p in enumerate(self.paths):
                 self.in_listbox.InsertItem(i, p.path.name)
-                self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S %Z") if p.date_time else "")
+                if p.date_time:
+                    self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S %Z"))
+                else:
+                    enable_field_rotation_option = False
+                    self.field_derotation_checkbox.SetValue(False)
+                    self.set_field_derotation_state()
+            self.field_derotation_checkbox.Enable(enable_field_rotation_option)
             self.in_listbox.Refresh()
             self.in_listbox.Update()
             self.out_dir_textctrl.SetValue(str(self.paths[0].path.parent))
@@ -216,8 +272,10 @@ class MainFrame(wx.Frame):
         has_input = self.in_listbox.GetItemCount() > 0
         has_output_dir = out_dir.exists() and out_dir.is_absolute()
         has_output_name = len(self.out_name_textctrl.GetValue()) > 0
+        do_derotate = self.field_derotation_checkbox.GetValue()
+        derotate_and_target = (not do_derotate) or (do_derotate and not self.target_combobox.GetValue() not in convert.TARGETS.keys())
 
-        self.convert_button.Enable((do_apng or do_avif or do_webp or do_gif) and has_input and has_output_dir and has_output_name)
+        self.convert_button.Enable((do_apng or do_avif or do_webp or do_gif) and has_input and has_output_dir and has_output_name and derotate_and_target)
 
     def on_convert_start(self, event):
         self.panel.Enable(False)
@@ -225,6 +283,35 @@ class MainFrame(wx.Frame):
         self.activity_indicator.Show()
         t = threading.Thread(target=self.convert)
         t.start()
+    
+    def on_field_derotation_checkbox_toggle(self, event):
+        self.set_field_derotation_state()
+        self.set_convert_button_state()
+    
+    def on_target_combobox_selection(self, event):
+        self.set_convert_button_state()
+    
+    def set_field_derotation_state(self):
+        is_checked = True
+
+        for f in self.paths:
+            if f.date_time:
+                break
+        else:
+            is_checked = False
+        
+        is_checked = is_checked and self.field_derotation_checkbox.GetValue()
+
+        self.latitude_label.Enable(is_checked)
+        self.latitude_spinctrl.Enable(is_checked)
+        self.lat_deg_label.Enable(is_checked)
+
+        self.longitude_label.Enable(is_checked)
+        self.longitude_spinctrl.Enable(is_checked)
+        self.lon_deg_label.Enable(is_checked)
+
+        self.target_label.Enable(is_checked)
+        self.target_combobox.Enable(is_checked)
     
     def on_convert_end(self):
         out_dir = pathlib.Path(self.out_dir_textctrl.GetValue())
@@ -250,5 +337,9 @@ class MainFrame(wx.Frame):
             self.webp_checkbox.GetValue(),
             self.apng_checkbox.GetValue(),
             self.avif_checkbox.GetValue(),
+            self.field_derotation_checkbox.GetValue(),
+            self.latitude_spinctrl.GetValue(),
+            self.longitude_spinctrl.GetValue(),
+            self.target_combobox.GetValue(),
         )
         wx.CallAfter(self.on_convert_end)
