@@ -115,8 +115,6 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             optimize=True
         )
 
-    p = 1
-
     if avif:
         image.save(
             f"{o}.avif",
@@ -129,8 +127,6 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             quality=100,
             speed=0
         )
-
-    p = 2
 
     if webp:
         image.save(
@@ -145,8 +141,6 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             method=6
         )
 
-    p = 3
-
     if gif:
         image.save(
             f"{o}.gif",
@@ -157,5 +151,3 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             loop=0,
             optimize=True
         )
-
-    p = 4
