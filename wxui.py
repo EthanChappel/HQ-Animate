@@ -33,6 +33,7 @@ import wx.adv
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from PIL import Image
 import convert
+import settings
 
 
 SYSTEM = platform.system()
@@ -59,6 +60,11 @@ class MyListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 class MainFrame(wx.Frame):
     def __init__(self):
         super().__init__(None, title="HQ Animate", size=(600, 500))
+
+        self.Bind(wx.EVT_CLOSE, self.on_close)
+
+        self.settings = settings.Settings.from_file_or_default(Path(Path(__file__).parent, "ui-settings.json"))
+
         if not self.settings.ffmpeg_path:
             exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
 
@@ -115,6 +121,8 @@ class MainFrame(wx.Frame):
 
         self.field_derotation_checkbox = wx.CheckBox(self.main_panel, label="Alt-az field derotation")
         self.field_derotation_checkbox.Bind(wx.EVT_CHECKBOX, self.on_field_derotation_checkbox_toggle)
+        self.field_derotation_checkbox.Enable(False)
+        self.field_derotation_checkbox.SetValue(self.settings.field_derotation)
         self.altaz_sizer.Add(self.field_derotation_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
         self.altaz_sizer.AddSpacer(spacing)
 
@@ -125,8 +133,9 @@ class MainFrame(wx.Frame):
         self.altaz_sizer.Add(self.latitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
         self.altaz_sizer.AddSpacer(spacing)
 
-        self.latitude_spinctrl = wx.SpinCtrlDouble(self.main_panel, min=-90, max=90, initial=0)
+        self.latitude_spinctrl = wx.SpinCtrlDouble(self.main_panel, min=settings.LATITUDE_MIN, max=settings.LATITUDE_MAX)
         self.latitude_spinctrl.SetDigits(2)
+        self.latitude_spinctrl.SetValue(self.settings.latitude)
         self.latitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.latitude_spinctrl.GetMinHeight())) 
         self.altaz_sizer.Add(self.latitude_spinctrl, flag=wx.EXPAND)
         self.altaz_sizer.AddSpacer(spacing // 2)
@@ -142,8 +151,9 @@ class MainFrame(wx.Frame):
         self.altaz_sizer.Add(self.longitude_label, flag=wx.ALIGN_CENTER_VERTICAL)
         self.altaz_sizer.AddSpacer(spacing)
 
-        self.longitude_spinctrl = wx.SpinCtrlDouble(self.main_panel, min=-180, max=180, initial=0)
+        self.longitude_spinctrl = wx.SpinCtrlDouble(self.main_panel, min=settings.LONGITUDE_MIN, max=settings.LONGITUDE_MAX)
         self.longitude_spinctrl.SetDigits(2)
+        self.longitude_spinctrl.SetValue(self.settings.longitude)
         self.longitude_spinctrl.SetMinSize(wx.Size(longitude_width, self.longitude_spinctrl.GetMinHeight())) 
         self.altaz_sizer.Add(self.longitude_spinctrl, flag=wx.EXPAND)
         self.altaz_sizer.AddSpacer(spacing // 2)
@@ -190,21 +200,25 @@ class MainFrame(wx.Frame):
         self.grid_sizer.Add(self.checkbox_sizer, pos=(4, 1), flag=wx.EXPAND)
 
         self.apng_checkbox = wx.CheckBox(self.main_panel, label="APNG")
+        self.apng_checkbox.SetValue(self.settings.do_apng)
         self.apng_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.apng_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(spacing)
 
         self.avif_checkbox = wx.CheckBox(self.main_panel, label="AVIF")
+        self.avif_checkbox.SetValue(self.settings.do_avif)
         self.avif_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.avif_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(spacing)
 
         self.webp_checkbox = wx.CheckBox(self.main_panel, label="WebP")
+        self.webp_checkbox.SetValue(self.settings.do_webp)
         self.webp_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.webp_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(spacing)
 
         self.gif_checkbox = wx.CheckBox(self.main_panel, label="GIF")
+        self.gif_checkbox.SetValue(self.settings.do_gif)
         self.gif_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
         self.checkbox_sizer.Add(self.gif_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
 
@@ -215,7 +229,8 @@ class MainFrame(wx.Frame):
         self.checkbox_sizer.Add(self.frame_duration_label, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(spacing)
 
-        self.frame_duration_spinctrl = wx.SpinCtrl(self.main_panel, min=1, max=100000, initial=100)
+        self.frame_duration_spinctrl = wx.SpinCtrl(self.main_panel, min=settings.FRAME_LENGTH_MIN, max=settings.FRAME_LENGTH_MAX)
+        self.frame_duration_spinctrl.SetValue(self.settings.frame_length)
         self.checkbox_sizer.Add(self.frame_duration_spinctrl, proportion=1, flag=wx.EXPAND)
         self.checkbox_sizer.AddSpacer(spacing // 2)
 
@@ -274,13 +289,13 @@ class MainFrame(wx.Frame):
         self.bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.grid_sizer.Add(self.bottom_sizer, pos=(6, 0), span=(1, 2), flag=wx.EXPAND)
 
-        self.about_button = wx.Button(self.main_panel, label="About")
+        self.about_button = wx.Button(self.main_panel, label="Settings")
         self.about_button.Bind(wx.EVT_BUTTON, self.on_about)
         self.bottom_sizer.Add(self.about_button)
         self.bottom_sizer.AddStretchSpacer(1)
 
         self.show_folder_checkbox = wx.CheckBox(self.main_panel, label="Show folder when done")
-        self.show_folder_checkbox.SetValue(True)
+        self.show_folder_checkbox.SetValue(self.settings.show_folder)
         self.bottom_sizer.Add(self.show_folder_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
         self.bottom_sizer.AddSpacer(spacing)
 
@@ -378,6 +393,7 @@ class MainFrame(wx.Frame):
         if dialog.ShowModal() == wx.ID_OK:
             chosen_path = dialog.GetPath()
             self.ffmpeg_dir_textctrl.SetValue(chosen_path)
+            self.save_settings()
             self.update_ffmpeg_widgets()
         dialog.Destroy()
 
@@ -388,6 +404,7 @@ class MainFrame(wx.Frame):
         self.set_convert_button_state()
     
     def on_ffmpeg_focus_lost_event(self, event):
+        self.save_settings()
         self.update_ffmpeg_widgets()
     
     def update_ffmpeg_widgets(self):
@@ -429,6 +446,7 @@ class MainFrame(wx.Frame):
         self.convert_book.ChangeSelection(1)
         t = threading.Thread(target=self.convert)
         t.start()
+        self.save_settings()
     
     def on_field_derotation_checkbox_toggle(self, event):
         self.set_field_derotation_state()
@@ -504,3 +522,23 @@ class MainFrame(wx.Frame):
         finally:
             wx.CallAfter(self.on_convert_end)
     
+    def save_settings(self):
+        self.settings.field_derotation = self.field_derotation_checkbox.GetValue()
+        self.settings.latitude = self.latitude_spinctrl.GetValue()
+        self.settings.longitude = self.longitude_spinctrl.GetValue()
+        self.settings.do_apng = self.apng_checkbox.GetValue()
+        self.settings.do_avif = self.avif_checkbox.GetValue()
+        self.settings.do_webp = self.webp_checkbox.GetValue()
+        self.settings.do_gif = self.gif_checkbox.GetValue()
+        self.settings.do_mp4 = self.mp4_checkbox.GetValue()
+        self.settings.frame_length = self.frame_duration_spinctrl.GetValue()
+        self.settings.quality = self.quality_spinctrl.GetValue()
+        self.settings.mp4_codec = convert.Codec.AV1 if self.mp4av1_radio.GetValue() else convert.Codec.AVC
+        self.settings.show_folder = self.show_folder_checkbox.GetValue()
+        self.settings.ffmpeg_path = self.ffmpeg_dir_textctrl.GetValue()
+
+        self.settings.save()
+        
+    def on_close(self, event):
+        self.Destroy()
+        self.save_settings()
