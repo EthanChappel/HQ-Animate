@@ -342,6 +342,12 @@ class MainFrame(wx.Frame):
     def on_target_combobox_selection(self, event):
         self.set_convert_button_state()
     
+    def on_about(self, event):
+        self.book.ChangeSelection(1)
+    
+    def on_back(self, event):
+        self.book.ChangeSelection(0)
+    
     def set_field_derotation_state(self):
         is_checked = True
 
