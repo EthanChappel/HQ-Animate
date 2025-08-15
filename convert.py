@@ -121,7 +121,9 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
         for frame in ImageSequence.Iterator(image):
             f = frame.convert('RGB').copy()
             if derotate:
+                f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
+                f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
             frames.append(f)
 
     image = frames[0]
