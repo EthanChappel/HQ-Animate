@@ -267,8 +267,8 @@ class MainFrame(wx.Frame):
                 else:
                     enable_field_rotation_option = False
                     self.field_derotation_checkbox.SetValue(False)
-                    self.set_field_derotation_state()
             self.field_derotation_checkbox.Enable(enable_field_rotation_option)
+            self.set_field_derotation_state()
             if target:
                 self.target_combobox.SetValue(target)
             self.out_dir_textctrl.SetValue(str(self.paths[0].path.parent))
