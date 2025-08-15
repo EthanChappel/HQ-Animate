@@ -25,7 +25,7 @@ SOFTWARE.
 
 import re
 import datetime
-import pathlib
+from pathlib import Path
 from PIL import Image, ImageSequence
 from skyfield.api import load, load_file, wgs84
 import numpy as np
@@ -43,15 +43,15 @@ TARGETS = {
     "Neptune": "NEPTUNE BARYCENTER",
 }
 
-script_path = pathlib.Path(__file__).resolve().parent
+script_path = Path(__file__).resolve().parent
 
-planets = load_file(str(pathlib.Path(script_path, 'de423.bsp')))
+planets = load_file(str(Path(script_path, 'de423.bsp')))
 ts = load.timescale()
 
 
 class Frame:
     def __init__(self, path):
-        self.path = pathlib.Path(path)
+        self.path = Path(path)
         self.date_time = None
         self.target = None
 

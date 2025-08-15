@@ -26,7 +26,7 @@ SOFTWARE.
 import threading
 import subprocess
 import platform
-import pathlib
+from pathlib import Path
 import wx
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from PIL import Image
@@ -313,7 +313,7 @@ class MainFrame(wx.Frame):
         self.set_convert_button_state()
     
     def set_convert_button_state(self):
-        out_dir = pathlib.Path(self.out_dir_textctrl.GetValue())
+        out_dir = Path(self.out_dir_textctrl.GetValue())
 
         do_apng = self.apng_checkbox.GetValue()
         do_avif = self.avif_checkbox.GetValue()
@@ -365,7 +365,7 @@ class MainFrame(wx.Frame):
         self.target_combobox.Enable(is_checked)
     
     def on_convert_end(self):
-        out_dir = pathlib.Path(self.out_dir_textctrl.GetValue())
+        out_dir = Path(self.out_dir_textctrl.GetValue())
 
         if not self.show_folder_checkbox.GetValue():
             pass
