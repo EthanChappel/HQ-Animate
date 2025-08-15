@@ -23,11 +23,13 @@ SOFTWARE.
 '''
 
 
+import os
 import threading
 import subprocess
 import platform
 from pathlib import Path
 import wx
+import wx.adv
 from wx.lib.mixins.listctrl import ListCtrlAutoWidthMixin
 from PIL import Image
 import convert
@@ -57,6 +59,17 @@ class MyListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
 class MainFrame(wx.Frame):
     def __init__(self):
         super().__init__(None, title="HQ Animate", size=(600, 500))
+        if not self.settings.ffmpeg_path:
+            exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
+
+            for p in [Path(exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
+                if p.is_file():
+                    self.settings.ffmpeg_path = p.resolve()
+                    break
+
+
+        self.can_avc = False
+        self.can_av1 = False
 
         spacing = 6
 
@@ -217,11 +230,49 @@ class MainFrame(wx.Frame):
         self.checkbox_sizer.Add(self.quality_label, flag=wx.ALIGN_CENTER_VERTICAL)
         self.checkbox_sizer.AddSpacer(spacing)
 
-        self.quality_spinctrl = wx.SpinCtrl(self.main_panel, min=1, max=100, initial=100)
+        self.quality_spinctrl = wx.SpinCtrl(self.main_panel, min=settings.QUALITY_MIN, max=settings.QUALITY_MAX)
+        self.quality_spinctrl.SetValue(self.settings.quality)
         self.checkbox_sizer.Add(self.quality_spinctrl, proportion=1, flag=wx.EXPAND)
 
+        self.video_book = wx.Simplebook(self.main_panel)
+        self.grid_sizer.Add(self.video_book, pos=(5, 1), span=(1, 2))
+
+        self.video_info_panel = wx.Panel(self.video_book)
+        self.video_info_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.video_info_panel.SetSizerAndFit(self.video_info_sizer)
+        self.video_book.AddPage(self.video_info_panel, "")
+
+        self.video_support_label = wx.StaticText(self.video_info_panel, label="Conversion to MP4 video requires FFmpeg. ")
+        self.video_info_sizer.Add(self.video_support_label)
+
+        self.select_ffmpeg_label = wx.adv.HyperlinkCtrl(self.video_info_panel, label="Select FFmpeg executable...")
+        self.select_ffmpeg_label.Bind(wx.adv.EVT_HYPERLINK, self.set_ffmpeg_path)
+        self.video_info_sizer.Add(self.select_ffmpeg_label)
+
+        self.video_panel = wx.Panel(self.video_book)
+        self.video_book.AddPage(self.video_panel, "")
+
+        self.video_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.video_panel.SetSizerAndFit(self.video_sizer)
+
+        self.mp4_checkbox = wx.CheckBox(self.video_panel, label="MP4")
+        self.mp4_checkbox.SetValue(self.settings.do_mp4)
+        self.mp4_checkbox.Bind(wx.EVT_CHECKBOX, self.on_format_checkbox_event)
+        self.video_sizer.Add(self.mp4_checkbox, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.video_sizer.AddSpacer(spacing)
+
+        self.mp4avc_radio = wx.RadioButton(self.video_panel, label="AVC")
+        self.mp4avc_radio.SetValue(self.settings.mp4_codec == convert.Codec.AVC)
+        self.video_sizer.Add(self.mp4avc_radio, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.video_sizer.AddSpacer(spacing)
+
+        self.mp4av1_radio = wx.RadioButton(self.video_panel, label="AV1")
+        self.mp4av1_radio.SetValue(self.settings.mp4_codec == convert.Codec.AV1)
+        self.video_sizer.Add(self.mp4av1_radio, flag=wx.ALIGN_CENTER_VERTICAL)
+        self.video_sizer.AddSpacer(spacing)
+
         self.bottom_sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.grid_sizer.Add(self.bottom_sizer, pos=(5, 0), span=(1, 2), flag=wx.EXPAND)
+        self.grid_sizer.Add(self.bottom_sizer, pos=(6, 0), span=(1, 2), flag=wx.EXPAND)
 
         self.about_button = wx.Button(self.main_panel, label="About")
         self.about_button.Bind(wx.EVT_BUTTON, self.on_about)
@@ -247,24 +298,39 @@ class MainFrame(wx.Frame):
         self.grid_sizer.AddGrowableCol(1, 1)
 
         self.about_panel = wx.Panel(self.book, wx.ID_ANY)
-        self.about_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.about_sizer = wx.GridBagSizer(hgap=spacing, vgap=spacing)
         self.about_panel.SetSizerAndFit(self.about_sizer)
         self.book.AddPage(self.about_panel, "")
+
+        self.ffmpeg_label = wx.StaticText(self.about_panel, label="FFmpeg path")
+        self.about_sizer.Add(self.ffmpeg_label, pos=(0, 0), flag=wx.ALIGN_CENTER_VERTICAL)
+
+        self.ffmpeg_dir_textctrl = wx.TextCtrl(self.about_panel)
+        self.ffmpeg_dir_textctrl.SetValue(str(self.settings.ffmpeg_path))
+        self.ffmpeg_dir_textctrl.Bind(wx.EVT_KILL_FOCUS, self.on_ffmpeg_focus_lost_event)
+        self.about_sizer.Add(self.ffmpeg_dir_textctrl, pos=(0, 1), flag=wx.EXPAND | wx.ALL)
+
+        self.ffmpeg_browse_button = wx.Button(self.about_panel, label="Browse...")
+        self.ffmpeg_browse_button.Bind(wx.EVT_BUTTON, self.set_ffmpeg_path)
+        self.about_sizer.Add(self.ffmpeg_browse_button, pos=(0, 2))
 
         self.license_textctrl = wx.TextCtrl(self.about_panel, style=wx.TE_MULTILINE | wx.TE_READONLY | wx.VSCROLL | wx.BORDER_NONE)
         with open(Path("./dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.license_textctrl.ChangeValue(f.read())
-        self.about_sizer.Add(self.license_textctrl, proportion=1, flag=wx.EXPAND)
-        self.about_sizer.AddSpacer(spacing)
+        self.about_sizer.Add(self.license_textctrl, pos=(1, 0), span=(1, 3), flag=wx.EXPAND)
 
         self.back_button = wx.Button(self.about_panel, label="Back")
         self.back_button.Bind(wx.EVT_BUTTON, self.on_back)
-        self.about_sizer.Add(self.back_button)
+        self.about_sizer.Add(self.back_button, pos=(2, 0))
+
+        self.about_sizer.AddGrowableRow(1, 1)
+        self.about_sizer.AddGrowableCol(1, 1)
 
         self.panel.SetSizerAndFit(self.wrapper_sizer)
 
-        self.set_convert_button_state()
         self.set_field_derotation_state()
+        self.update_ffmpeg_widgets()
+        self.set_convert_button_state()
 
         self.Show()
         self.in_listbox.PostSizeEventToParent()
@@ -305,12 +371,38 @@ class MainFrame(wx.Frame):
             self.out_dir_textctrl.SetValue(chosen_dir)
         dialog.Destroy()
         self.set_convert_button_state()
+    
+    def set_ffmpeg_path(self, event):
+        wildcards = "Executable files|*.exe" if SYSTEM == 'Windows' else "Executable files|*"
+        dialog = wx.FileDialog(None, "Select FFmpeg executable...", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST, wildcard=wildcards)
+        if dialog.ShowModal() == wx.ID_OK:
+            chosen_path = dialog.GetPath()
+            self.ffmpeg_dir_textctrl.SetValue(chosen_path)
+            self.update_ffmpeg_widgets()
+        dialog.Destroy()
 
     def on_format_checkbox_event(self, event):
         self.set_convert_button_state()
     
     def on_output_text_changed_event(self, event):
         self.set_convert_button_state()
+    
+    def on_ffmpeg_focus_lost_event(self, event):
+        self.update_ffmpeg_widgets()
+    
+    def update_ffmpeg_widgets(self):
+        is_valid_ffmpeg = convert.validate_ffmpeg(self.settings.ffmpeg_path)
+        self.can_avc = is_valid_ffmpeg["avc"]
+        self.can_av1 = is_valid_ffmpeg["av1"]
+        if self.can_avc or self.can_av1:
+            self.video_book.ChangeSelection(1)
+        else:
+            self.video_book.ChangeSelection(0)
+        
+        if self.can_avc and not self.can_av1:
+            self.mp4avc_radio.SetValue(True)
+        elif self.can_av1 and not self.can_avc:
+            self.mp4av1_radio.SetValue(True)
     
     def set_convert_button_state(self):
         out_dir = Path(self.out_dir_textctrl.GetValue())
@@ -319,13 +411,16 @@ class MainFrame(wx.Frame):
         do_avif = self.avif_checkbox.GetValue()
         do_webp = self.webp_checkbox.GetValue()
         do_gif = self.gif_checkbox.GetValue()
+        do_mp4 = self.mp4_checkbox.GetValue()
         has_input = self.in_listbox.GetItemCount() > 0
         has_output_dir = out_dir.exists() and out_dir.is_absolute()
         has_output_name = len(self.out_name_textctrl.GetValue()) > 0
         do_derotate = self.field_derotation_checkbox.GetValue()
         derotate_and_target = (not do_derotate) or (do_derotate and not self.target_combobox.GetValue() not in convert.TARGETS.keys())
 
-        self.convert_button.Enable((do_apng or do_avif or do_webp or do_gif) and has_input and has_output_dir and has_output_name and derotate_and_target)
+        self.convert_button.Enable((do_apng or do_avif or do_webp or do_gif or do_mp4) and has_input and has_output_dir and has_output_name and derotate_and_target)
+        self.mp4avc_radio.Enable(do_mp4 and self.can_avc)
+        self.mp4av1_radio.Enable(do_mp4 and self.can_av1)
 
     def on_convert_start(self, event):
         self.SetCursor(wx.Cursor(wx.CURSOR_WAIT))
@@ -389,18 +484,23 @@ class MainFrame(wx.Frame):
         self.SetCursor(wx.NullCursor)
 
     def convert(self):
-        convert.save(
-            self.paths,
-            pathlib.Path(self.out_dir_textctrl.GetValue(), self.out_name_textctrl.GetValue()),
-            self.frame_duration_spinctrl.GetValue(),
-            self.gif_checkbox.GetValue(),
-            self.webp_checkbox.GetValue(),
-            self.apng_checkbox.GetValue(),
-            self.avif_checkbox.GetValue(),
-            self.quality_spinctrl.GetValue(),
-            self.field_derotation_checkbox.GetValue(),
-            self.latitude_spinctrl.GetValue(),
-            self.longitude_spinctrl.GetValue(),
-            self.target_combobox.GetValue(),
-        )
-        wx.CallAfter(self.on_convert_end)
+        try:
+            convert.save(
+                self.paths,
+                Path(self.out_dir_textctrl.GetValue(), self.out_name_textctrl.GetValue()),
+                self.frame_duration_spinctrl.GetValue(),
+                self.gif_checkbox.GetValue(),
+                self.webp_checkbox.GetValue(),
+                self.apng_checkbox.GetValue(),
+                self.avif_checkbox.GetValue(),
+                self.mp4_checkbox.GetValue(),
+                convert.Codec.AV1 if self.mp4av1_radio.GetValue() else convert.Codec.AVC,
+                self.quality_spinctrl.GetValue(),
+                self.field_derotation_checkbox.GetValue(),
+                self.latitude_spinctrl.GetValue(),
+                self.longitude_spinctrl.GetValue(),
+                self.target_combobox.GetValue(),
+            )
+        finally:
+            wx.CallAfter(self.on_convert_end)
+    
