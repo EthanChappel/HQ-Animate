@@ -337,7 +337,7 @@ class MainFrame(wx.Frame):
 
     def set_input(self, event):
         wildcards = "Images|" + self.wildcards
-        dialog = wx.FileDialog(self, "Choose animation frames",
+        dialog = wx.FileDialog(self, "Select animation frames...",
             wildcard=wildcards,
             style=wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_FILE_MUST_EXIST,
         )
@@ -365,7 +365,7 @@ class MainFrame(wx.Frame):
         self.set_convert_button_state()
     
     def set_output(self, event):
-        dialog = wx.DirDialog(None, "Choose output directory", style=wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST)
+        dialog = wx.DirDialog(None, "Select output directory...", style=wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST)
         if dialog.ShowModal() == wx.ID_OK:
             chosen_dir = dialog.GetPath()
             self.out_dir_textctrl.SetValue(chosen_dir)
