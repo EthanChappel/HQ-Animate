@@ -104,7 +104,7 @@ class MainFrame(wx.Frame):
 
         self.paths = []
 
-        self.wildcards = "; ".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
+        self.wildcards = ";".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
 
         if SYSTEM == 'Windows':
             self.SetDoubleBuffered(True)
