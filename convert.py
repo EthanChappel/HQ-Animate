@@ -29,7 +29,9 @@ import datetime
 from pathlib import Path
 from enum import Enum
 from PIL import Image, ImageSequence
-from skyfield.api import load, load_file, wgs84
+from astropy.time import Time, TimezoneInfo
+from astropy.coordinates import solar_system_ephemeris, EarthLocation, get_body, HADec
+from astropy import units as u
 import numpy as np
 
 
@@ -45,10 +47,8 @@ TARGETS = {
     "Neptune": "NEPTUNE BARYCENTER",
 }
 
-script_path = Path(__file__).resolve().parent
 
-planets = load_file(str(Path(script_path, 'de423.bsp')))
-ts = load.timescale()
+script_path = Path(__file__).resolve().parent
 
 
 class Frame:
@@ -91,7 +91,7 @@ class Frame:
             if match.group(1) == "":
                 second = str(int(second) * 6).rjust(2, "0")
             
-            self.date_time = datetime.datetime.strptime(f"{year}{month}{day}{hour}{minute}{second}", "%Y%m%d%H%M%S").replace(tzinfo=datetime.timezone.utc)
+            self.date_time = Time(f"{year}-{month}-{day} {hour}:{minute}:{second}", format="iso")
     
     def __str__(self):
         return self.path.name
@@ -115,27 +115,36 @@ def validate_ffmpeg(path: str):
     return features
 
 
-def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, mp4_codec: Codec, quality: int, derotate=False, latitude=0, longitude=0, target=None):
+def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, mp4_codec: Codec, quality: int, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
     frames = []
-    observer = planets["Earth"] + wgs84.latlon(latitude, longitude)
+    observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
     for n in tar:
         rotation = 0
         if derotate:
-            t2 = ts.from_datetime(n.date_time)
-            if t1 == None:
-                t1 = t2
-            else:
-                a1 = observer.at(t1).observe(planets[TARGETS[target]])
-                a2 = observer.at(t2).observe(planets[TARGETS[target]])
+            with solar_system_ephemeris.set('builtin'):
+                t2 = n.date_time
+                if t1 == None:
+                    t1 = t2
+                else:
+                    a1 = get_body(target.lower(), t1, observer)
+                    a2 = get_body(target.lower(), t2, observer)
 
-                ha1, dec1, _ = a1.apparent().hadec()
-                ha2, dec2, _ = a2.apparent().hadec()
+                    hadec1 = a1.transform_to(HADec(obstime=t1, location=observer))
+                    hadec2 = a2.transform_to(HADec(obstime=t2, location=observer))
 
-                q1 = np.degrees(np.arctan(np.sin(ha1.radians) / (np.tan(np.radians(latitude)) * np.cos(dec1.radians) - np.sin(dec1.radians) * np.cos(ha1.radians))))
-                q2 = np.degrees(np.arctan(np.sin(ha2.radians) / (np.tan(np.radians(latitude)) * np.cos(dec2.radians) - np.sin(dec2.radians) * np.cos(ha2.radians))))
+                    ha1_rad = hadec1.ha.radian
+                    dec1_rad = hadec1.dec.radian
 
-                rotation = q2 - q1
+                    ha2_rad = hadec2.ha.radian
+                    dec2_rad = hadec2.dec.radian
+
+                    tan_lat_rad = np.tan(np.radians(latitude))
+
+                    q1 = np.degrees(np.arctan(np.sin(ha1_rad) / (tan_lat_rad) * np.cos(dec1_rad) - np.sin(dec1_rad) * np.cos(ha1_rad)))
+                    q2 = np.degrees(np.arctan(np.sin(ha2_rad) / (tan_lat_rad) * np.cos(dec2_rad) - np.sin(dec2_rad) * np.cos(ha2_rad)))
+
+                    rotation = q2 - q1
 
         image = Image.open(n.path)
         for frame in ImageSequence.Iterator(image):

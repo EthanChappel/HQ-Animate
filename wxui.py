@@ -367,7 +367,7 @@ class MainFrame(wx.Frame):
                 if not target:
                     target = p.target
                 if p.date_time:
-                    self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S %Z"))
+                    self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S UTC"))
                 else:
                     enable_field_rotation_option = False
                     self.field_derotation_checkbox.SetValue(False)
