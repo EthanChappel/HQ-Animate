@@ -46,15 +46,34 @@ class MyApp(wx.App):
         return True
 
 
-class MyListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
-    def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
+class FrameListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
+    def __init__(self, parent, data_source: list[convert.Frame], id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=0):
         wx.ListCtrl.__init__(self, parent, id, pos, size, style)
         ListCtrlAutoWidthMixin.__init__(self)
+
+        self.data_source = data_source
+
+        dc = wx.MemoryDC()
+        utc_width = dc.GetTextExtent("0000-00-00 00:00:00 UTC").Width + 20
+
+        self.InsertColumn(0, 'Name')
+        self.setResizeColumn(0)
+        self.InsertColumn(1, 'Time')
+        self.SetColumnWidth(1, utc_width)
 
         self.Bind(wx.EVT_LIST_COL_DRAGGING, self.on_col_dragging)
 
     def on_col_dragging(self, event):
         event.Veto()
+
+    def OnGetItemText(self, item, col):
+        if item < len(self.data_source):
+            obj = self.data_source[item]
+            if col == 0:
+                return obj.path.name
+            elif col == 1:
+                return str(obj.date_time.strftime("%Y-%m-%d %H:%M:%S UTC"))
+        return ""
 
 
 class MainFrame(wx.Frame):
@@ -87,7 +106,6 @@ class MainFrame(wx.Frame):
             self.SetDoubleBuffered(True)
 
         dc = wx.MemoryDC()
-        utc_width = dc.GetTextExtent("0000-00-00 00:00:00 UTC").Width + 20
         longitude_width = dc.GetTextExtent("-180.00").Width + 30
 
         self.panel = wx.Panel(self, wx.ID_ANY)
@@ -105,11 +123,7 @@ class MainFrame(wx.Frame):
         self.in_label = wx.StaticText(self.main_panel, label="Frames")
         self.grid_sizer.Add(self.in_label, pos=(0, 0))
 
-        self.in_listbox = MyListCtrl(self.main_panel, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
-        self.in_listbox.InsertColumn(0, 'Name')
-        self.in_listbox.setResizeColumn(0)
-        self.in_listbox.InsertColumn(1, 'Time')
-        self.in_listbox.SetColumnWidth(1, utc_width)
+        self.in_listbox = FrameListCtrl(self.main_panel, self.paths, style=wx.LC_REPORT | wx.LC_VIRTUAL | wx.LC_HRULES | wx.LC_VRULES)
         self.grid_sizer.Add(self.in_listbox, pos=(0, 1), flag=wx.EXPAND)
 
         self.in_browse_button = wx.Button(self.main_panel, label="Browse...")
@@ -358,19 +372,19 @@ class MainFrame(wx.Frame):
         )
 
         if dialog.ShowModal() == wx.ID_OK:
-            self.paths = [convert.Frame(p) for p in dialog.GetPaths()]
-            self.in_listbox.DeleteAllItems()
+            self.paths.clear()
             enable_field_rotation_option = True
             target = None
-            for i, p in enumerate(self.paths):
-                self.in_listbox.InsertItem(i, p.path.name)
+            for p in dialog.GetPaths():
+                f = convert.Frame(p)
+                self.paths.append(f)
                 if not target:
-                    target = p.target
-                if p.date_time:
-                    self.in_listbox.SetItem(i, 1, p.date_time.strftime("%Y-%m-%d %H:%M:%S UTC"))
+                    target = f.target
                 else:
                     enable_field_rotation_option = False
                     self.field_derotation_checkbox.SetValue(False)
+            self.in_listbox.SetItemCount(len(self.paths))
+            self.in_listbox.Refresh()
             self.field_derotation_checkbox.Enable(enable_field_rotation_option)
             self.set_field_derotation_state()
             if target:
