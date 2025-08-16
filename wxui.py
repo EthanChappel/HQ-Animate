@@ -62,9 +62,13 @@ class FrameListCtrl(wx.ListCtrl, ListCtrlAutoWidthMixin):
         self.SetColumnWidth(1, utc_width)
 
         self.Bind(wx.EVT_LIST_COL_DRAGGING, self.on_col_dragging)
+        self.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.on_item_activated)
 
     def on_col_dragging(self, event):
         event.Veto()
+    
+    def on_item_activated(self, event):
+        webbrowser.open(self.data_source[event.GetIndex()].path)
 
     def OnGetItemText(self, item, col):
         if item < len(self.data_source):
