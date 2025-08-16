@@ -25,7 +25,7 @@ SOFTWARE.
 
 import os
 import threading
-import subprocess
+import webbrowser
 import platform
 from pathlib import Path
 import wx
@@ -484,17 +484,7 @@ class MainFrame(wx.Frame):
         self.target_combobox.Enable(is_checked)
     
     def on_convert_end(self):
-        out_dir = Path(self.out_dir_textctrl.GetValue())
-
-        if not self.show_folder_checkbox.GetValue():
-            pass
-        elif SYSTEM == "Darwin":  # macOS
-            subprocess.run(["open", out_dir])
-        elif SYSTEM == "Windows":  # Windows
-            subprocess.run(["explorer", out_dir])
-        else:
-            subprocess.run(["xdg-open", out_dir])
-    
+        webbrowser.open(Path(self.out_dir_textctrl.GetValue()))
         self.activity_indicator.Stop()
         self.convert_book.ChangeSelection(0)
         self.Layout()
