@@ -25,11 +25,11 @@ SOFTWARE.
 
 import subprocess
 import re
-import datetime
 from pathlib import Path
 from enum import Enum
 from PIL import Image, ImageSequence
-from astropy.time import Time, TimezoneInfo
+from astropy.io import fits
+from astropy.time import Time
 from astropy.coordinates import solar_system_ephemeris, EarthLocation, get_body, HADec
 from astropy import units as u
 import numpy as np
@@ -58,6 +58,15 @@ class Frame:
         self.target = None
 
         match = re.match(r"(.?)(\d{4})-(\d{2})-(\d{2})[-_](\d{2})-?(\d{2})[-_](\d{1,2})([\s\S]*)\.", self.path.name)
+
+        if '.fit' in self.path.suffix.lower():
+            with fits.open(self.path) as hdul:
+                header = hdul[0].header
+                date_obs_string = header.get('DATE-OBS')
+                time_scale = str(header.get('TIMESYS', 'UTC')).lower()
+                if date_obs_string:
+                    self.date_time = Time(date_obs_string, format='fits', scale=time_scale).utc
+                    return
 
         if match:
             g1 = match.group(1)
