@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from convert import Codec
+from convert import MP4Codec, WebMCodec
 
 LATITUDE_MIN = -90
 LATITUDE_MAX = 90
@@ -16,7 +16,9 @@ FRAME_LENGTH_MAX = 100000
 
 
 class Settings:
-    def __init__(self, path: Path, field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, frame_length: int=100, quality: int=100, mp4_codec: Codec = Codec.AVC, show_folder: bool=True, ffmpeg_path: str=""):
+    _file_instances = {}
+
+    def __init__(self, path: Path=Path("./settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=100, quality: int=100, lossless: bool=True, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
         if not LONGITUDE_MIN <= longitude and longitude <= LONGITUDE_MAX:
@@ -37,9 +39,12 @@ class Settings:
         self.do_webp = do_webp
         self.do_gif = do_gif
         self.do_mp4 = do_mp4
+        self.do_webm = do_webm
         self.frame_length = frame_length
         self.quality = quality
-        self.mp4_codec = mp4_codec
+        self.lossless = lossless
+        self.mp4_codec = MP4Codec(mp4_codec)
+        self.webm_codec = WebMCodec(webm_codec)
         self.show_folder = show_folder
         self.ffmpeg_path = ffmpeg_path
     
@@ -53,9 +58,12 @@ class Settings:
             'do_webp': self.do_webp,
             'do_gif': self.do_gif,
             'do_mp4': self.do_mp4,
+            'do_webm': self.do_webm,
             'frame_length': self.frame_length,
             'quality': self.quality,
+            'lossless': self.lossless,
             'mp4_codec': self.mp4_codec,
+            'webm_codec': self.webm_codec,
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
         }
@@ -64,11 +72,15 @@ class Settings:
     
     @staticmethod
     def from_file_or_default(path: Path):
+        if path in Settings._file_instances.keys():
+            return Settings._file_instances[path]
         if not path.exists():
-            return Settings(path)
+            s = Settings(path)
+            Settings._file_instances[path] = s
+            return s
         with open(path, 'r') as f:
             j = json.load(f)
-            return Settings(
+            s = Settings(
                 path,
                 j['field_derotation'],
                 j['latitude'],
@@ -78,9 +90,15 @@ class Settings:
                 j['do_webp'],
                 j['do_gif'],
                 j['do_mp4'],
+                j['do_webm'],
                 j['frame_length'],
                 j['quality'],
+                j['lossless'],
                 j['mp4_codec'],
+                j['webm_codec'],
                 j['show_folder'],
                 j['ffmpeg_path'],
             )
+
+            Settings._file_instances[path] = s
+            return s

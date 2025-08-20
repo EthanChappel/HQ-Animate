@@ -105,19 +105,24 @@ class Frame:
     def __str__(self):
         return self.path.name
 
-
-class Codec(str, Enum):
-    AVC = 0
+class WebMCodec(str, Enum):
+    VP9 = 0
     AV1 = 1
+
+class MP4Codec(str, Enum):
+    VP9 = 0
+    AV1 = 1
+    AVC = 2
 
 
 def validate_ffmpeg(path: str):
-    features = {"avc": False, "av1": False}
+    features = {"avc": False, "av1": False, "vp9": False}
 
     try:
         result = subprocess.run([path, '-encoders'], capture_output=True, check=True, encoding='utf-8')
         features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", result.stdout, flags=re.MULTILINE))
         features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", result.stdout, flags=re.MULTILINE))
+        features["vp9"] = bool(re.search(r"^ V[\.FSXBD]{5} libvpx-vp9", result.stdout, flags=re.MULTILINE))
     except:
         pass
 
@@ -197,7 +202,7 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             append_images=frames[1:],
             duration=d,
             loop=0,
-            lossless=True,
+            lossless=lossless,
             quality=quality,
             method=3
         )
@@ -236,7 +241,7 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
                 '-frames:v', str(len(frames)),
                 '-r', str(1000 / d),
             ] + \
-            (avc_options if mp4_codec == Codec.AVC else av1_options) + \
+            (avc_options if mp4_codec == MP4Codec.AVC else av1_options) + \
             [
                 f'{o}.mp4',
             ],

@@ -295,12 +295,12 @@ class MainFrame(wx.Frame):
         self.video_sizer.AddSpacer(spacing)
 
         self.mp4avc_radio = wx.RadioButton(self.video_panel, label="AVC")
-        self.mp4avc_radio.SetValue(self.settings.mp4_codec == convert.Codec.AVC)
+        self.mp4avc_radio.SetValue(self.settings.mp4_codec == convert.MP4Codec.AVC)
         self.video_sizer.Add(self.mp4avc_radio, flag=wx.ALIGN_CENTER_VERTICAL)
         self.video_sizer.AddSpacer(spacing)
 
         self.mp4av1_radio = wx.RadioButton(self.video_panel, label="AV1")
-        self.mp4av1_radio.SetValue(self.settings.mp4_codec == convert.Codec.AV1)
+        self.mp4av1_radio.SetValue(self.settings.mp4_codec == convert.MP4Codec.AV1)
         self.video_sizer.Add(self.mp4av1_radio, flag=wx.ALIGN_CENTER_VERTICAL)
         self.video_sizer.AddSpacer(spacing)
 
@@ -520,7 +520,7 @@ class MainFrame(wx.Frame):
                 self.apng_checkbox.GetValue(),
                 self.avif_checkbox.GetValue(),
                 self.mp4_checkbox.GetValue(),
-                convert.Codec.AV1 if self.mp4av1_radio.GetValue() else convert.Codec.AVC,
+                convert.MP4Codec.AV1 if self.mp4av1_radio.GetValue() else convert.MP4Codec.AVC,
                 self.quality_spinctrl.GetValue(),
                 self.field_derotation_checkbox.GetValue(),
                 self.latitude_spinctrl.GetValue(),
@@ -541,7 +541,7 @@ class MainFrame(wx.Frame):
         self.settings.do_mp4 = self.mp4_checkbox.GetValue()
         self.settings.frame_length = self.frame_duration_spinctrl.GetValue()
         self.settings.quality = self.quality_spinctrl.GetValue()
-        self.settings.mp4_codec = convert.Codec.AV1 if self.mp4av1_radio.GetValue() else convert.Codec.AVC
+        self.settings.mp4_codec = convert.MP4Codec.AV1 if self.mp4av1_radio.GetValue() else convert.MP4Codec.AVC
         self.settings.show_folder = self.show_folder_checkbox.GetValue()
         self.settings.ffmpeg_path = self.ffmpeg_dir_textctrl.GetValue()
 
