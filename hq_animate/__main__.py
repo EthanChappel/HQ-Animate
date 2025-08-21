@@ -25,7 +25,7 @@ SOFTWARE.
 
 
 from PySide6.QtWidgets import QApplication
-from .mainwindow import MainWindow
+from hq_animate.mainwindow import MainWindow
 
 
 __version__ = '0.1.0'

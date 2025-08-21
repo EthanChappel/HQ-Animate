@@ -6,9 +6,9 @@ from PIL import Image
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication
-from .settings import Settings
-from .ui_mainframe import Ui_MainFrame
-from . import convert
+from hq_animate.settings import Settings
+from hq_animate.ui_mainframe import Ui_MainFrame
+from hq_animate import convert
 
 
 SYSTEM = platform.system()

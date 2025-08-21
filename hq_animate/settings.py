@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from .convert import MP4Codec, WebMCodec
+from hq_animate.convert import MP4Codec, WebMCodec
 
 
 SCRIPT_PATH = Path(__file__).resolve().parent

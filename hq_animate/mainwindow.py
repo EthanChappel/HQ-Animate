@@ -3,10 +3,10 @@ import platform
 from pathlib import Path
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
-from . import convert
-from .mainframe import MainFrame
-from .settings import Settings
-from .settingsframe import SettingsFrame
+from hq_animate import convert
+from hq_animate.mainframe import MainFrame
+from hq_animate.settings import Settings
+from hq_animate.settingsframe import SettingsFrame
 
 
 SYSTEM = platform.system()

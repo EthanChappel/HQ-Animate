@@ -2,8 +2,8 @@ import platform
 from pathlib import Path
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QFrame, QFileDialog
-from .settings import Settings
-from .ui_settingsframe import Ui_SettingsFrame
+from hq_animate.settings import Settings
+from hq_animate.ui_settingsframe import Ui_SettingsFrame
 
 
 SYSTEM = platform.system()
