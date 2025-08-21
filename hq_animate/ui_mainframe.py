@@ -179,7 +179,7 @@ class Ui_MainFrame(object):
         self.duration_spinbox.setSizePolicy(sizePolicy3)
         self.duration_spinbox.setMinimum(1)
         self.duration_spinbox.setMaximum(10000)
-        self.duration_spinbox.setValue(30)
+        self.duration_spinbox.setValue(10)
 
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.duration_spinbox)
 
