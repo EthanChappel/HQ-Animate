@@ -1,4 +1,3 @@
-import os
 import platform
 from pathlib import Path
 from PySide6.QtCore import Signal
@@ -20,14 +19,6 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         self.setupUi(self)
 
         self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
-
-        if not self.settings.ffmpeg_path:
-            exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
-
-            for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
-                if p.is_file():
-                    self.settings.ffmpeg_path = p.resolve()
-                    break
         
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.dependencies_textbox.setPlainText(f.read())

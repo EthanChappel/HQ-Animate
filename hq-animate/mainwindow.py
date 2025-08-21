@@ -1,3 +1,5 @@
+import os
+import platform
 from pathlib import Path
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
@@ -7,6 +9,7 @@ from .settings import Settings
 from .settingsframe import SettingsFrame
 
 
+SYSTEM = platform.system()
 SCRIPT_PATH = Path(__file__).resolve().parent
 
 
@@ -17,6 +20,14 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
+
+        if not self.settings.ffmpeg_path:
+            exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
+
+            for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
+                if p.is_file():
+                    self.settings.ffmpeg_path = p.resolve()
+                    break
 
         self.setWindowTitle("HQ Animate")
 
