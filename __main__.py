@@ -25,10 +25,15 @@ SOFTWARE.
 
 
 from wxui import MyApp
+from PySide6.QtWidgets import QApplication
+from mainwindow import MainWindow
 
 
 __version__ = '0.1.0'
 
 
-app = MyApp()
-app.MainLoop()
+app = QApplication()
+window = MainWindow()
+window.show()
+app.exec()
+

@@ -43,8 +43,8 @@ class Settings:
         self.frame_length = frame_length
         self.quality = quality
         self.lossless = lossless
-        self.mp4_codec = MP4Codec(mp4_codec)
-        self.webm_codec = WebMCodec(webm_codec)
+        self.mp4_codec = mp4_codec
+        self.webm_codec = webm_codec
         self.show_folder = show_folder
         self.ffmpeg_path = ffmpeg_path
     
@@ -62,8 +62,8 @@ class Settings:
             'frame_length': self.frame_length,
             'quality': self.quality,
             'lossless': self.lossless,
-            'mp4_codec': self.mp4_codec,
-            'webm_codec': self.webm_codec,
+            'mp4_codec': self.mp4_codec.name,
+            'webm_codec': self.webm_codec.name,
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
         }
@@ -94,8 +94,8 @@ class Settings:
                 j['frame_length'],
                 j['quality'],
                 j['lossless'],
-                j['mp4_codec'],
-                j['webm_codec'],
+                MP4Codec[j['mp4_codec']],
+                WebMCodec[j['webm_codec']],
                 j['show_folder'],
                 j['ffmpeg_path'],
             )

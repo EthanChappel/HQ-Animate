@@ -36,15 +36,15 @@ import numpy as np
 
 
 TARGETS = {
-    "Sun": "SUN",
-    "Mercury": "MERCURY",
-    "Venus": "VENUS",
-    "Moon": "MOON",
-    "Mars": "MARS",
-    "Jupiter": "JUPITER BARYCENTER",
-    "Saturn": "SATURN BARYCENTER",
-    "Uranus": "URANUS BARYCENTER",
-    "Neptune": "NEPTUNE BARYCENTER",
+    "Sun": "sun",
+    "Mercury": "mercury",
+    "Venus": "venus",
+    "Moon": "moon",
+    "Mars": "mars",
+    "Jupiter": "jupiter",
+    "Saturn": "saturn",
+    "Uranus": "uranus",
+    "Neptune": "neptune",
 }
 
 
@@ -59,7 +59,7 @@ class Frame:
 
         match = re.match(r"(.?)(\d{4})-(\d{2})-(\d{2})[-_](\d{2})-?(\d{2})[-_](\d{1,2})([\s\S]*)\.", self.path.name)
 
-        if '.fit' in self.path.suffix.lower():
+        if self.path.suffix.lower() in ('.fits', '.fit'):
             with fits.open(self.path) as hdul:
                 header = hdul[0].header
                 date_obs_string = header.get('DATE-OBS')
@@ -129,7 +129,7 @@ def validate_ffmpeg(path: str):
     return features
 
 
-def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, mp4_codec: Codec, quality: int, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
     frames = []
     observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
@@ -171,13 +171,15 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
 
     image = frames[0]
 
+    duration = int(1000 / d)
+
     if apng:
         image.save(
             f"{o}.apng",
             format='PNG',
             save_all=True,
             append_images=frames[1:],
-            duration=d,
+            duration=duration,
             loop=0,
             optimize=True
         )
@@ -188,7 +190,7 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             format='AVIF',
             save_all=True,
             append_images=frames[1:],
-            duration=d,
+            duration=duration,
             loop=0,
             quality=quality,
             subsampling="4:4:4",
@@ -200,7 +202,7 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             format='WebP',
             save_all=True,
             append_images=frames[1:],
-            duration=d,
+            duration=duration,
             loop=0,
             lossless=lossless,
             quality=quality,
@@ -213,12 +215,24 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             format='GIF',
             save_all=True,
             append_images=frames[1:],
-            duration=d,
+            duration=duration,
             loop=0,
             optimize=True
         )
     
-    if mp4:
+    if mp4 or webm:
+        ffmpeg_options = [
+            str(Path('ffmpeg')), '-y',
+            '-f', 'rawvideo',
+            '-pixel_format', 'rgb24',
+            '-video_size', f'{image.width}x{image.height}',
+            '-r', str(d),
+            '-i', 'pipe:0',
+        ]
+        output_options = [
+            '-frames:v', str(len(frames)),
+            '-r', str(d),
+        ]
         avc_options = [
             '-c:v', 'libx264',
             '-profile:v', 'main',
@@ -229,24 +243,33 @@ def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, av
             '-c:v', 'librav1e',
             '-qp', '0',
         ]
+        vp9_options = [
+            '-c:v', 'libvpx-vp9',
+            '-row-mt', '1',
+            '-b:v', '0',
+            '-crf', '0',
+            '-lossless', str(int(lossless)),
+        ]
+        
+        if mp4:
+            ffmpeg_options += output_options
+            if mp4_codec == MP4Codec.AVC:
+                ffmpeg_options += avc_options
+            elif mp4_codec == MP4Codec.AV1:
+                ffmpeg_options += av1_options
+            elif mp4_codec == MP4Codec.VP9:
+                ffmpeg_options += vp9_options
+            ffmpeg_options += [f'{o}.mp4']
+        
+        if webm:
+            ffmpeg_options += output_options
+            if webm_codec == WebMCodec.AV1:
+                ffmpeg_options += av1_options
+            elif webm_codec == WebMCodec.VP9:
+                ffmpeg_options += vp9_options
+            ffmpeg_options += [f'{o}.webm']
 
-        process = subprocess.Popen(
-            [
-                str(Path('ffmpeg')), '-y',
-                '-f', 'rawvideo',
-                '-pixel_format', 'rgb24',
-                '-video_size', f'{image.width}x{image.height}',
-                '-r', str(1000 / d),
-                '-i', 'pipe:0',
-                '-frames:v', str(len(frames)),
-                '-r', str(1000 / d),
-            ] + \
-            (avc_options if mp4_codec == MP4Codec.AVC else av1_options) + \
-            [
-                f'{o}.mp4',
-            ],
-            stdin=subprocess.PIPE
-        )
+        process = subprocess.Popen(ffmpeg_options, stdin=subprocess.PIPE)
         
         for f in frames:
             process.stdin.write(f.tobytes())

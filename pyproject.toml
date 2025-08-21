@@ -6,11 +6,11 @@ description = "Create high quality APNG and WebP animations from a sequence of i
 authors = ["Ethan Chappel <EthanChappel@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = ">=3.13,<3.14"
 pillow = "^11.3.0"
-wxpython = "^4.2.3"
 numpy = "^2.3.2"
 astropy = "^7.1.0"
+pyside6-essentials = "^6.9.1"
 
 [tool.poetry.group.dev.dependencies]
 cx_freeze = "^8.3.0"
