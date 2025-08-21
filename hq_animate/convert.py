@@ -119,10 +119,11 @@ def validate_ffmpeg(path: str):
     features = {"avc": False, "av1": False, "vp9": False}
 
     try:
-        result = subprocess.run([path, '-encoders'], capture_output=True, check=True, encoding='utf-8')
-        features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", result.stdout, flags=re.MULTILINE))
-        features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", result.stdout, flags=re.MULTILINE))
-        features["vp9"] = bool(re.search(r"^ V[\.FSXBD]{5} libvpx-vp9", result.stdout, flags=re.MULTILINE))
+        proc = subprocess.Popen([path, '-encoders'], stdout=subprocess.PIPE, text=True, creationflags=subprocess.CREATE_NO_WINDOW, encoding='utf-8')
+        stdout, stderr = proc.communicate()
+        features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", stdout, flags=re.MULTILINE))
+        features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", stdout, flags=re.MULTILINE))
+        features["vp9"] = bool(re.search(r"^ V[\.FSXBD]{5} libvpx-vp9", stdout, flags=re.MULTILINE))
     except:
         pass
 
