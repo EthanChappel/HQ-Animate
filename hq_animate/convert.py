@@ -24,6 +24,7 @@ SOFTWARE.
 
 
 import subprocess
+import platform
 import re
 from pathlib import Path
 from enum import Enum
@@ -48,6 +49,7 @@ TARGETS = {
 }
 
 
+SYSTEM = platform.system()
 script_path = Path(__file__).resolve().parent
 
 
@@ -119,7 +121,12 @@ def validate_ffmpeg(path: str):
     features = {"avc": False, "av1": False, "vp9": False}
 
     try:
-        proc = subprocess.Popen([path, '-encoders'], stdout=subprocess.PIPE, text=True, creationflags=subprocess.CREATE_NO_WINDOW, encoding='utf-8')
+        popen_cmd = (path, '-encoders')
+        popen_parameters = {'stdout': subprocess.PIPE, 'text': True, 'encoding': 'utf-8'}
+        if SYSTEM == "Windows":
+            proc = subprocess.Popen(popen_cmd, creationflags=subprocess.CREATE_NO_WINDOW, **popen_parameters)
+        else:
+            proc = subprocess.Popen(popen_cmd, **popen_parameters)
         stdout, stderr = proc.communicate()
         features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", stdout, flags=re.MULTILINE))
         features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", stdout, flags=re.MULTILINE))
