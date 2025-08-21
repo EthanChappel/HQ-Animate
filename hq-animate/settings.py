@@ -1,6 +1,10 @@
 import json
 from pathlib import Path
-from convert import MP4Codec, WebMCodec
+from .convert import MP4Codec, WebMCodec
+
+
+SCRIPT_PATH = Path(__file__).resolve().parent
+
 
 LATITUDE_MIN = -90
 LATITUDE_MAX = 90
@@ -18,7 +22,7 @@ FRAME_LENGTH_MAX = 100000
 class Settings:
     _file_instances = {}
 
-    def __init__(self, path: Path=Path("./settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=100, quality: int=100, lossless: bool=True, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
+    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=100, quality: int=100, lossless: bool=True, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
         if not LONGITUDE_MIN <= longitude and longitude <= LONGITUDE_MAX:
@@ -62,8 +66,8 @@ class Settings:
             'frame_length': self.frame_length,
             'quality': self.quality,
             'lossless': self.lossless,
-            'mp4_codec': self.mp4_codec.name,
-            'webm_codec': self.webm_codec.name,
+            'mp4_codec': self.mp4_codec.name if self.mp4_codec else "",
+            'webm_codec': self.webm_codec.name if self.webm_codec else "",
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
         }
@@ -94,8 +98,8 @@ class Settings:
                 j['frame_length'],
                 j['quality'],
                 j['lossless'],
-                MP4Codec[j['mp4_codec']],
-                WebMCodec[j['webm_codec']],
+                MP4Codec[j['mp4_codec']] if j['mp4_codec'] else None,
+                WebMCodec[j['webm_codec']] if j['webm_codec'] else None,
                 j['show_folder'],
                 j['ffmpeg_path'],
             )

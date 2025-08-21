@@ -1,10 +1,14 @@
 from pathlib import Path
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
-import convert
-from mainframe import MainFrame
-from settings import Settings
-from settingsframe import SettingsFrame
+from . import convert
+from .mainframe import MainFrame
+from .settings import Settings
+from .settingsframe import SettingsFrame
+
+
+SCRIPT_PATH = Path(__file__).resolve().parent
+
 
 class MainWindow(QMainWindow):
     settings_updated = Signal()
@@ -12,7 +16,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.settings = Settings.from_file_or_default(Path("./settings.json"))
+        self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
 
         self.setWindowTitle("HQ Animate")
 

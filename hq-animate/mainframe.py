@@ -6,12 +6,13 @@ from PIL import Image
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication
-from settings import Settings
-from ui_mainframe import Ui_MainFrame
-import convert
+from .settings import Settings
+from .ui_mainframe import Ui_MainFrame
+from . import convert
 
 
 SYSTEM = platform.system()
+SCRIPT_PATH = Path(__file__).resolve().parent
 
 
 class MainFrame(QFrame, Ui_MainFrame):
@@ -27,7 +28,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         self.paths = []
 
-        self.settings = Settings.from_file_or_default(Path("./settings.json"))
+        self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
 
         self.frames_table.setModel(TableModel(self.paths))
         self.frames_table.verticalHeader().setVisible(False)
@@ -83,8 +84,10 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.update_ffmpeg_widgets()
         self.set_convert_button_state()
 
-        self.mp4_codec_combo.setCurrentText(self.settings.mp4_codec.name)
-        self.webm_codec_combo.setCurrentText(self.settings.webm_codec.name)
+        if self.settings.mp4_codec:
+            self.mp4_codec_combo.setCurrentText(self.settings.mp4_codec.name)
+        if self.settings.webm_codec:
+            self.webm_codec_combo.setCurrentText(self.settings.webm_codec.name)
 
     
     def set_input_frames(self, event):

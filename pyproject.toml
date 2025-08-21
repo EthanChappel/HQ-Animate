@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "HQ-Animate"
+packages = [{include = "hq-animate"}]
 version = "0.1.0"
 license = "MIT"
 description = "Create high quality APNG and WebP animations from a sequence of images."
