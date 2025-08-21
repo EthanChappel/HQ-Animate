@@ -35,6 +35,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.frames_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.frames_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeToContents)
         self.frames_table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.frames_table.horizontalHeader().setVisible(False)
 
         self.enable_label.setEnabled(False)
         self.enable_check.setEnabled(False)
@@ -95,6 +96,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         if paths:
             self.paths.clear()
+            self.frames_table.horizontalHeader().setVisible(True)
             enable_field_rotation_option = True
             target = None
             self.frames_table.model().beginResetModel()
