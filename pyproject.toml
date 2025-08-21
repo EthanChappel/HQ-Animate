@@ -1,10 +1,17 @@
 [tool.poetry]
 name = "HQ-Animate"
-packages = [{include = "hq-animate"}]
+packages = [{include = "hq_animate"}]
 version = "0.1.0"
 license = "MIT"
 description = "Create high quality APNG and WebP animations from a sequence of images."
 authors = ["Ethan Chappel <EthanChappel@users.noreply.github.com>"]
+
+[project]
+name = "hq-animate"
+version = "0.1.0"
+
+[project.gui-scripts]
+hq-animate = "hq_animate.__main__:main"
 
 [tool.poetry.dependencies]
 python = ">=3.13,<3.14"
