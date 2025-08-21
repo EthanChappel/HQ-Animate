@@ -24,7 +24,6 @@ SOFTWARE.
 '''
 
 
-from wxui import MyApp
 from PySide6.QtWidgets import QApplication
 from mainwindow import MainWindow
 
