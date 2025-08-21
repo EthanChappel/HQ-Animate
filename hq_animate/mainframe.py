@@ -36,8 +36,6 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.frames_table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.frames_table.horizontalHeader().setVisible(False)
 
-        self.enable_label.setEnabled(False)
-        self.enable_check.setEnabled(False)
         self.target_combo.addItems(convert.TARGETS.keys())
         self.target_combo.setCurrentIndex(-1)
 
@@ -50,6 +48,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.quality_spinbox.setValue(self.settings.quality)
+        self.enable_check.setChecked(self.settings.field_derotation)
         self.latitude_spin.setValue(self.settings.latitude)
         self.longitude_spin.setValue(self.settings.longitude)
         self.lossless_check.setChecked(self.settings.lossless)
@@ -135,10 +134,9 @@ class MainFrame(QFrame, Ui_MainFrame):
         is_checked = self.enable_check.isChecked()
 
         for f in self.paths:
-            if f.date_time:
+            if not f.date_time:
+                is_checked = False
                 break
-        else:
-            is_checked = False
 
         self.latitude_label.setEnabled(is_checked)
         self.latitude_spin.setEnabled(is_checked)
