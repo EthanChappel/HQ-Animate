@@ -30,9 +30,11 @@ from .mainwindow import MainWindow
 
 __version__ = '0.1.0'
 
+def main():
+    app = QApplication()
+    window = MainWindow()
+    window.show()
+    app.exec()
 
-app = QApplication()
-window = MainWindow()
-window.show()
-app.exec()
-
+if __name__ == '__main__':
+    main()
