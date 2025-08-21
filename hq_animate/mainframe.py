@@ -206,9 +206,9 @@ class MainFrame(QFrame, Ui_MainFrame):
             if SYSTEM == 'Windows':
                 os.startfile(self.paths[row].path)
             elif SYSTEM == 'Darwin':
-                subprocess.call(('open', self.paths[row].path.absolute()))
+                subprocess.Popen(('open', self.paths[row].path.absolute()))
             else:
-                subprocess.call(('xdg-open', self.paths[row].path.absolute()))
+                subprocess.Popen(('xdg-open', self.paths[row].path.absolute()))
     
     def on_convert_start(self):
         self.setting_changed.emit()
@@ -254,9 +254,9 @@ class MainFrame(QFrame, Ui_MainFrame):
         if SYSTEM == 'Windows':
             os.startfile(self.output_path_edit.text())
         elif SYSTEM == 'Darwin':
-            subprocess.call(('open', self.output_path_edit.text()))
+            subprocess.Popen(('open', self.output_path_edit.text()))
         else:
-            subprocess.call(('xdg-open', self.output_path_edit.text()))
+            subprocess.Popen(('xdg-open', self.output_path_edit.text()))
 
 
 class ConvertWorker(QObject):
