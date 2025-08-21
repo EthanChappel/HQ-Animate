@@ -3,6 +3,7 @@ from pathlib import Path
 import platform
 import subprocess
 from PIL import Image
+from astropy.time import Time
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication
@@ -312,13 +313,22 @@ class TableModel(QAbstractTableModel):
         self.table_data = data
     
     def data(self, index, role):
-        if role == Qt.DisplayRole:
+        if role in (Qt.DisplayRole, Qt.EditRole):
             obj = self.table_data[index.row()]
             if index.column() == 0:
                 return obj.path.name
             elif index.column() == 1:
                 return str(obj.date_time.strftime("%Y-%m-%d %H:%M:%S UTC")) if obj.date_time else ""
 
+    def setData(self, index, value, role):
+        if role == Qt.EditRole:
+            if index.column() == 1:
+                t = Time(value.replace(" ", "T", 1).rstrip(" UTC"), format='fits', scale='utc')
+                self.table_data[index.row()].date_time = t
+                self.dataChanged.emit(index, index, [role])
+                return True
+        return False
+    
     def rowCount(self, index):
         return len(self.table_data)
 
@@ -334,4 +344,9 @@ class TableModel(QAbstractTableModel):
         #for setting rows name
         if orientation == Qt.Vertical and role == Qt.DisplayRole:
             return f"{section + 1}"
+    
+    def flags(self, index):
+        if index.column() == 1:
+            return Qt.ItemIsEnabled | Qt.ItemIsEditable
+        return super().flags(index)
 
