@@ -129,7 +129,7 @@ def validate_ffmpeg(path: str):
     return features
 
 
-def save(tar: list[Frame], o: str, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
     frames = []
     observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None

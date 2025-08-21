@@ -261,7 +261,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 class ConvertWorker(QObject):
     finished = Signal()
 
-    def __init__(self, paths: list[convert.Frame], output: str, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
         super().__init__()
         self.paths = paths
         self.output = output
