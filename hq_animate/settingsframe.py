@@ -2,7 +2,6 @@ import platform
 from pathlib import Path
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QFrame, QFileDialog
-from hq_animate.settings import Settings
 from hq_animate.ui_settingsframe import Ui_SettingsFrame
 
 
@@ -18,7 +17,7 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
+        self.settings = parent.settings
         
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.dependencies_textbox.setPlainText(f.read())

@@ -6,7 +6,6 @@ from PIL import Image
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
 from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication
-from hq_animate.settings import Settings
 from hq_animate.ui_mainframe import Ui_MainFrame
 from hq_animate import convert
 
@@ -28,7 +27,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         self.paths = []
 
-        self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
+        self.settings = parent.settings
 
         self.frames_table.setModel(TableModel(self.paths))
         self.frames_table.verticalHeader().setVisible(False)
