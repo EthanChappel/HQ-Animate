@@ -67,7 +67,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.formats_group = QGroupBox(MainFrame)
         self.formats_group.setObjectName(u"formats_group")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.formats_group.sizePolicy().hasHeightForWidth())
@@ -103,7 +103,7 @@ class Ui_MainFrame(object):
 
         self.video_stack = QStackedWidget(self.formats_group)
         self.video_stack.setObjectName(u"video_stack")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.video_stack.sizePolicy().hasHeightForWidth())
@@ -120,11 +120,15 @@ class Ui_MainFrame(object):
 
         self.webm_codec_combo = QComboBox(self.page_3)
         self.webm_codec_combo.setObjectName(u"webm_codec_combo")
+        sizePolicy3.setHeightForWidth(self.webm_codec_combo.sizePolicy().hasHeightForWidth())
+        self.webm_codec_combo.setSizePolicy(sizePolicy3)
 
         self.gridLayout_3.addWidget(self.webm_codec_combo, 1, 1, 1, 1)
 
         self.mp4_codec_combo = QComboBox(self.page_3)
         self.mp4_codec_combo.setObjectName(u"mp4_codec_combo")
+        sizePolicy3.setHeightForWidth(self.mp4_codec_combo.sizePolicy().hasHeightForWidth())
+        self.mp4_codec_combo.setSizePolicy(sizePolicy3)
 
         self.gridLayout_3.addWidget(self.mp4_codec_combo, 0, 1, 1, 1)
 
@@ -163,6 +167,7 @@ class Ui_MainFrame(object):
         self.parameters_group.setSizePolicy(sizePolicy2)
         self.formLayout_2 = QFormLayout(self.parameters_group)
         self.formLayout_2.setObjectName(u"formLayout_2")
+        self.formLayout_2.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
         self.duration_label = QLabel(self.parameters_group)
         self.duration_label.setObjectName(u"duration_label")
 
@@ -216,6 +221,7 @@ class Ui_MainFrame(object):
         self.derotation_group.setChecked(False)
         self.formLayout = QFormLayout(self.derotation_group)
         self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
         self.enable_label = QLabel(self.derotation_group)
         self.enable_label.setObjectName(u"enable_label")
 
@@ -228,6 +234,8 @@ class Ui_MainFrame(object):
 
         self.target_combo = QComboBox(self.derotation_group)
         self.target_combo.setObjectName(u"target_combo")
+        sizePolicy3.setHeightForWidth(self.target_combo.sizePolicy().hasHeightForWidth())
+        self.target_combo.setSizePolicy(sizePolicy3)
 
         self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.target_combo)
 
