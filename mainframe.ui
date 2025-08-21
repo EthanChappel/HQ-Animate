@@ -80,7 +80,7 @@
      <item>
       <widget class="QGroupBox" name="formats_group">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -127,7 +127,7 @@
         <item row="4" column="0" colspan="2">
          <widget class="QStackedWidget" name="video_stack">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -157,10 +157,24 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QComboBox" name="webm_codec_combo"/>
+             <widget class="QComboBox" name="webm_codec_combo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QComboBox" name="mp4_codec_combo"/>
+             <widget class="QComboBox" name="mp4_codec_combo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QCheckBox" name="webm_check">
@@ -211,7 +225,7 @@
      <item>
       <widget class="QGroupBox" name="parameters_group">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -220,6 +234,9 @@
         <string>Conversion parameters</string>
        </property>
        <layout class="QFormLayout" name="formLayout_2">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
+        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="duration_label">
           <property name="text">
@@ -233,7 +250,7 @@
         <item row="0" column="1">
          <widget class="QSpinBox" name="duration_spinbox">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -262,7 +279,7 @@
         <item row="1" column="1">
          <widget class="QSpinBox" name="quality_spinbox">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -307,7 +324,7 @@
      <item>
       <widget class="QGroupBox" name="derotation_group">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -322,6 +339,9 @@
         <bool>false</bool>
        </property>
        <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
+        </property>
         <item row="0" column="0">
          <widget class="QLabel" name="enable_label">
           <property name="text">
@@ -343,7 +363,14 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QComboBox" name="target_combo"/>
+         <widget class="QComboBox" name="target_combo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="latitude_label">
@@ -358,7 +385,7 @@
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="latitude_spin">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -387,7 +414,7 @@
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="longitude_spin">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
