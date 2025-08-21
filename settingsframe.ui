@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>500</height>
+    <width>600</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
-    <height>500</height>
+    <width>600</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -58,12 +58,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QPlainTextEdit" name="dependencies_textbox">
-     <property name="undoRedoEnabled">
+    <widget class="QTextBrowser" name="dependencies_textbox">
+     <property name="openLinks">
       <bool>false</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
      </property>
     </widget>
    </item>

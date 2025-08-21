@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPlainTextEdit, QPushButton, QSizePolicy,
+    QLineEdit, QPushButton, QSizePolicy, QTextBrowser,
     QVBoxLayout, QWidget)
 
 class Ui_SettingsFrame(object):
     def setupUi(self, SettingsFrame):
         if not SettingsFrame.objectName():
             SettingsFrame.setObjectName(u"SettingsFrame")
-        SettingsFrame.resize(550, 500)
-        SettingsFrame.setMinimumSize(QSize(550, 500))
+        SettingsFrame.resize(600, 600)
+        SettingsFrame.setMinimumSize(QSize(600, 600))
         SettingsFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(SettingsFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -55,10 +55,9 @@ class Ui_SettingsFrame(object):
 
         self.verticalLayout.addWidget(self.line)
 
-        self.dependencies_textbox = QPlainTextEdit(SettingsFrame)
+        self.dependencies_textbox = QTextBrowser(SettingsFrame)
         self.dependencies_textbox.setObjectName(u"dependencies_textbox")
-        self.dependencies_textbox.setUndoRedoEnabled(False)
-        self.dependencies_textbox.setReadOnly(True)
+        self.dependencies_textbox.setOpenLinks(False)
 
         self.verticalLayout.addWidget(self.dependencies_textbox)
 

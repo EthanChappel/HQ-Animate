@@ -167,6 +167,13 @@ class MainFrame(QFrame, Ui_MainFrame):
     
     def update_ffmpeg_widgets(self):
         is_valid_ffmpeg = convert.validate_ffmpeg(self.settings.ffmpeg_path)
+        
+        if not is_valid_ffmpeg["avc"] and not is_valid_ffmpeg["av1"] and not is_valid_ffmpeg["vp9"]:
+            self.video_stack.setCurrentIndex(1)
+            return
+
+        self.video_stack.setCurrentIndex(0)
+
         self.can_avc = is_valid_ffmpeg["avc"]
         self.can_av1 = is_valid_ffmpeg["av1"]
         self.can_vp9 = is_valid_ffmpeg["vp9"]

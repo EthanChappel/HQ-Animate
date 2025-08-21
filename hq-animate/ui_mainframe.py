@@ -17,16 +17,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
     QFormLayout, QFrame, QGridLayout, QGroupBox,
-    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QSpinBox, QTableView,
-    QVBoxLayout, QWidget)
+    QHBoxLayout, QHeaderView, QLabel, QLayout,
+    QLineEdit, QPushButton, QSizePolicy, QSpinBox,
+    QStackedWidget, QTableView, QVBoxLayout, QWidget)
 
 class Ui_MainFrame(object):
     def setupUi(self, MainFrame):
         if not MainFrame.objectName():
             MainFrame.setObjectName(u"MainFrame")
-        MainFrame.resize(550, 500)
-        MainFrame.setMinimumSize(QSize(550, 500))
+        MainFrame.resize(600, 600)
+        MainFrame.setMinimumSize(QSize(600, 600))
         MainFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(MainFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -40,16 +40,21 @@ class Ui_MainFrame(object):
 
         self.frames_table = QTableView(MainFrame)
         self.frames_table.setObjectName(u"frames_table")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frames_table.sizePolicy().hasHeightForWidth())
+        self.frames_table.setSizePolicy(sizePolicy)
 
         self.verticalLayout_2.addWidget(self.frames_table)
 
         self.input_browse_button = QPushButton(MainFrame)
         self.input_browse_button.setObjectName(u"input_browse_button")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.input_browse_button.sizePolicy().hasHeightForWidth())
-        self.input_browse_button.setSizePolicy(sizePolicy)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.input_browse_button.sizePolicy().hasHeightForWidth())
+        self.input_browse_button.setSizePolicy(sizePolicy1)
         self.input_browse_button.setAutoDefault(True)
 
         self.verticalLayout_2.addWidget(self.input_browse_button, 0, Qt.AlignmentFlag.AlignRight)
@@ -59,29 +64,30 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.formats_group = QGroupBox(MainFrame)
         self.formats_group.setObjectName(u"formats_group")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.formats_group.sizePolicy().hasHeightForWidth())
+        self.formats_group.setSizePolicy(sizePolicy2)
         self.gridLayout = QGridLayout(self.formats_group)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.apng_check = QCheckBox(self.formats_group)
-        self.apng_check.setObjectName(u"apng_check")
+        self.webp_check = QCheckBox(self.formats_group)
+        self.webp_check.setObjectName(u"webp_check")
 
-        self.gridLayout.addWidget(self.apng_check, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.webp_check, 1, 0, 1, 1)
 
         self.avif_check = QCheckBox(self.formats_group)
         self.avif_check.setObjectName(u"avif_check")
 
         self.gridLayout.addWidget(self.avif_check, 0, 1, 1, 1)
 
-        self.webp_check = QCheckBox(self.formats_group)
-        self.webp_check.setObjectName(u"webp_check")
+        self.apng_check = QCheckBox(self.formats_group)
+        self.apng_check.setObjectName(u"apng_check")
 
-        self.gridLayout.addWidget(self.webp_check, 1, 0, 1, 1)
-
-        self.gif_check = QCheckBox(self.formats_group)
-        self.gif_check.setObjectName(u"gif_check")
-
-        self.gridLayout.addWidget(self.gif_check, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.apng_check, 0, 0, 1, 1)
 
         self.line = QFrame(self.formats_group)
         self.line.setObjectName(u"line")
@@ -90,31 +96,71 @@ class Ui_MainFrame(object):
 
         self.gridLayout.addWidget(self.line, 2, 0, 2, 2)
 
-        self.mp4_codec_combo = QComboBox(self.formats_group)
-        self.mp4_codec_combo.setObjectName(u"mp4_codec_combo")
+        self.gif_check = QCheckBox(self.formats_group)
+        self.gif_check.setObjectName(u"gif_check")
 
-        self.gridLayout.addWidget(self.mp4_codec_combo, 3, 1, 2, 1)
+        self.gridLayout.addWidget(self.gif_check, 1, 1, 1, 1)
 
-        self.mp4_check = QCheckBox(self.formats_group)
+        self.video_stack = QStackedWidget(self.formats_group)
+        self.video_stack.setObjectName(u"video_stack")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.video_stack.sizePolicy().hasHeightForWidth())
+        self.video_stack.setSizePolicy(sizePolicy3)
+        self.page_3 = QWidget()
+        self.page_3.setObjectName(u"page_3")
+        self.gridLayout_3 = QGridLayout(self.page_3)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.mp4_check = QCheckBox(self.page_3)
         self.mp4_check.setObjectName(u"mp4_check")
 
-        self.gridLayout.addWidget(self.mp4_check, 4, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.mp4_check, 0, 0, 1, 1)
 
-        self.webm_check = QCheckBox(self.formats_group)
-        self.webm_check.setObjectName(u"webm_check")
-
-        self.gridLayout.addWidget(self.webm_check, 5, 0, 1, 1)
-
-        self.webm_codec_combo = QComboBox(self.formats_group)
+        self.webm_codec_combo = QComboBox(self.page_3)
         self.webm_codec_combo.setObjectName(u"webm_codec_combo")
 
-        self.gridLayout.addWidget(self.webm_codec_combo, 5, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.webm_codec_combo, 1, 1, 1, 1)
+
+        self.mp4_codec_combo = QComboBox(self.page_3)
+        self.mp4_codec_combo.setObjectName(u"mp4_codec_combo")
+
+        self.gridLayout_3.addWidget(self.mp4_codec_combo, 0, 1, 1, 1)
+
+        self.webm_check = QCheckBox(self.page_3)
+        self.webm_check.setObjectName(u"webm_check")
+
+        self.gridLayout_3.addWidget(self.webm_check, 1, 0, 1, 1)
+
+        self.video_stack.addWidget(self.page_3)
+        self.page_4 = QWidget()
+        self.page_4.setObjectName(u"page_4")
+        self.verticalLayout_3 = QVBoxLayout(self.page_4)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.requires_ffmpeg_label = QLabel(self.page_4)
+        self.requires_ffmpeg_label.setObjectName(u"requires_ffmpeg_label")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.requires_ffmpeg_label.sizePolicy().hasHeightForWidth())
+        self.requires_ffmpeg_label.setSizePolicy(sizePolicy4)
+        self.requires_ffmpeg_label.setWordWrap(True)
+
+        self.verticalLayout_3.addWidget(self.requires_ffmpeg_label)
+
+        self.video_stack.addWidget(self.page_4)
+
+        self.gridLayout.addWidget(self.video_stack, 4, 0, 1, 2)
 
 
         self.horizontalLayout.addWidget(self.formats_group)
 
         self.parameters_group = QGroupBox(MainFrame)
         self.parameters_group.setObjectName(u"parameters_group")
+        sizePolicy2.setHeightForWidth(self.parameters_group.sizePolicy().hasHeightForWidth())
+        self.parameters_group.setSizePolicy(sizePolicy2)
         self.formLayout_2 = QFormLayout(self.parameters_group)
         self.formLayout_2.setObjectName(u"formLayout_2")
         self.duration_label = QLabel(self.parameters_group)
@@ -124,6 +170,8 @@ class Ui_MainFrame(object):
 
         self.duration_spinbox = QSpinBox(self.parameters_group)
         self.duration_spinbox.setObjectName(u"duration_spinbox")
+        sizePolicy3.setHeightForWidth(self.duration_spinbox.sizePolicy().hasHeightForWidth())
+        self.duration_spinbox.setSizePolicy(sizePolicy3)
         self.duration_spinbox.setMinimum(1)
         self.duration_spinbox.setMaximum(10000)
         self.duration_spinbox.setValue(30)
@@ -137,6 +185,8 @@ class Ui_MainFrame(object):
 
         self.quality_spinbox = QSpinBox(self.parameters_group)
         self.quality_spinbox.setObjectName(u"quality_spinbox")
+        sizePolicy3.setHeightForWidth(self.quality_spinbox.sizePolicy().hasHeightForWidth())
+        self.quality_spinbox.setSizePolicy(sizePolicy3)
         self.quality_spinbox.setMinimum(1)
         self.quality_spinbox.setMaximum(100)
         self.quality_spinbox.setValue(100)
@@ -150,8 +200,8 @@ class Ui_MainFrame(object):
 
         self.lossless_check = QCheckBox(self.parameters_group)
         self.lossless_check.setObjectName(u"lossless_check")
-        sizePolicy.setHeightForWidth(self.lossless_check.sizePolicy().hasHeightForWidth())
-        self.lossless_check.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.lossless_check.sizePolicy().hasHeightForWidth())
+        self.lossless_check.setSizePolicy(sizePolicy1)
 
         self.formLayout_2.setWidget(2, QFormLayout.ItemRole.FieldRole, self.lossless_check)
 
@@ -160,6 +210,8 @@ class Ui_MainFrame(object):
 
         self.derotation_group = QGroupBox(MainFrame)
         self.derotation_group.setObjectName(u"derotation_group")
+        sizePolicy2.setHeightForWidth(self.derotation_group.sizePolicy().hasHeightForWidth())
+        self.derotation_group.setSizePolicy(sizePolicy2)
         self.derotation_group.setCheckable(False)
         self.derotation_group.setChecked(False)
         self.formLayout = QFormLayout(self.derotation_group)
@@ -186,6 +238,8 @@ class Ui_MainFrame(object):
 
         self.latitude_spin = QDoubleSpinBox(self.derotation_group)
         self.latitude_spin.setObjectName(u"latitude_spin")
+        sizePolicy3.setHeightForWidth(self.latitude_spin.sizePolicy().hasHeightForWidth())
+        self.latitude_spin.setSizePolicy(sizePolicy3)
         self.latitude_spin.setMinimum(-90.000000000000000)
         self.latitude_spin.setMaximum(90.000000000000000)
 
@@ -198,6 +252,8 @@ class Ui_MainFrame(object):
 
         self.longitude_spin = QDoubleSpinBox(self.derotation_group)
         self.longitude_spin.setObjectName(u"longitude_spin")
+        sizePolicy3.setHeightForWidth(self.longitude_spin.sizePolicy().hasHeightForWidth())
+        self.longitude_spin.setSizePolicy(sizePolicy3)
         self.longitude_spin.setMinimum(-180.000000000000000)
         self.longitude_spin.setMaximum(180.000000000000000)
 
@@ -205,8 +261,8 @@ class Ui_MainFrame(object):
 
         self.enable_check = QCheckBox(self.derotation_group)
         self.enable_check.setObjectName(u"enable_check")
-        sizePolicy.setHeightForWidth(self.enable_check.sizePolicy().hasHeightForWidth())
-        self.enable_check.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.enable_check.sizePolicy().hasHeightForWidth())
+        self.enable_check.setSizePolicy(sizePolicy1)
 
         self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.enable_check)
 
@@ -225,21 +281,21 @@ class Ui_MainFrame(object):
 
         self.output_path_edit = QLineEdit(MainFrame)
         self.output_path_edit.setObjectName(u"output_path_edit")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy1.setHorizontalStretch(2)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.output_path_edit.sizePolicy().hasHeightForWidth())
-        self.output_path_edit.setSizePolicy(sizePolicy1)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy5.setHorizontalStretch(2)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.output_path_edit.sizePolicy().hasHeightForWidth())
+        self.output_path_edit.setSizePolicy(sizePolicy5)
 
         self.horizontalLayout_4.addWidget(self.output_path_edit)
 
         self.output_name_edit = QLineEdit(MainFrame)
         self.output_name_edit.setObjectName(u"output_name_edit")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        sizePolicy2.setHorizontalStretch(1)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.output_name_edit.sizePolicy().hasHeightForWidth())
-        self.output_name_edit.setSizePolicy(sizePolicy2)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        sizePolicy6.setHorizontalStretch(1)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.output_name_edit.sizePolicy().hasHeightForWidth())
+        self.output_name_edit.setSizePolicy(sizePolicy6)
 
         self.horizontalLayout_4.addWidget(self.output_name_edit)
 
@@ -256,8 +312,8 @@ class Ui_MainFrame(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.settings_button = QPushButton(MainFrame)
         self.settings_button.setObjectName(u"settings_button")
-        sizePolicy.setHeightForWidth(self.settings_button.sizePolicy().hasHeightForWidth())
-        self.settings_button.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.settings_button.sizePolicy().hasHeightForWidth())
+        self.settings_button.setSizePolicy(sizePolicy1)
         self.settings_button.setAutoDefault(True)
 
         self.horizontalLayout_2.addWidget(self.settings_button)
@@ -269,8 +325,8 @@ class Ui_MainFrame(object):
 
         self.convert_button = QPushButton(MainFrame)
         self.convert_button.setObjectName(u"convert_button")
-        sizePolicy.setHeightForWidth(self.convert_button.sizePolicy().hasHeightForWidth())
-        self.convert_button.setSizePolicy(sizePolicy)
+        sizePolicy1.setHeightForWidth(self.convert_button.sizePolicy().hasHeightForWidth())
+        self.convert_button.setSizePolicy(sizePolicy1)
         self.convert_button.setAutoDefault(True)
 
         self.horizontalLayout_2.addWidget(self.convert_button)
@@ -294,8 +350,7 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.apng_check, self.avif_check)
         QWidget.setTabOrder(self.avif_check, self.webp_check)
         QWidget.setTabOrder(self.webp_check, self.gif_check)
-        QWidget.setTabOrder(self.gif_check, self.mp4_check)
-        QWidget.setTabOrder(self.mp4_check, self.duration_spinbox)
+        QWidget.setTabOrder(self.gif_check, self.duration_spinbox)
         QWidget.setTabOrder(self.duration_spinbox, self.quality_spinbox)
         QWidget.setTabOrder(self.quality_spinbox, self.lossless_check)
         QWidget.setTabOrder(self.lossless_check, self.target_combo)
@@ -310,6 +365,7 @@ class Ui_MainFrame(object):
 
         self.retranslateUi(MainFrame)
 
+        self.video_stack.setCurrentIndex(0)
         self.convert_button.setDefault(True)
 
 
@@ -321,12 +377,13 @@ class Ui_MainFrame(object):
         self.input_label.setText(QCoreApplication.translate("MainFrame", u"&Input frames", None))
         self.input_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
         self.formats_group.setTitle(QCoreApplication.translate("MainFrame", u"Formats", None))
-        self.apng_check.setText(QCoreApplication.translate("MainFrame", u"A&PNG", None))
-        self.avif_check.setText(QCoreApplication.translate("MainFrame", u"A&VIF", None))
         self.webp_check.setText(QCoreApplication.translate("MainFrame", u"&WebP", None))
+        self.avif_check.setText(QCoreApplication.translate("MainFrame", u"A&VIF", None))
+        self.apng_check.setText(QCoreApplication.translate("MainFrame", u"A&PNG", None))
         self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
         self.mp4_check.setText(QCoreApplication.translate("MainFrame", u"MP&4", None))
         self.webm_check.setText(QCoreApplication.translate("MainFrame", u"Web&M", None))
+        self.requires_ffmpeg_label.setText(QCoreApplication.translate("MainFrame", u"MP4 and WebM requires FFmpeg.", None))
         self.parameters_group.setTitle(QCoreApplication.translate("MainFrame", u"Conversion parameters", None))
         self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))
         self.quality_label.setText(QCoreApplication.translate("MainFrame", u"&Quality", None))

@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>550</width>
-    <height>500</height>
+    <width>600</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>550</width>
-    <height>500</height>
+    <width>600</width>
+    <height>600</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -45,7 +45,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableView" name="frames_table"/>
+      <widget class="QTableView" name="frames_table">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item alignment="Qt::AlignmentFlag::AlignRight">
       <widget class="QPushButton" name="input_browse_button">
@@ -67,16 +74,25 @@
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+     </property>
      <item>
       <widget class="QGroupBox" name="formats_group">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Formats</string>
        </property>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="apng_check">
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="webp_check">
           <property name="text">
-           <string>A&amp;PNG</string>
+           <string>&amp;WebP</string>
           </property>
          </widget>
         </item>
@@ -87,17 +103,10 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="webp_check">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="apng_check">
           <property name="text">
-           <string>&amp;WebP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="gif_check">
-          <property name="text">
-           <string>&amp;GIF</string>
+           <string>A&amp;PNG</string>
           </property>
          </widget>
         </item>
@@ -108,31 +117,105 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1" rowspan="2">
-         <widget class="QComboBox" name="mp4_codec_combo"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="mp4_check">
+        <item row="1" column="1">
+         <widget class="QCheckBox" name="gif_check">
           <property name="text">
-           <string>MP&amp;4</string>
+           <string>&amp;GIF</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="webm_check">
-          <property name="text">
-           <string>Web&amp;M</string>
+        <item row="4" column="0" colspan="2">
+         <widget class="QStackedWidget" name="video_stack">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="page_3">
+           <layout class="QGridLayout" name="gridLayout_3">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="mp4_check">
+              <property name="text">
+               <string>MP&amp;4</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QComboBox" name="webm_codec_combo"/>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="mp4_codec_combo"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="webm_check">
+              <property name="text">
+               <string>Web&amp;M</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="page_4">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="requires_ffmpeg_label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>MP4 and WebM requires FFmpeg.</string>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="QComboBox" name="webm_codec_combo"/>
         </item>
        </layout>
       </widget>
      </item>
      <item>
       <widget class="QGroupBox" name="parameters_group">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Conversion parameters</string>
        </property>
@@ -149,6 +232,12 @@
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="duration_spinbox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -172,6 +261,12 @@
         </item>
         <item row="1" column="1">
          <widget class="QSpinBox" name="quality_spinbox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -211,6 +306,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="derotation_group">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="title">
         <string>Alt-az field derotation</string>
        </property>
@@ -256,6 +357,12 @@
         </item>
         <item row="2" column="1">
          <widget class="QDoubleSpinBox" name="latitude_spin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="suffix">
            <string>°</string>
           </property>
@@ -279,6 +386,12 @@
         </item>
         <item row="3" column="1">
          <widget class="QDoubleSpinBox" name="longitude_spin">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="suffix">
            <string>°</string>
           </property>
@@ -407,7 +520,6 @@
   <tabstop>avif_check</tabstop>
   <tabstop>webp_check</tabstop>
   <tabstop>gif_check</tabstop>
-  <tabstop>mp4_check</tabstop>
   <tabstop>duration_spinbox</tabstop>
   <tabstop>quality_spinbox</tabstop>
   <tabstop>lossless_check</tabstop>
