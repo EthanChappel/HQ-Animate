@@ -1,6 +1,7 @@
 import os
 import platform
 from pathlib import Path
+import platformdirs
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from hq_animate import convert
@@ -19,7 +20,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.settings = Settings.from_file_or_default(Path(SCRIPT_PATH, "settings.json"))
+        self.settings = Settings.from_file_or_default(Path(platformdirs.user_config_dir("hq-animate", "", ensure_exists=True), "settings.json"))
 
         if not self.settings.ffmpeg_path:
             exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
