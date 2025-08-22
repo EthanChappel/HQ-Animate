@@ -20,3 +20,11 @@ Open a terminal and navigate to the project's root folder, where pyproject.toml 
 ```
 pip install .
 ```
+
+## Usage
+
+To start the program, call it from a terminal:
+
+```
+hq-animate
+```
