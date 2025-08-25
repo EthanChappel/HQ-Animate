@@ -28,7 +28,7 @@ from PySide6.QtWidgets import QApplication
 from hq_animate.mainwindow import MainWindow
 
 
-__version__ = '0.1.0'
+__version__ = '0.2.0'
 
 def main():
     app = QApplication()
