@@ -297,12 +297,11 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout_4.addWidget(self.output_path_edit)
 
-        self.output_line = QFrame(MainFrame)
-        self.output_line.setObjectName(u"output_line")
-        self.output_line.setFrameShape(QFrame.Shape.VLine)
-        self.output_line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.output_browse_button = QPushButton(MainFrame)
+        self.output_browse_button.setObjectName(u"output_browse_button")
+        self.output_browse_button.setAutoDefault(True)
 
-        self.horizontalLayout_4.addWidget(self.output_line)
+        self.horizontalLayout_4.addWidget(self.output_browse_button)
 
         self.output_name_label = QLabel(MainFrame)
         self.output_name_label.setObjectName(u"output_name_label")
@@ -318,12 +317,6 @@ class Ui_MainFrame(object):
         self.output_name_edit.setSizePolicy(sizePolicy6)
 
         self.horizontalLayout_4.addWidget(self.output_name_edit)
-
-        self.output_browse_button = QPushButton(MainFrame)
-        self.output_browse_button.setObjectName(u"output_browse_button")
-        self.output_browse_button.setAutoDefault(True)
-
-        self.horizontalLayout_4.addWidget(self.output_browse_button)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_4)
@@ -378,8 +371,7 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.latitude_spin, self.longitude_spin)
         QWidget.setTabOrder(self.longitude_spin, self.output_path_edit)
         QWidget.setTabOrder(self.output_path_edit, self.output_name_edit)
-        QWidget.setTabOrder(self.output_name_edit, self.output_browse_button)
-        QWidget.setTabOrder(self.output_browse_button, self.settings_button)
+        QWidget.setTabOrder(self.output_name_edit, self.settings_button)
         QWidget.setTabOrder(self.settings_button, self.show_folder_check)
         QWidget.setTabOrder(self.show_folder_check, self.convert_button)
 
@@ -418,8 +410,8 @@ class Ui_MainFrame(object):
         self.longitude_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.enable_check.setText("")
         self.output_label.setText(QCoreApplication.translate("MainFrame", u"&Output folder", None))
-        self.output_name_label.setText(QCoreApplication.translate("MainFrame", u"Name", None))
         self.output_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
+        self.output_name_label.setText(QCoreApplication.translate("MainFrame", u"Name", None))
         self.settings_button.setText(QCoreApplication.translate("MainFrame", u"&Settings", None))
         self.show_folder_check.setText(QCoreApplication.translate("MainFrame", u"Show folder when &done", None))
         self.convert_button.setText(QCoreApplication.translate("MainFrame", u"&Convert", None))

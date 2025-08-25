@@ -471,9 +471,12 @@
       </widget>
      </item>
      <item>
-      <widget class="Line" name="output_line">
-       <property name="orientation">
-        <enum>Qt::Orientation::Vertical</enum>
+      <widget class="QPushButton" name="output_browse_button">
+       <property name="text">
+        <string>Browse...</string>
+       </property>
+       <property name="autoDefault">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -491,16 +494,6 @@
          <horstretch>1</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="output_browse_button">
-       <property name="text">
-        <string>Browse...</string>
-       </property>
-       <property name="autoDefault">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -569,7 +562,6 @@
   <tabstop>longitude_spin</tabstop>
   <tabstop>output_path_edit</tabstop>
   <tabstop>output_name_edit</tabstop>
-  <tabstop>output_browse_button</tabstop>
   <tabstop>settings_button</tabstop>
   <tabstop>show_folder_check</tabstop>
   <tabstop>convert_button</tabstop>
