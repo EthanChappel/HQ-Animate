@@ -214,8 +214,6 @@ class MainFrame(QFrame, Ui_MainFrame):
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.setEnabled(False)
         self.worker_thread = QThread()
-        print(f'{self.mp4_codec_combo.currentText()} {convert.MP4Codec[self.mp4_codec_combo.currentText()]}')
-        print(f'{self.webm_codec_combo.currentText()} {convert.WebMCodec[self.webm_codec_combo.currentText()]}')
         self.worker = ConvertWorker(
             self.paths,
             Path(self.output_path_edit.text(), self.output_name_edit.text()),
