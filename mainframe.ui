@@ -453,7 +453,7 @@
      <item>
       <widget class="QLabel" name="output_label">
        <property name="text">
-        <string>&amp;Output</string>
+        <string>&amp;Output folder</string>
        </property>
        <property name="buddy">
         <cstring>output_browse_button</cstring>
@@ -467,6 +467,20 @@
          <horstretch>2</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Line" name="output_line">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="output_name_label">
+       <property name="text">
+        <string>Name</string>
        </property>
       </widget>
      </item>

@@ -297,6 +297,18 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout_4.addWidget(self.output_path_edit)
 
+        self.output_line = QFrame(MainFrame)
+        self.output_line.setObjectName(u"output_line")
+        self.output_line.setFrameShape(QFrame.Shape.VLine)
+        self.output_line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_4.addWidget(self.output_line)
+
+        self.output_name_label = QLabel(MainFrame)
+        self.output_name_label.setObjectName(u"output_name_label")
+
+        self.horizontalLayout_4.addWidget(self.output_name_label)
+
         self.output_name_edit = QLineEdit(MainFrame)
         self.output_name_edit.setObjectName(u"output_name_edit")
         sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
@@ -405,7 +417,8 @@ class Ui_MainFrame(object):
         self.longitude_label.setText(QCoreApplication.translate("MainFrame", u"Lo&ngitude", None))
         self.longitude_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.enable_check.setText("")
-        self.output_label.setText(QCoreApplication.translate("MainFrame", u"&Output", None))
+        self.output_label.setText(QCoreApplication.translate("MainFrame", u"&Output folder", None))
+        self.output_name_label.setText(QCoreApplication.translate("MainFrame", u"Name", None))
         self.output_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
         self.settings_button.setText(QCoreApplication.translate("MainFrame", u"&Settings", None))
         self.show_folder_check.setText(QCoreApplication.translate("MainFrame", u"Show folder when &done", None))
