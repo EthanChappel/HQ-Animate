@@ -178,13 +178,23 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.can_av1 = is_valid_ffmpeg["av1"]
         self.can_vp9 = is_valid_ffmpeg["vp9"]
 
-        self.mp4_check.setEnabled(self.can_av1 and self.can_vp9 and self.can_avc)
-        self.webm_check.setEnabled(self.can_av1 and self.can_vp9)
+        can_mp4 = self.can_av1 or self.can_vp9 or self.can_avc
+        can_webm = self.can_av1 and self.can_vp9
 
-        self.mp4_codec_combo.setEnabled(self.can_av1 or self.can_vp9 or self.can_avc)
-        self.webm_codec_combo.setEnabled(self.can_av1 or self.can_vp9)
+        self.mp4_check.setEnabled(can_mp4)
+        self.webm_check.setEnabled(can_webm)
+
+        if not can_mp4:
+            self.mp4_check.setChecked(False)
+        if not can_webm:
+            self.webm_check.setChecked(False)
+
+        self.mp4_codec_combo.setEnabled(can_mp4)
+        self.webm_codec_combo.setEnabled(can_webm)
+
         mp4_selection = self.mp4_codec_combo.currentText()
         webm_selection = self.webm_codec_combo.currentText()
+
         self.mp4_codec_combo.clear()
         self.webm_codec_combo.clear()
         if self.can_avc:
@@ -195,6 +205,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         if self.can_vp9:
             self.mp4_codec_combo.addItem("VP9")
             self.webm_codec_combo.addItem("VP9")
+
         self.mp4_codec_combo.setCurrentText(mp4_selection)
         self.webm_codec_combo.setCurrentText(webm_selection)
     
