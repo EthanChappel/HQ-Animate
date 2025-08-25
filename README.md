@@ -3,7 +3,7 @@ Create high quality animations from a sequence of image files.
 
 ## Installation
 ### Install with `pipx`
-`pipx` is recommended since it installs Python applications into isolated environemnts.
+`pipx` is recommended since it installs Python applications into isolated environments.
 
 Installation instructions for `pipx`: [https://pipx.pypa.io/stable/installation/](https://pipx.pypa.io/stable/installation/)
 
