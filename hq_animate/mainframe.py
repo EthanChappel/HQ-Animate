@@ -1,11 +1,12 @@
 import os
+import traceback
 from pathlib import Path
 import platform
 import subprocess
 from PIL import Image
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
-from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication
+from PySide6.QtWidgets import QFrame, QFileDialog, QHeaderView, QApplication, QMessageBox
 from hq_animate.ui_mainframe import Ui_MainFrame
 from hq_animate import convert
 
@@ -236,9 +237,12 @@ class MainFrame(QFrame, Ui_MainFrame):
         )
         self.worker.moveToThread(self.worker_thread)
         self.worker.finished.connect(self.on_convert_end)
+        self.worker.error.connect(self.on_convert_error)
         self.worker_thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.worker_thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
+        self.worker.error.connect(self.worker_thread.quit)
+        self.worker.error.connect(self.worker.deleteLater)
         self.worker_thread.finished.connect(self.worker.deleteLater)
         self.worker_thread.start()
     
@@ -255,10 +259,20 @@ class MainFrame(QFrame, Ui_MainFrame):
             subprocess.Popen(('open', self.output_path_edit.text()))
         else:
             subprocess.Popen(('xdg-open', self.output_path_edit.text()))
+    
+    def on_convert_error(self, error: str):
+        QApplication.restoreOverrideCursor()
+        messagebox = QMessageBox(QMessageBox.Icon.Critical, "HQ Animate - Error while converting", "Unable to create some or all animations due to an error.")
+        messagebox.setDetailedText(error)
+        messagebox.exec()
+
+        self.on_convert_end()
+
 
 
 class ConvertWorker(QObject):
     finished = Signal()
+    error = Signal(str)
 
     def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
         super().__init__()
@@ -302,8 +316,10 @@ class ConvertWorker(QObject):
                 self.longitude,
                 self.target,
             )
-        finally:
             self.finished.emit()
+        except Exception as e:
+            self.error.emit(e)
+            
 
 
 class TableModel(QAbstractTableModel):
