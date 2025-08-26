@@ -28,7 +28,7 @@ import platform
 import re
 from pathlib import Path
 from enum import Enum
-from PIL import Image, ImageSequence
+from PIL import Image, ImageSequence, ImageMath
 from astropy.io import fits
 from astropy.time import Time
 from astropy.coordinates import solar_system_ephemeris, EarthLocation, get_body, HADec
@@ -170,7 +170,9 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
 
         image = Image.open(n.path)
         for frame in ImageSequence.Iterator(image):
-            f = frame.convert('RGB').copy()
+            f = frame.copy()
+            if f.mode == 'I;16':
+                f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
             if derotate:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
