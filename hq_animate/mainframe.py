@@ -253,6 +253,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.latitude_spin.value(),
             self.longitude_spin.value(),
             self.target_combo.currentText(),
+            Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
         self.worker.finished.connect(self.on_convert_end)
@@ -288,7 +289,7 @@ class MainFrame(QFrame, Ui_MainFrame):
     def on_convert_error(self, error: str):
         QApplication.restoreOverrideCursor()
         logger.error(f"Error while converting:\n{error}")
-        messagebox = QMessageBox(QMessageBox.Icon.Critical, "HQ Animate - Error while converting", "Unable to create some or all animations due to an error.")
+        messagebox = QMessageBox(QMessageBox.Icon.Critical, "HQ Animate - Error while converting", "Unable to create some or all animations due to an error.", parent=self)
         messagebox.setDetailedText(error)
         messagebox.exec()
 
@@ -300,7 +301,7 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
@@ -319,6 +320,7 @@ class ConvertWorker(QObject):
         self.latitude = latitude
         self.longitude = longitude
         self.target = target
+        self.ffmpeg_path = ffmpeg_path
 
 
     def run(self):
@@ -341,6 +343,7 @@ class ConvertWorker(QObject):
                 self.latitude,
                 self.longitude,
                 self.target,
+                self.ffmpeg_path,
             )
             self.finished.emit()
         except Exception as e:

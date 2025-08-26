@@ -140,7 +140,7 @@ def validate_ffmpeg(path: str):
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
     logger.info(f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}, Field Derotation={derotate}, Target={target}, Latitude={int(latitude)}, Longitude={int(longitude)}")
     
     frames = []
@@ -258,9 +258,9 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             optimize=optimize,
         )
     
-    if mp4 or webm:
+    if (mp4 or webm) and ffmpeg_path != None:
         ffmpeg_options = [
-            str(Path('ffmpeg')), '-y',
+            str(ffmpeg_path), '-y',
             '-f', 'rawvideo',
             '-pixel_format', 'rgb24',
             '-video_size', f'{image.width}x{image.height}',
