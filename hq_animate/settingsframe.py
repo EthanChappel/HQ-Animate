@@ -53,7 +53,7 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         logging.info(log_file_path)
         
         if SYSTEM == "Windows":
-            subprocess.Popen(f"explorer /select,\"{log_file_path}\"")
+            subprocess.Popen(f"explorer /select,\"{log_file_path}\"", creationflags=subprocess.CREATE_NO_WINDOW)
 
     def ffmpeg_path_edited(self):
         self.setting_changed.emit()
