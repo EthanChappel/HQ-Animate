@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
+    QLabel, QPushButton, QSizePolicy, QSpacerItem,
     QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_SettingsFrame(object):
@@ -32,16 +32,32 @@ class Ui_SettingsFrame(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.ffmpeg_path_label = QLabel(SettingsFrame)
         self.ffmpeg_path_label.setObjectName(u"ffmpeg_path_label")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.ffmpeg_path_label.sizePolicy().hasHeightForWidth())
+        self.ffmpeg_path_label.setSizePolicy(sizePolicy)
 
         self.horizontalLayout.addWidget(self.ffmpeg_path_label)
 
-        self.ffmpeg_path_edit = QLineEdit(SettingsFrame)
-        self.ffmpeg_path_edit.setObjectName(u"ffmpeg_path_edit")
+        self.ffmpeg_path_combo = QComboBox(SettingsFrame)
+        self.ffmpeg_path_combo.setObjectName(u"ffmpeg_path_combo")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.ffmpeg_path_combo.sizePolicy().hasHeightForWidth())
+        self.ffmpeg_path_combo.setSizePolicy(sizePolicy1)
+        self.ffmpeg_path_combo.setEditable(True)
 
-        self.horizontalLayout.addWidget(self.ffmpeg_path_edit)
+        self.horizontalLayout.addWidget(self.ffmpeg_path_combo)
 
         self.ffmpeg_browse_button = QPushButton(SettingsFrame)
         self.ffmpeg_browse_button.setObjectName(u"ffmpeg_browse_button")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.ffmpeg_browse_button.sizePolicy().hasHeightForWidth())
+        self.ffmpeg_browse_button.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout.addWidget(self.ffmpeg_browse_button)
 
@@ -65,11 +81,8 @@ class Ui_SettingsFrame(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.back_button = QPushButton(SettingsFrame)
         self.back_button.setObjectName(u"back_button")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.back_button.sizePolicy().hasHeightForWidth())
-        self.back_button.setSizePolicy(sizePolicy)
+        sizePolicy2.setHeightForWidth(self.back_button.sizePolicy().hasHeightForWidth())
+        self.back_button.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_2.addWidget(self.back_button)
 

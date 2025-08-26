@@ -28,15 +28,10 @@ class MainWindow(QMainWindow):
         self.settings = Settings.from_file_or_default(Path(platformdirs.user_config_dir("hq-animate", "", ensure_exists=True), "settings.json"))
         logger.info(f"Using settings file {self.settings.path}")
 
+        ffmpeg_paths = convert.find_ffmpeg()
         if not self.settings.ffmpeg_path or not Path(self.settings.ffmpeg_path).exists():
-            exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
-
-            for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
-                if p.is_file():
-                    ffmpeg_path = p.resolve()
-                    logger.info(f"Found FFmpeg: {ffmpeg_path}")
-                    self.settings.ffmpeg_path = ffmpeg_path
-                    break
+            if len(ffmpeg_paths) > 0:
+                self.settings.ffmpeg_path = ffmpeg_paths[0]
 
         self.setWindowTitle("HQ Animate")
 
@@ -47,7 +42,7 @@ class MainWindow(QMainWindow):
         self.main_frame.settings_clicked.connect(self.show_settings)
         self.stack_frame.addWidget(self.main_frame)
         
-        self.settings_frame = SettingsFrame(self)
+        self.settings_frame = SettingsFrame(self, ffmpeg_paths=ffmpeg_paths)
         self.settings_frame.setting_changed.connect(self.save_settings)
         self.settings_frame.back_clicked.connect(self.show_main)
         self.stack_frame.addWidget(self.settings_frame)
@@ -78,7 +73,7 @@ class MainWindow(QMainWindow):
         self.settings.mp4_codec = convert.MP4Codec[mp4_codec] if mp4_codec else None
         self.settings.webm_codec = convert.WebMCodec[webm_codec] if webm_codec else None
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
-        self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_edit.text()
+        self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 
         self.settings.save()
         self.settings_updated.emit()

@@ -18,7 +18,7 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
     back_clicked = Signal()
     setting_changed = Signal()
 
-    def __init__(self, parent):
+    def __init__(self, parent, ffmpeg_paths: list[Path]):
         super().__init__(parent)
         self.setupUi(self)
 
@@ -27,21 +27,35 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.dependencies_textbox.setPlainText(f.read())
         
-        self.ffmpeg_path_edit.setText(str(self.settings.ffmpeg_path))
+        ffmpeg = Path(self.settings.ffmpeg_path).absolute()
+
+        self.ffmpeg_path_combo.addItems([str(p.absolute()) for p in ffmpeg_paths])
+        if ffmpeg.exists():
+            s = str(ffmpeg)
+            if self.ffmpeg_path_combo.findText(s) == -1:
+                self.ffmpeg_path_combo.addItem(s)
+            self.ffmpeg_path_combo.setCurrentText(s)
 
         self.back_button.clicked.connect(self.switch_to_main_page)
         self.open_logs_button.clicked.connect(self.open_logs_path)
 
-        self.ffmpeg_path_edit.editingFinished.connect(self.ffmpeg_path_edited)
+        self.ffmpeg_path_combo.lineEdit().editingFinished.connect(self.ffmpeg_path_edited)
         self.ffmpeg_browse_button.clicked.connect(self.set_ffmpeg_path)
     
     def set_ffmpeg_path(self, event):
         wildcards = "Executable files (*.exe)" if SYSTEM == 'Windows' else "Executable files (*)"
-        path, _ = QFileDialog.getOpenFileName(self, "Select FFmpeg executable...", self.ffmpeg_path_edit.text(), wildcards)
+        path, _ = QFileDialog.getOpenFileName(self, "Select FFmpeg executable...", self.ffmpeg_path_combo.currentText(), wildcards)
 
-        if path:
-            self.ffmpeg_path_edit.setText(path)
-            self.setting_changed.emit()
+        if not path:
+            return
+        
+        path = str(Path(path).absolute())
+        
+        if self.ffmpeg_path_combo.findText(path) == -1:
+            self.ffmpeg_path_combo.addItem(path)
+        
+        self.ffmpeg_path_combo.setCurrentText(path)
+        self.setting_changed.emit()
     
     def open_logs_path(self):
         log_file_path = None

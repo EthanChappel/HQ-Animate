@@ -23,6 +23,7 @@ SOFTWARE.
 '''
 
 
+import os
 import subprocess
 import logging
 import platform
@@ -51,6 +52,7 @@ TARGETS = {
 
 
 SYSTEM = platform.system()
+SCRIPT_PATH = Path(__file__).resolve().parent
 
 logger = logging.getLogger("app")
 
@@ -121,7 +123,20 @@ class MP4Codec(str, Enum):
     AVC = 2
 
 
-def validate_ffmpeg(path: str):
+def find_ffmpeg() -> list[Path]:
+    exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
+
+    ffmpeg_paths = []
+    for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
+        if p.is_file():
+            ffmpeg_path = p.resolve()
+            logger.info(f"Found FFmpeg: {ffmpeg_path}")
+            ffmpeg_paths.append(ffmpeg_path)
+    
+    return ffmpeg_paths
+
+
+def validate_ffmpeg(path: str) -> dict[str, bool]:
     features = {"avc": False, "av1": False, "vp9": False}
 
     try:
