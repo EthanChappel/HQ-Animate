@@ -327,7 +327,7 @@ class ConvertWorker(QObject):
             )
             self.finished.emit()
         except Exception as e:
-            self.error.emit(e)
+            self.error.emit(traceback.format_exc())
             
 
 
