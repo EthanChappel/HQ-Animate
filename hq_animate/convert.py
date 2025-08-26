@@ -24,6 +24,7 @@ SOFTWARE.
 
 
 import subprocess
+import logging
 import platform
 import re
 from pathlib import Path
@@ -50,7 +51,8 @@ TARGETS = {
 
 
 SYSTEM = platform.system()
-script_path = Path(__file__).resolve().parent
+
+logger = logging.getLogger("app")
 
 
 class Frame:
@@ -103,6 +105,8 @@ class Frame:
                 second = str(int(second) * 6).rjust(2, "0")
             
             self.date_time = Time(f"{year}-{month}-{day} {hour}:{minute}:{second}", format="iso")
+
+            logger.info(f"New Frame Path={self.path}, Target={self.target}, Time={self.date_time}")
     
     def __str__(self):
         return self.path.name
@@ -121,6 +125,7 @@ def validate_ffmpeg(path: str):
     features = {"avc": False, "av1": False, "vp9": False}
 
     try:
+        logger.info(f"Validate FFmpeg Path={path}")
         popen_cmd = (path, '-encoders')
         popen_parameters = {'stdout': subprocess.PIPE, 'text': True, 'encoding': 'utf-8'}
         if SYSTEM == "Windows":
@@ -131,13 +136,16 @@ def validate_ffmpeg(path: str):
         features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", stdout, flags=re.MULTILINE))
         features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", stdout, flags=re.MULTILINE))
         features["vp9"] = bool(re.search(r"^ V[\.FSXBD]{5} libvpx-vp9", stdout, flags=re.MULTILINE))
+        logger.info(f"FFmpeg features: {features}")
     except:
-        pass
+        logger.info("FFmpeg not validated.")
 
     return features
 
 
 def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None):
+    logger.info(f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}, Field Derotation={derotate}, Target={target}, Latitude={int(latitude)}, Longitude={int(longitude)}")
+    
     frames = []
     observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
@@ -169,8 +177,11 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
                     rotation = q2 - q1
 
         image = Image.open(n.path)
-        for frame in ImageSequence.Iterator(image):
+        for i, frame in enumerate(ImageSequence.Iterator(image)):
             f = frame.copy()
+
+            logger.info(f"Process frame {i} Mode={f.mode}, Rotation={rotation:0.2f}")
+
             if f.mode == 'I;16':
                 f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
             if derotate:
@@ -184,31 +195,46 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
     duration = int(1000 / d)
 
     if apng:
+        filename = f"{o}.apng"
+        optimize = True
+
+        logger.info(f"Create APNG Path={filename}, Optimize={optimize}")
+        
         image.save(
-            f"{o}.apng",
+            filename,
             format='PNG',
             save_all=True,
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=True
+            optimize=optimize,
         )
 
     if avif:
+        filename = f"{o}.avif"
+        subsampling = "4:4:4"
+
+        logger.info(f"Create AVIF Path={filename}, Quality={quality}, Subsampling={subsampling}")
+        
         image.save(
-            f"{o}.avif",
+            filename,
             format='AVIF',
             save_all=True,
             append_images=frames[1:],
             duration=duration,
             loop=0,
             quality=quality,
-            subsampling="4:4:4",
+            subsampling=subsampling,
         )
 
     if webp:
+        filename = f"{o}.webp"
+        method = 3
+
+        logger.info(f"Create WebP Path={filename}, Quality={quality}, Lossless={lossless}, Method={method}")
+
         image.save(
-            f"{o}.webp",
+            filename,
             format='WebP',
             save_all=True,
             append_images=frames[1:],
@@ -216,18 +242,23 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             loop=0,
             lossless=lossless,
             quality=quality,
-            method=3
+            method=method,
         )
 
     if gif:
+        filename = f"{o}.gif"
+        optimize = True
+
+        logger.info(f"Create GIF Path={filename}, Optimize={optimize}")
+
         image.save(
-            f"{o}.gif",
+            filename,
             format='GIF',
             save_all=True,
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=True
+            optimize=optimize,
         )
     
     if mp4 or webm:
@@ -278,6 +309,8 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             elif webm_codec == WebMCodec.VP9:
                 ffmpeg_options += vp9_options
             ffmpeg_options += [f'{o}.webm']
+
+        logger.info("Run FFmpeg: " + " ".join(ffmpeg_options))
 
         process = subprocess.Popen(ffmpeg_options, stdin=subprocess.PIPE)
         

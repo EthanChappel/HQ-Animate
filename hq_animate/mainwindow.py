@@ -1,4 +1,5 @@
 import os
+import logging
 import platform
 from pathlib import Path
 import platformdirs
@@ -14,20 +15,27 @@ SYSTEM = platform.system()
 SCRIPT_PATH = Path(__file__).resolve().parent
 
 
+logger = logging.getLogger("app")
+
+
 class MainWindow(QMainWindow):
     settings_updated = Signal()
 
     def __init__(self):
         super().__init__()
 
+        logger.info("Initializing main window")
         self.settings = Settings.from_file_or_default(Path(platformdirs.user_config_dir("hq-animate", "", ensure_exists=True), "settings.json"))
+        logger.info(f"Using settings file {self.settings.path}")
 
         if not self.settings.ffmpeg_path:
             exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
 
             for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:
                 if p.is_file():
-                    self.settings.ffmpeg_path = p.resolve()
+                    ffmpeg_path = p.resolve()
+                    logger.info(f"Found FFmpeg: {ffmpeg_path}")
+                    self.settings.ffmpeg_path = ffmpeg_path
                     break
 
         self.setWindowTitle("HQ Animate")
@@ -48,6 +56,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.stack_frame)
     
     def show_settings(self):
+        logger.info("Switch to settings frame")
         self.stack_frame.setCurrentWidget(self.settings_frame)
     
     def save_settings(self):
@@ -75,8 +84,10 @@ class MainWindow(QMainWindow):
         self.settings_updated.emit()
     
     def show_main(self):
+        logger.info("Switch to main frame")
         self.stack_frame.setCurrentWidget(self.main_frame)
     
     def closeEvent(self, event):
+        logger.info("Closing main window.")
         self.save_settings()
         return super().closeEvent(event)

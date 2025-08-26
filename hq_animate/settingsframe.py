@@ -1,3 +1,4 @@
+import logging
 import platform
 from pathlib import Path
 import subprocess
@@ -8,6 +9,9 @@ from hq_animate.ui_settingsframe import Ui_SettingsFrame
 
 SYSTEM = platform.system()
 SCRIPT_PATH = Path(__file__).resolve().parent
+
+
+logger = logging.getLogger("app")
 
 
 class SettingsFrame(QFrame, Ui_SettingsFrame):
@@ -45,6 +49,8 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
             if isinstance(handler, (logging.FileHandler)):
                 log_file_path = handler.baseFilename
                 break
+        
+        logging.info(log_file_path)
         
         if SYSTEM == "Windows":
             subprocess.Popen(f"explorer /select,\"{log_file_path}\"")

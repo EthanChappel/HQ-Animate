@@ -24,17 +24,36 @@ SOFTWARE.
 '''
 
 
+from datetime import datetime, timezone
+import logging
+from importlib.metadata import version
+from pathlib import Path
 from PySide6.QtWidgets import QApplication
+import platformdirs
 from hq_animate.mainwindow import MainWindow
 
 
-__version__ = '0.2.0'
+__version__ = version("hq_animate")
+
+log_path = Path(platformdirs.user_config_dir("hq-animate", "", version=__version__, ensure_exists=True), "logs")
+Path.mkdir(log_path, exist_ok=True)
+
+logger = logging.getLogger("app")
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler(Path(log_path, f"log_{datetime.now(timezone.utc).strftime("%Y-%m-%d-%H-%M-%S.%f")}.txt"))
+logger.addHandler(file_handler)
+
+logger.info(f"HQ-Animate {__version__}")
 
 def main():
+    logger.info(f"Starting application")
+
     app = QApplication()
     window = MainWindow()
     window.show()
     app.exec()
+
+    logger.info(f"Closing application")
 
 if __name__ == '__main__':
     main()

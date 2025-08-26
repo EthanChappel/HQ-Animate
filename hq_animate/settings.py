@@ -1,3 +1,4 @@
+import logging
 import json
 from pathlib import Path
 from hq_animate.convert import MP4Codec, WebMCodec
@@ -17,6 +18,9 @@ QUALITY_MAX = 100
 
 FRAME_LENGTH_MIN = 1
 FRAME_LENGTH_MAX = 100000
+
+
+logger = logging.getLogger("app")
 
 
 class Settings:
@@ -51,6 +55,8 @@ class Settings:
         self.webm_codec = webm_codec
         self.show_folder = show_folder
         self.ffmpeg_path = ffmpeg_path
+
+        logger.info(f"New Settings: {self.path}")
     
     def save(self):
         j = {
@@ -71,18 +77,26 @@ class Settings:
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
         }
+
+        logger.info(f"Save Settings: {self.path}")
+        
         with open(self.path, 'w') as f:
             json.dump(j, f)
     
     @staticmethod
     def from_file_or_default(path: Path):
+        logger.info(f"Load settings file or use default: {path}")
         if path in Settings._file_instances.keys():
-            return Settings._file_instances[path]
+            logger.info(f"Found Settings instance: {path}")
+            s = Settings._file_instances[path]
+            return s
         if not path.exists():
+            logger.info(f"Loaded new settings file: {path}")
             s = Settings(path)
             Settings._file_instances[path] = s
             return s
         with open(path, 'r') as f:
+            logger.info(f"Found settings file: {path}")
             j = json.load(f)
             s = Settings(
                 path,

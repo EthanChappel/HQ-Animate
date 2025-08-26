@@ -1,8 +1,9 @@
 import os
-import traceback
+import logging
 from pathlib import Path
 import platform
 import subprocess
+import traceback
 from PIL import Image
 from PySide6.QtCore import Signal, QAbstractTableModel, Qt, QThread, QObject
 from PySide6.QtGui import QCursor
@@ -13,6 +14,9 @@ from hq_animate import convert
 
 SYSTEM = platform.system()
 SCRIPT_PATH = Path(__file__).resolve().parent
+
+
+logger = logging.getLogger("app")
 
 
 class MainFrame(QFrame, Ui_MainFrame):
@@ -212,15 +216,21 @@ class MainFrame(QFrame, Ui_MainFrame):
     def view_frame(self, index):
         row = index.row()
         column = index.column()
+
+        frame_path = self.paths[row].path.absolute()
+
+        logger.info(f"View frame Path={frame_path}")
+
         if column == 0:
             if SYSTEM == 'Windows':
-                os.startfile(self.paths[row].path)
+                os.startfile(frame_path)
             elif SYSTEM == 'Darwin':
-                subprocess.Popen(('open', self.paths[row].path.absolute()))
+                subprocess.Popen(('open', frame_path))
             else:
-                subprocess.Popen(('xdg-open', self.paths[row].path.absolute()))
+                subprocess.Popen(('xdg-open', frame_path))
     
     def on_convert_start(self):
+        logger.info("Disable GUI while processing frames.")
         self.setting_changed.emit()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.setEnabled(False)
@@ -256,21 +266,28 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.worker_thread.start()
     
     def on_convert_end(self):
+        logger.info("Enable GUI after processing frames.")
+        
         QApplication.restoreOverrideCursor()
         self.setEnabled(True)
 
         if not self.show_folder_check.isChecked():
             return
 
+        open_path = self.output_path_edit.text()
+        
+        logger.info(f"Show folder: {open_path}")
+
         if SYSTEM == 'Windows':
-            os.startfile(self.output_path_edit.text())
+            os.startfile(open_path)
         elif SYSTEM == 'Darwin':
-            subprocess.Popen(('open', self.output_path_edit.text()))
+            subprocess.Popen(('open', open_path))
         else:
-            subprocess.Popen(('xdg-open', self.output_path_edit.text()))
+            subprocess.Popen(('xdg-open', open_path))
     
     def on_convert_error(self, error: str):
         QApplication.restoreOverrideCursor()
+        logger.error(f"Error while converting:\n{error}")
         messagebox = QMessageBox(QMessageBox.Icon.Critical, "HQ Animate - Error while converting", "Unable to create some or all animations due to an error.")
         messagebox.setDetailedText(error)
         messagebox.exec()
