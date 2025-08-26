@@ -128,10 +128,7 @@ def validate_ffmpeg(path: str):
         logger.info(f"Validate FFmpeg Path={path}")
         popen_cmd = (path, '-encoders')
         popen_parameters = {'stdout': subprocess.PIPE, 'text': True, 'encoding': 'utf-8'}
-        if SYSTEM == "Windows":
-            proc = subprocess.Popen(popen_cmd, creationflags=subprocess.CREATE_NO_WINDOW, **popen_parameters)
-        else:
-            proc = subprocess.Popen(popen_cmd, **popen_parameters)
+        proc = subprocess.Popen(popen_cmd, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, **popen_parameters)
         stdout, stderr = proc.communicate()
         features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", stdout, flags=re.MULTILINE))
         features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", stdout, flags=re.MULTILINE))
@@ -311,8 +308,8 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             ffmpeg_options += [f'{o}.webm']
 
         logger.info("Run FFmpeg: " + " ".join(ffmpeg_options))
-
-        process = subprocess.Popen(ffmpeg_options, stdin=subprocess.PIPE)
+        
+        process = subprocess.Popen(ffmpeg_options, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, stdin=subprocess.PIPE)
         
         for f in frames:
             process.stdin.write(f.tobytes())
