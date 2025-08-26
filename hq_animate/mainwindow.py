@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         self.settings = Settings.from_file_or_default(Path(platformdirs.user_config_dir("hq-animate", "", ensure_exists=True), "settings.json"))
         logger.info(f"Using settings file {self.settings.path}")
 
-        if not self.settings.ffmpeg_path:
+        if not self.settings.ffmpeg_path or not Path(self.settings.ffmpeg_path).exists():
             exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
 
             for p in [Path(SCRIPT_PATH, exe_name)] + [Path(p, exe_name) for p in os.environ["PATH"].split(os.pathsep)]:

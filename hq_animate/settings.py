@@ -35,8 +35,6 @@ class Settings:
             raise ValueError(f"frame_length is {frame_length}, but must be within the range of {FRAME_LENGTH_MIN} and {FRAME_LENGTH_MAX}.")
         if not QUALITY_MIN <= quality and quality <= QUALITY_MAX:
             raise ValueError(f"quality is {quality}, but must be within the range of {QUALITY_MIN} and {QUALITY_MAX}.")
-        if not Path(ffmpeg_path).exists():
-            raise ValueError(f"ffmpeg path {ffmpeg_path} does not exist.")
 
         self.path = path
         self.field_derotation = field_derotation
