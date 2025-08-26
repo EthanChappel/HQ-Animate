@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QTextBrowser,
-    QVBoxLayout, QWidget)
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QTextBrowser, QVBoxLayout, QWidget)
 
 class Ui_SettingsFrame(object):
     def setupUi(self, SettingsFrame):
@@ -61,6 +61,8 @@ class Ui_SettingsFrame(object):
 
         self.verticalLayout.addWidget(self.dependencies_textbox)
 
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.back_button = QPushButton(SettingsFrame)
         self.back_button.setObjectName(u"back_button")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -69,7 +71,19 @@ class Ui_SettingsFrame(object):
         sizePolicy.setHeightForWidth(self.back_button.sizePolicy().hasHeightForWidth())
         self.back_button.setSizePolicy(sizePolicy)
 
-        self.verticalLayout.addWidget(self.back_button)
+        self.horizontalLayout_2.addWidget(self.back_button)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+
+        self.open_logs_button = QPushButton(SettingsFrame)
+        self.open_logs_button.setObjectName(u"open_logs_button")
+
+        self.horizontalLayout_2.addWidget(self.open_logs_button)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
 #if QT_CONFIG(shortcut)
         self.ffmpeg_path_label.setBuddy(self.ffmpeg_browse_button)
@@ -85,5 +99,6 @@ class Ui_SettingsFrame(object):
         self.ffmpeg_path_label.setText(QCoreApplication.translate("SettingsFrame", u"&FFmpeg path", None))
         self.ffmpeg_browse_button.setText(QCoreApplication.translate("SettingsFrame", u"Browse...", None))
         self.back_button.setText(QCoreApplication.translate("SettingsFrame", u"&Back", None))
+        self.open_logs_button.setText(QCoreApplication.translate("SettingsFrame", u"Open logs folder...", None))
     # retranslateUi
 

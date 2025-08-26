@@ -1,5 +1,6 @@
 import platform
 from pathlib import Path
+import subprocess
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QFrame, QFileDialog
 from hq_animate.ui_settingsframe import Ui_SettingsFrame
@@ -25,6 +26,7 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         self.ffmpeg_path_edit.setText(str(self.settings.ffmpeg_path))
 
         self.back_button.clicked.connect(self.switch_to_main_page)
+        self.open_logs_button.clicked.connect(self.open_logs_path)
 
         self.ffmpeg_path_edit.editingFinished.connect(self.ffmpeg_path_edited)
         self.ffmpeg_browse_button.clicked.connect(self.set_ffmpeg_path)
@@ -37,6 +39,16 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
             self.ffmpeg_path_edit.setText(path)
             self.setting_changed.emit()
     
+    def open_logs_path(self):
+        log_file_path = None
+        for handler in logger.handlers:
+            if isinstance(handler, (logging.FileHandler)):
+                log_file_path = handler.baseFilename
+                break
+        
+        if SYSTEM == "Windows":
+            subprocess.Popen(f"explorer /select,\"{log_file_path}\"")
+
     def ffmpeg_path_edited(self):
         self.setting_changed.emit()
     
