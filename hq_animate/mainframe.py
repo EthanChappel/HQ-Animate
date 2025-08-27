@@ -251,6 +251,11 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.setting_changed.emit()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.setEnabled(False)
+
+        derotation_options = None
+        if self.enable_check.isChecked():
+            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
+
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
             self.paths,
@@ -266,10 +271,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             convert.WebMCodec[self.webm_codec_combo.currentText()],
             self.quality_spinbox.value(),
             self.lossless_check.isChecked(),
-            self.enable_check.isChecked(),
-            self.latitude_spin.value(),
-            self.longitude_spin.value(),
-            self.target_combo.currentText(),
+            derotation_options,
             Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
@@ -318,7 +320,7 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotation_options: convert.DerotationOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
@@ -333,11 +335,9 @@ class ConvertWorker(QObject):
         self.webm_codec = webm_codec
         self.quality = quality
         self.lossless = lossless
-        self.derotate = derotate
-        self.latitude = latitude
-        self.longitude = longitude
-        self.target = target
         self.ffmpeg_path = ffmpeg_path
+        
+        self.derotation_options = derotation_options
 
 
     def run(self):
@@ -356,10 +356,7 @@ class ConvertWorker(QObject):
                 self.webm_codec,
                 self.quality,
                 self.lossless,
-                self.derotate,
-                self.latitude,
-                self.longitude,
-                self.target,
+                self.derotation_options,
                 self.ffmpeg_path,
             )
             self.finished.emit()

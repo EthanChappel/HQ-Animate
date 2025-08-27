@@ -123,6 +123,13 @@ class MP4Codec(str, Enum):
     AVC = 2
 
 
+class DerotationOptions:
+    def __init__(self, latitude: float, longitude: float, target: str):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.target = target
+
+
 def find_ffmpeg() -> list[Path]:
     exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
 
@@ -155,22 +162,25 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
-    logger.info(f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}, Field Derotation={derotate}, Target={target}, Latitude={int(latitude)}, Longitude={int(longitude)}")
+def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}"
+    if derotation_options != None:
+        log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
+    logger.info(log_str)
     
     frames = []
-    observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
     for n in tar:
         rotation = 0
-        if derotate:
+        if derotation_options != None:
             with solar_system_ephemeris.set('builtin'):
+                observer = EarthLocation(lat=derotation_options.latitude * u.deg, lon=derotation_options.longitude * u.deg)
                 t2 = n.date_time
                 if t1 == None:
                     t1 = t2
                 else:
-                    a1 = get_body(target.lower(), t1, observer)
-                    a2 = get_body(target.lower(), t2, observer)
+                    a1 = get_body(derotation_options.target.lower(), t1, observer)
+                    a2 = get_body(derotation_options.target.lower(), t2, observer)
 
                     hadec1 = a1.transform_to(HADec(obstime=t1, location=observer))
                     hadec2 = a2.transform_to(HADec(obstime=t2, location=observer))
@@ -181,7 +191,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
                     ha2_rad = hadec2.ha.radian
                     dec2_rad = hadec2.dec.radian
 
-                    tan_lat_rad = np.tan(np.radians(latitude))
+                    tan_lat_rad = np.tan(np.radians(derotation_options.latitude))
 
                     q1 = np.degrees(np.arctan(np.sin(ha1_rad) / (tan_lat_rad) * np.cos(dec1_rad) - np.sin(dec1_rad) * np.cos(ha1_rad)))
                     q2 = np.degrees(np.arctan(np.sin(ha2_rad) / (tan_lat_rad) * np.cos(dec2_rad) - np.sin(dec2_rad) * np.cos(ha2_rad)))
@@ -196,7 +206,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
 
             if f.mode == 'I;16':
                 f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
-            if derotate:
+            if derotation_options != None:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
