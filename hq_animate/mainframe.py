@@ -51,6 +51,27 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.mp4_check.setChecked(self.settings.do_mp4)
         self.webm_check.setChecked(self.settings.do_webm)
 
+        self.apng_check.stateChanged.connect(self.set_convert_button_state)
+        self.avif_check.stateChanged.connect(self.set_convert_button_state)
+        self.webp_check.stateChanged.connect(self.set_convert_button_state)
+        self.gif_check.stateChanged.connect(self.set_convert_button_state)
+        self.mp4_check.stateChanged.connect(self.set_convert_button_state)
+        self.webm_check.stateChanged.connect(self.set_convert_button_state)
+
+        self.apng_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.apng_page))
+        self.avif_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.avif_page))
+        self.webp_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.webp_page))
+        self.gif_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.gif_page))
+        self.mp4_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.mp4_page))
+        self.webm_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.webm_page))
+
+        self.apng_back_button.clicked.connect(self.view_format_page)
+        self.avif_back_button.clicked.connect(self.view_format_page)
+        self.webp_back_button.clicked.connect(self.view_format_page)
+        self.gif_back_button.clicked.connect(self.view_format_page)
+        self.mp4_back_button.clicked.connect(self.view_format_page)
+        self.webm_back_button.clicked.connect(self.view_format_page)
+
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.quality_spinbox.setValue(self.settings.quality)
         self.enable_check.setChecked(self.settings.field_derotation)
@@ -58,13 +79,6 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.longitude_spin.setValue(self.settings.longitude)
         self.lossless_check.setChecked(self.settings.lossless)
         self.show_folder_check.setChecked(self.settings.show_folder)
-
-        self.apng_check.stateChanged.connect(self.set_convert_button_state)
-        self.avif_check.stateChanged.connect(self.set_convert_button_state)
-        self.webp_check.stateChanged.connect(self.set_convert_button_state)
-        self.gif_check.stateChanged.connect(self.set_convert_button_state)
-        self.mp4_check.stateChanged.connect(self.set_convert_button_state)
-        self.webm_check.stateChanged.connect(self.set_convert_button_state)
 
         self.output_path_edit.textChanged.connect(self.set_convert_button_state)
         self.output_name_edit.textChanged.connect(self.set_convert_button_state)
@@ -228,6 +242,9 @@ class MainFrame(QFrame, Ui_MainFrame):
                 subprocess.Popen(('open', frame_path))
             else:
                 subprocess.Popen(('xdg-open', frame_path))
+    
+    def view_format_page(self):
+        self.formats_stack.setCurrentWidget(self.formats_page)
     
     def on_convert_start(self):
         logger.info("Disable GUI while processing frames.")

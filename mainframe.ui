@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
+    <width>650</width>
     <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>600</width>
+    <width>650</width>
     <height>600</height>
    </size>
   </property>
@@ -88,46 +88,23 @@
        <property name="title">
         <string>Formats</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="webp_check">
-          <property name="text">
-           <string>&amp;WebP</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QCheckBox" name="avif_check">
-          <property name="text">
-           <string>A&amp;VIF</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QCheckBox" name="apng_check">
-          <property name="text">
-           <string>A&amp;PNG</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" rowspan="2" colspan="2">
-         <widget class="Line" name="line">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="gif_check">
-          <property name="text">
-           <string>&amp;GIF</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0" colspan="2">
-         <widget class="QStackedWidget" name="video_stack">
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QStackedWidget" name="formats_stack">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -135,85 +112,508 @@
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="page_3">
-           <layout class="QGridLayout" name="gridLayout_3">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="mp4_check">
+          <widget class="QWidget" name="formats_page">
+           <layout class="QGridLayout" name="gridLayout_2">
+            <item row="0" column="1">
+             <widget class="QToolButton" name="apng_options_button">
               <property name="text">
-               <string>MP&amp;4</string>
+               <string>...</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QComboBox" name="webm_codec_combo">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <widget class="QToolButton" name="webp_options_button">
+              <property name="text">
+               <string>...</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QComboBox" name="mp4_codec_combo">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="1" column="4">
+             <widget class="QToolButton" name="gif_options_button">
+              <property name="text">
+               <string>...</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QCheckBox" name="webm_check">
+             <widget class="QCheckBox" name="webp_check">
               <property name="text">
-               <string>Web&amp;M</string>
+               <string>&amp;WebP</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="apng_check">
+              <property name="text">
+               <string>A&amp;PNG</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QToolButton" name="avif_options_button">
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="5">
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QCheckBox" name="avif_check">
+              <property name="text">
+               <string>A&amp;VIF</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="5">
+             <widget class="QStackedWidget" name="video_stack">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <widget class="QWidget" name="page_3">
+               <layout class="QGridLayout" name="gridLayout_3">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item row="1" column="0">
+                 <widget class="QCheckBox" name="webm_check">
+                  <property name="text">
+                   <string>Web&amp;M</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QToolButton" name="mp4_options_button">
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QCheckBox" name="mp4_check">
+                  <property name="text">
+                   <string>MP&amp;4</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QToolButton" name="webm_options_button">
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="page_4">
+               <layout class="QVBoxLayout" name="verticalLayout_3">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="requires_ffmpeg_label">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>MP4 and WebM requires FFmpeg.</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QCheckBox" name="gif_check">
+              <property name="text">
+               <string>&amp;GIF</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" rowspan="2">
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
               </property>
              </widget>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="page_4">
-           <layout class="QVBoxLayout" name="verticalLayout_3">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
+          <widget class="QWidget" name="apng_page">
+           <layout class="QVBoxLayout" name="verticalLayout_7">
             <item>
-             <widget class="QLabel" name="requires_ffmpeg_label">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QLabel" name="label">
               <property name="text">
-               <string>MP4 and WebM requires FFmpeg.</string>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
+               <string>APNG options</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_6"/>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QPushButton" name="apng_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_3">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="avif_page">
+           <layout class="QVBoxLayout" name="verticalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>AVIF options</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_7"/>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>75</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QPushButton" name="avif_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="webp_page">
+           <layout class="QVBoxLayout" name="verticalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>WebP options</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_9"/>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_6">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>75</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QPushButton" name="webp_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="gif_page">
+           <layout class="QVBoxLayout" name="verticalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>GIF options</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_8"/>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_5">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>75</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <widget class="QPushButton" name="gif_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="mp4_page">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>MP4 options</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_3">
+              <item row="0" column="0">
+               <widget class="QLabel" name="mp4_codec_label">
+                <property name="text">
+                 <string>Codec</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="mp4_codec_combo">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>51</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QPushButton" name="mp4_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="webm_page">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>WebM Options</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QFormLayout" name="formLayout_4">
+              <item row="0" column="1">
+               <widget class="QComboBox" name="webm_codec_combo">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="webm_codec_label">
+                <property name="text">
+                 <string>Codec</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QPushButton" name="webm_back_button">
+                <property name="text">
+                 <string>Back</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -231,7 +631,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Conversion parameters</string>
+        <string>Parameters</string>
        </property>
        <layout class="QFormLayout" name="formLayout_2">
         <property name="fieldGrowthPolicy">
@@ -550,10 +950,6 @@
  <tabstops>
   <tabstop>frames_table</tabstop>
   <tabstop>input_browse_button</tabstop>
-  <tabstop>apng_check</tabstop>
-  <tabstop>avif_check</tabstop>
-  <tabstop>webp_check</tabstop>
-  <tabstop>gif_check</tabstop>
   <tabstop>duration_spinbox</tabstop>
   <tabstop>quality_spinbox</tabstop>
   <tabstop>lossless_check</tabstop>
