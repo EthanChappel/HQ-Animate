@@ -73,7 +73,6 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.webm_back_button.clicked.connect(self.view_format_page)
 
         self.duration_spinbox.setValue(self.settings.frame_length)
-        self.quality_spinbox.setValue(self.settings.quality)
         self.enable_check.setChecked(self.settings.field_derotation)
         self.latitude_spin.setValue(self.settings.latitude)
         self.longitude_spin.setValue(self.settings.longitude)

@@ -68,7 +68,6 @@ class MainWindow(QMainWindow):
         self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
         self.settings.do_webm = self.main_frame.webm_check.isChecked()
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
-        self.settings.quality = self.main_frame.quality_spinbox.value()
         self.settings.lossless = self.main_frame.lossless_check.isChecked()
         self.settings.mp4_codec = convert.MP4Codec[mp4_codec] if mp4_codec else None
         self.settings.webm_codec = convert.WebMCodec[webm_codec] if webm_codec else None
