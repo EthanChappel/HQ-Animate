@@ -251,6 +251,19 @@ class Ui_MainFrame(object):
 
         self.formLayout_7 = QFormLayout()
         self.formLayout_7.setObjectName(u"formLayout_7")
+        self.avif_quality_label = QLabel(self.avif_page)
+        self.avif_quality_label.setObjectName(u"avif_quality_label")
+
+        self.formLayout_7.setWidget(0, QFormLayout.ItemRole.LabelRole, self.avif_quality_label)
+
+        self.avif_quality_spinner = QSpinBox(self.avif_page)
+        self.avif_quality_spinner.setObjectName(u"avif_quality_spinner")
+        self.avif_quality_spinner.setMaximum(100)
+        self.avif_quality_spinner.setSingleStep(5)
+        self.avif_quality_spinner.setValue(95)
+
+        self.formLayout_7.setWidget(0, QFormLayout.ItemRole.FieldRole, self.avif_quality_spinner)
+
 
         self.verticalLayout_8.addLayout(self.formLayout_7)
 
@@ -624,6 +637,7 @@ class Ui_MainFrame(object):
 #if QT_CONFIG(shortcut)
         self.input_label.setBuddy(self.input_browse_button)
         self.label_7.setBuddy(self.apng_optimize_check)
+        self.avif_quality_label.setBuddy(self.avif_quality_spinner)
         self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
@@ -681,6 +695,7 @@ class Ui_MainFrame(object):
         self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize", None))
         self.apng_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_2.setText(QCoreApplication.translate("MainFrame", u"AVIF options", None))
+        self.avif_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
         self.avif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_6.setText(QCoreApplication.translate("MainFrame", u"WebP options", None))
         self.webp_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
