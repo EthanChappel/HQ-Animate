@@ -206,6 +206,18 @@ class Ui_MainFrame(object):
 
         self.formLayout_6 = QFormLayout()
         self.formLayout_6.setObjectName(u"formLayout_6")
+        self.apng_optimize_check = QCheckBox(self.apng_page)
+        self.apng_optimize_check.setObjectName(u"apng_optimize_check")
+        sizePolicy1.setHeightForWidth(self.apng_optimize_check.sizePolicy().hasHeightForWidth())
+        self.apng_optimize_check.setSizePolicy(sizePolicy1)
+
+        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.FieldRole, self.apng_optimize_check)
+
+        self.label_7 = QLabel(self.apng_page)
+        self.label_7.setObjectName(u"label_7")
+
+        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_7)
+
 
         self.verticalLayout_7.addLayout(self.formLayout_6)
 
@@ -611,6 +623,9 @@ class Ui_MainFrame(object):
 
 #if QT_CONFIG(shortcut)
         self.input_label.setBuddy(self.input_browse_button)
+        self.label_7.setBuddy(self.apng_optimize_check)
+        self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
+        self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
         self.quality_label.setBuddy(self.quality_spinbox)
         self.lossless_label.setBuddy(self.lossless_check)
@@ -662,6 +677,8 @@ class Ui_MainFrame(object):
         self.requires_ffmpeg_label.setText(QCoreApplication.translate("MainFrame", u"MP4 and WebM requires FFmpeg.", None))
         self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
         self.label.setText(QCoreApplication.translate("MainFrame", u"APNG options", None))
+        self.apng_optimize_check.setText("")
+        self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize", None))
         self.apng_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_2.setText(QCoreApplication.translate("MainFrame", u"AVIF options", None))
         self.avif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
