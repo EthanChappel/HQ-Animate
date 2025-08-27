@@ -132,6 +132,12 @@ class APNGOptions(FormatOptions):
         self.optimize = optimize
 
 
+class AVIFOptions(FormatOptions):
+    def __init__(self, quality: int):
+        self.quality = quality
+
+
+
 class DerotationOptions:
     def __init__(self, latitude: float, longitude: float, target: str):
         self.latitude = latitude
@@ -171,8 +177,8 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, apng_options:APNGOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
-    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng_options != None}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}"
+def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, apng_options:APNGOptions=None, avif_options: AVIFOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}"
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
     logger.info(log_str)
@@ -241,11 +247,11 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, avif: bool, m
             optimize=apng_options.optimize,
         )
 
-    if avif:
+    if avif_options != None:
         filename = f"{o}.avif"
         subsampling = "4:4:4"
 
-        logger.info(f"Create AVIF Path={filename}, Quality={quality}, Subsampling={subsampling}")
+        logger.info(f"Create AVIF Path={filename}, Quality={avif_options.quality}, Subsampling={subsampling}")
         
         image.save(
             filename,
@@ -254,7 +260,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, avif: bool, m
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            quality=quality,
+            quality=avif_options.quality,
             subsampling=subsampling,
         )
 
