@@ -297,6 +297,31 @@ class Ui_MainFrame(object):
 
         self.formLayout_9 = QFormLayout()
         self.formLayout_9.setObjectName(u"formLayout_9")
+        self.webp_quality_label = QLabel(self.webp_page)
+        self.webp_quality_label.setObjectName(u"webp_quality_label")
+
+        self.formLayout_9.setWidget(0, QFormLayout.ItemRole.LabelRole, self.webp_quality_label)
+
+        self.webp_quality_spinner = QSpinBox(self.webp_page)
+        self.webp_quality_spinner.setObjectName(u"webp_quality_spinner")
+        self.webp_quality_spinner.setMaximum(100)
+        self.webp_quality_spinner.setSingleStep(5)
+        self.webp_quality_spinner.setValue(95)
+
+        self.formLayout_9.setWidget(0, QFormLayout.ItemRole.FieldRole, self.webp_quality_spinner)
+
+        self.webp_lossless_label = QLabel(self.webp_page)
+        self.webp_lossless_label.setObjectName(u"webp_lossless_label")
+
+        self.formLayout_9.setWidget(1, QFormLayout.ItemRole.LabelRole, self.webp_lossless_label)
+
+        self.webp_lossless_check = QCheckBox(self.webp_page)
+        self.webp_lossless_check.setObjectName(u"webp_lossless_check")
+        sizePolicy1.setHeightForWidth(self.webp_lossless_check.sizePolicy().hasHeightForWidth())
+        self.webp_lossless_check.setSizePolicy(sizePolicy1)
+
+        self.formLayout_9.setWidget(1, QFormLayout.ItemRole.FieldRole, self.webp_lossless_check)
+
 
         self.verticalLayout_10.addLayout(self.formLayout_9)
 
@@ -638,6 +663,8 @@ class Ui_MainFrame(object):
         self.input_label.setBuddy(self.input_browse_button)
         self.label_7.setBuddy(self.apng_optimize_check)
         self.avif_quality_label.setBuddy(self.avif_quality_spinner)
+        self.webp_quality_label.setBuddy(self.webp_quality_spinner)
+        self.webp_lossless_label.setBuddy(self.webp_lossless_check)
         self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
@@ -698,6 +725,9 @@ class Ui_MainFrame(object):
         self.avif_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
         self.avif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_6.setText(QCoreApplication.translate("MainFrame", u"WebP options", None))
+        self.webp_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
+        self.webp_lossless_label.setText(QCoreApplication.translate("MainFrame", u"Lossless", None))
+        self.webp_lossless_check.setText("")
         self.webp_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_5.setText(QCoreApplication.translate("MainFrame", u"GIF options", None))
         self.gif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))

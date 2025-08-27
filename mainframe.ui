@@ -435,7 +435,54 @@
              </widget>
             </item>
             <item>
-             <layout class="QFormLayout" name="formLayout_9"/>
+             <layout class="QFormLayout" name="formLayout_9">
+              <item row="0" column="0">
+               <widget class="QLabel" name="webp_quality_label">
+                <property name="text">
+                 <string>Quality</string>
+                </property>
+                <property name="buddy">
+                 <cstring>webp_quality_spinner</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="webp_quality_spinner">
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="singleStep">
+                 <number>5</number>
+                </property>
+                <property name="value">
+                 <number>95</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="webp_lossless_label">
+                <property name="text">
+                 <string>Lossless</string>
+                </property>
+                <property name="buddy">
+                 <cstring>webp_lossless_check</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="webp_lossless_check">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <spacer name="verticalSpacer_6">
