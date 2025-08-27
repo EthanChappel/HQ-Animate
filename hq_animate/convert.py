@@ -123,6 +123,15 @@ class MP4Codec(str, Enum):
     AVC = 2
 
 
+class FormatOptions:
+    pass
+
+
+class APNGOptions(FormatOptions):
+    def __init__(self, optimize: bool):
+        self.optimize = optimize
+
+
 class DerotationOptions:
     def __init__(self, latitude: float, longitude: float, target: str):
         self.latitude = latitude
@@ -162,8 +171,8 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
-    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}"
+def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, apng_options:APNGOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng_options != None}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}"
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
     logger.info(log_str)
@@ -216,11 +225,11 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
 
     duration = int(1000 / d)
 
-    if apng:
+    if apng_options != None:
         filename = f"{o}.apng"
         optimize = True
 
-        logger.info(f"Create APNG Path={filename}, Optimize={optimize}")
+        logger.info(f"Create APNG Path={filename}, Optimize={apng_options.optimize}")
         
         image.save(
             filename,
@@ -229,7 +238,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=optimize,
+            optimize=apng_options.optimize,
         )
 
     if avif:
