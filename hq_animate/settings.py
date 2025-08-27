@@ -26,15 +26,13 @@ logger = logging.getLogger("app")
 class Settings:
     _file_instances = {}
 
-    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, quality: int=100, lossless: bool=True, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
+    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, lossless: bool=True, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
         if not LONGITUDE_MIN <= longitude and longitude <= LONGITUDE_MAX:
             raise ValueError(f"longitude is {longitude}, but must be within the range of {LONGITUDE_MIN} and {LONGITUDE_MAX}.")
         if not FRAME_LENGTH_MIN <= frame_length and frame_length <= FRAME_LENGTH_MAX:
             raise ValueError(f"frame_length is {frame_length}, but must be within the range of {FRAME_LENGTH_MIN} and {FRAME_LENGTH_MAX}.")
-        if not QUALITY_MIN <= quality and quality <= QUALITY_MAX:
-            raise ValueError(f"quality is {quality}, but must be within the range of {QUALITY_MIN} and {QUALITY_MAX}.")
 
         self.path = path
         self.field_derotation = field_derotation
@@ -47,7 +45,6 @@ class Settings:
         self.do_mp4 = do_mp4
         self.do_webm = do_webm
         self.frame_length = frame_length
-        self.quality = quality
         self.lossless = lossless
         self.mp4_codec = mp4_codec
         self.webm_codec = webm_codec
@@ -68,7 +65,6 @@ class Settings:
             'do_mp4': self.do_mp4,
             'do_webm': self.do_webm,
             'frame_length': self.frame_length,
-            'quality': self.quality,
             'lossless': self.lossless,
             'mp4_codec': self.mp4_codec.name if self.mp4_codec else "",
             'webm_codec': self.webm_codec.name if self.webm_codec else "",
@@ -108,7 +104,6 @@ class Settings:
                 j['do_mp4'],
                 j['do_webm'],
                 j['frame_length'],
-                j['quality'],
                 j['lossless'],
                 MP4Codec[j['mp4_codec']] if j['mp4_codec'] else None,
                 WebMCodec[j['webm_codec']] if j['webm_codec'] else None,
