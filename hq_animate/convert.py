@@ -161,6 +161,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
     frames = []
     observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
+    icc_profile = None
     for n in tar:
         rotation = 0
         if derotate:
@@ -192,6 +193,10 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
         for i, frame in enumerate(ImageSequence.Iterator(image)):
             f = frame.copy()
 
+            icc = frame.info.get("icc_profile")
+            if not icc_profile and icc:
+                icc_profile = icc
+
             logger.info(f"Process frame {i} Mode={f.mode}, Rotation={rotation:0.2f}")
 
             if f.mode == 'I;16':
@@ -220,6 +225,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             duration=duration,
             loop=0,
             optimize=optimize,
+            icc_profile=icc_profile,
         )
 
     if avif:
@@ -237,6 +243,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             loop=0,
             quality=quality,
             subsampling=subsampling,
+            icc_profile=icc_profile,
         )
 
     if webp:
@@ -255,6 +262,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             lossless=lossless,
             quality=quality,
             method=method,
+            icc_profile=icc_profile,
         )
 
     if gif:
