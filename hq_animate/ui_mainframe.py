@@ -519,18 +519,6 @@ class Ui_MainFrame(object):
 
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.duration_spinbox)
 
-        self.lossless_label = QLabel(self.parameters_group)
-        self.lossless_label.setObjectName(u"lossless_label")
-
-        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.LabelRole, self.lossless_label)
-
-        self.lossless_check = QCheckBox(self.parameters_group)
-        self.lossless_check.setObjectName(u"lossless_check")
-        sizePolicy1.setHeightForWidth(self.lossless_check.sizePolicy().hasHeightForWidth())
-        self.lossless_check.setSizePolicy(sizePolicy1)
-
-        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.lossless_check)
-
 
         self.horizontalLayout.addWidget(self.parameters_group)
 
@@ -678,7 +666,6 @@ class Ui_MainFrame(object):
         self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
-        self.lossless_label.setBuddy(self.lossless_check)
         self.enable_label.setBuddy(self.enable_check)
         self.target_label.setBuddy(self.target_combo)
         self.latitude_label.setBuddy(self.latitude_spin)
@@ -687,8 +674,7 @@ class Ui_MainFrame(object):
 #endif // QT_CONFIG(shortcut)
         QWidget.setTabOrder(self.frames_table, self.input_browse_button)
         QWidget.setTabOrder(self.input_browse_button, self.duration_spinbox)
-        QWidget.setTabOrder(self.duration_spinbox, self.lossless_check)
-        QWidget.setTabOrder(self.lossless_check, self.target_combo)
+        QWidget.setTabOrder(self.duration_spinbox, self.target_combo)
         QWidget.setTabOrder(self.target_combo, self.latitude_spin)
         QWidget.setTabOrder(self.latitude_spin, self.longitude_spin)
         QWidget.setTabOrder(self.longitude_spin, self.output_path_edit)
@@ -750,8 +736,6 @@ class Ui_MainFrame(object):
         self.webm_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.parameters_group.setTitle(QCoreApplication.translate("MainFrame", u"Parameters", None))
         self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))
-        self.lossless_label.setText(QCoreApplication.translate("MainFrame", u"&Lossless", None))
-        self.lossless_check.setText("")
         self.derotation_group.setTitle(QCoreApplication.translate("MainFrame", u"Alt-az field derotation", None))
         self.enable_label.setText(QCoreApplication.translate("MainFrame", u"&Enable", None))
         self.target_label.setText(QCoreApplication.translate("MainFrame", u"&Target", None))

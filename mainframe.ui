@@ -808,29 +808,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lossless_label">
-          <property name="text">
-           <string>&amp;Lossless</string>
-          </property>
-          <property name="buddy">
-           <cstring>lossless_check</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="lossless_check">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
      </item>
@@ -1064,7 +1041,6 @@
   <tabstop>frames_table</tabstop>
   <tabstop>input_browse_button</tabstop>
   <tabstop>duration_spinbox</tabstop>
-  <tabstop>lossless_check</tabstop>
   <tabstop>target_combo</tabstop>
   <tabstop>latitude_spin</tabstop>
   <tabstop>longitude_spin</tabstop>
