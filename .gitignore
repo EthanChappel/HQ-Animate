@@ -133,3 +133,6 @@ dmypy.json
 
 # JPL kernels
 *.bsp
+
+#Qt Creator autosave files
+*.ui.autosave
