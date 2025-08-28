@@ -143,6 +143,11 @@ class WebPOptions(FormatOptions):
         self.lossless = lossless
 
 
+class GIFOptions(FormatOptions):
+    def __init__(self, optimize: bool):
+        self.optimize = optimize
+
+
 class DerotationOptions:
     def __init__(self, latitude: float, longitude: float, target: str):
         self.latitude = latitude
@@ -182,8 +187,8 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, lossless: bool=True, apng_options:APNGOptions=None, avif_options: AVIFOptions=None, webp_options: WebPOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
-    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Lossless={lossless}"
+def save(tar: list[Frame], o: Path, d: int, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, lossless: bool=True, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Start processing {len(tar)} frames, Output={o}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Lossless={lossless}"
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
     logger.info(log_str)
@@ -287,11 +292,10 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, mp4: bool, webm: bool, mp
             method=method,
         )
 
-    if gif:
+    if gif_options != None:
         filename = f"{o}.gif"
-        optimize = True
 
-        logger.info(f"Create GIF Path={filename}, Optimize={optimize}")
+        logger.info(f"Create GIF Path={filename}, Optimize={gif_options.optimize}")
 
         image.save(
             filename,
@@ -300,7 +304,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, mp4: bool, webm: bool, mp
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=optimize,
+            optimize=gif_options.optimize,
         )
     
     if (mp4 or webm) and ffmpeg_path != None:

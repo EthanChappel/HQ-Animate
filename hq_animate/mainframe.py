@@ -258,21 +258,24 @@ class MainFrame(QFrame, Ui_MainFrame):
         avif_options = None
         if self.avif_check.isChecked():
             avif_options = convert.AVIFOptions(self.avif_quality_spinner.value())
-
-        derotation_options = None
-        if self.enable_check.isChecked():
-            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
         
         webp_options = None
         if self.webp_check.isChecked():
             webp_options = convert.WebPOptions(self.webp_quality_spinner.value(), self.webp_lossless_check.isChecked())
+        
+        gif_options = None
+        if self.gif_check.isChecked():
+            gif_options = convert.GIFOptions(self.gif_optimize_check.isChecked())
+
+        derotation_options = None
+        if self.enable_check.isChecked():
+            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
             self.paths,
             Path(self.output_path_edit.text(), self.output_name_edit.text()),
             self.duration_spinbox.value(),
-            self.gif_check.isChecked(),
             self.mp4_check.isChecked(),
             self.webm_check.isChecked(),
             convert.MP4Codec[self.mp4_codec_combo.currentText()],
@@ -280,6 +283,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.lossless_check.isChecked(),
             apng_options,
             avif_options,
+            gif_options,
             webp_options,
             derotation_options,
             Path(self.settings.ffmpeg_path),
@@ -330,12 +334,11 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, lossless: bool=True, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, webp_options: convert.WebPOptions=None, derotation_options: convert.DerotationOptions=None, ffmpeg_path: Path=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, lossless: bool=True, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, derotation_options: convert.DerotationOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
         self.duration = duration
-        self.gif = gif
         self.mp4 = mp4
         self.webm = webm
         self.mp4_codec = mp4_codec
@@ -346,6 +349,7 @@ class ConvertWorker(QObject):
         self.apng_options = apng_options
         self.avif_options = avif_options
         self.webp_options = webp_options
+        self.gif_options = gif_options
         self.derotation_options = derotation_options
 
 
@@ -355,7 +359,6 @@ class ConvertWorker(QObject):
                 self.paths,
                 self.output,
                 self.duration,
-                self.gif,
                 self.mp4,
                 self.webm,
                 self.mp4_codec,
@@ -363,6 +366,7 @@ class ConvertWorker(QObject):
                 self.lossless,
                 self.apng_options,
                 self.avif_options,
+                self.gif_options,
                 self.webp_options,
                 self.derotation_options,
                 self.ffmpeg_path,
