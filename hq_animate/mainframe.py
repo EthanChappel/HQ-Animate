@@ -253,7 +253,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         apng_options = None
         if self.apng_check.isChecked():
-            apng_options = convert.APNGOptions(self.apng_optimize_check.isChecked())
+            apng_options = convert.APNGOptions(self.apng_compress_spinner.value(), self.apng_optimize_check.isChecked())
         
         avif_options = None
         if self.avif_check.isChecked():

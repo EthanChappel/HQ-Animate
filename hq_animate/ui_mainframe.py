@@ -206,17 +206,29 @@ class Ui_MainFrame(object):
 
         self.formLayout_6 = QFormLayout()
         self.formLayout_6.setObjectName(u"formLayout_6")
+        self.label_7 = QLabel(self.apng_page)
+        self.label_7.setObjectName(u"label_7")
+
+        self.formLayout_6.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_7)
+
         self.apng_optimize_check = QCheckBox(self.apng_page)
         self.apng_optimize_check.setObjectName(u"apng_optimize_check")
         sizePolicy1.setHeightForWidth(self.apng_optimize_check.sizePolicy().hasHeightForWidth())
         self.apng_optimize_check.setSizePolicy(sizePolicy1)
 
-        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.FieldRole, self.apng_optimize_check)
+        self.formLayout_6.setWidget(1, QFormLayout.ItemRole.FieldRole, self.apng_optimize_check)
 
-        self.label_7 = QLabel(self.apng_page)
-        self.label_7.setObjectName(u"label_7")
+        self.apng_compress_spinner = QSpinBox(self.apng_page)
+        self.apng_compress_spinner.setObjectName(u"apng_compress_spinner")
+        self.apng_compress_spinner.setMaximum(9)
+        self.apng_compress_spinner.setValue(9)
 
-        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_7)
+        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.FieldRole, self.apng_compress_spinner)
+
+        self.apng_compress_label = QLabel(self.apng_page)
+        self.apng_compress_label.setObjectName(u"apng_compress_label")
+
+        self.formLayout_6.setWidget(0, QFormLayout.ItemRole.LabelRole, self.apng_compress_label)
 
 
         self.verticalLayout_7.addLayout(self.formLayout_6)
@@ -242,12 +254,12 @@ class Ui_MainFrame(object):
         self.formats_stack.addWidget(self.apng_page)
         self.avif_page = QWidget()
         self.avif_page.setObjectName(u"avif_page")
-        self.verticalLayout_8 = QVBoxLayout(self.avif_page)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.formLayout_5 = QFormLayout(self.avif_page)
+        self.formLayout_5.setObjectName(u"formLayout_5")
         self.label_2 = QLabel(self.avif_page)
         self.label_2.setObjectName(u"label_2")
 
-        self.verticalLayout_8.addWidget(self.label_2)
+        self.formLayout_5.setWidget(0, QFormLayout.ItemRole.SpanningRole, self.label_2)
 
         self.formLayout_7 = QFormLayout()
         self.formLayout_7.setObjectName(u"formLayout_7")
@@ -265,11 +277,7 @@ class Ui_MainFrame(object):
         self.formLayout_7.setWidget(0, QFormLayout.ItemRole.FieldRole, self.avif_quality_spinner)
 
 
-        self.verticalLayout_8.addLayout(self.formLayout_7)
-
-        self.verticalSpacer_4 = QSpacerItem(20, 75, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
-
-        self.verticalLayout_8.addItem(self.verticalSpacer_4)
+        self.formLayout_5.setLayout(1, QFormLayout.ItemRole.SpanningRole, self.formLayout_7)
 
         self.horizontalLayout_7 = QHBoxLayout()
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
@@ -283,7 +291,11 @@ class Ui_MainFrame(object):
         self.horizontalLayout_7.addItem(self.horizontalSpacer_4)
 
 
-        self.verticalLayout_8.addLayout(self.horizontalLayout_7)
+        self.formLayout_5.setLayout(3, QFormLayout.ItemRole.SpanningRole, self.horizontalLayout_7)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 75, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.formLayout_5.setItem(2, QFormLayout.ItemRole.SpanningRole, self.verticalSpacer_4)
 
         self.formats_stack.addWidget(self.avif_page)
         self.webp_page = QWidget()
@@ -325,7 +337,7 @@ class Ui_MainFrame(object):
 
         self.verticalLayout_10.addLayout(self.formLayout_9)
 
-        self.verticalSpacer_6 = QSpacerItem(20, 75, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_6 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.verticalLayout_10.addItem(self.verticalSpacer_6)
 
@@ -714,8 +726,9 @@ class Ui_MainFrame(object):
         self.requires_ffmpeg_label.setText(QCoreApplication.translate("MainFrame", u"MP4 and WebM requires FFmpeg.", None))
         self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
         self.label.setText(QCoreApplication.translate("MainFrame", u"APNG options", None))
+        self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize size", None))
         self.apng_optimize_check.setText("")
-        self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize", None))
+        self.apng_compress_label.setText(QCoreApplication.translate("MainFrame", u"Compress level", None))
         self.apng_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_2.setText(QCoreApplication.translate("MainFrame", u"AVIF options", None))
         self.avif_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
@@ -727,7 +740,7 @@ class Ui_MainFrame(object):
         self.webp_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_5.setText(QCoreApplication.translate("MainFrame", u"GIF options", None))
         self.gif_optimize_check.setText("")
-        self.label_8.setText(QCoreApplication.translate("MainFrame", u"Optimize", None))
+        self.label_8.setText(QCoreApplication.translate("MainFrame", u"Optimize palette", None))
         self.gif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_3.setText(QCoreApplication.translate("MainFrame", u"MP4 options", None))
         self.mp4_codec_label.setText(QCoreApplication.translate("MainFrame", u"Codec", None))

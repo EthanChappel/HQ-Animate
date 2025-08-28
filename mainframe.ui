@@ -286,7 +286,17 @@
             </item>
             <item>
              <layout class="QFormLayout" name="formLayout_6">
-              <item row="0" column="1">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label_7">
+                <property name="text">
+                 <string>Optimize size</string>
+                </property>
+                <property name="buddy">
+                 <cstring>apng_optimize_check</cstring>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
                <widget class="QCheckBox" name="apng_optimize_check">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -299,13 +309,20 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_7">
-                <property name="text">
-                 <string>Optimize</string>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="apng_compress_spinner">
+                <property name="maximum">
+                 <number>9</number>
                 </property>
-                <property name="buddy">
-                 <cstring>apng_optimize_check</cstring>
+                <property name="value">
+                 <number>9</number>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="apng_compress_label">
+                <property name="text">
+                 <string>Compress level</string>
                 </property>
                </widget>
               </item>
@@ -351,15 +368,15 @@
            </layout>
           </widget>
           <widget class="QWidget" name="avif_page">
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <item>
+           <layout class="QFormLayout" name="formLayout_5">
+            <item row="0" column="0" colspan="2">
              <widget class="QLabel" name="label_2">
               <property name="text">
                <string>AVIF options</string>
               </property>
              </widget>
             </item>
-            <item>
+            <item row="1" column="0" colspan="2">
              <layout class="QFormLayout" name="formLayout_7">
               <item row="0" column="0">
                <widget class="QLabel" name="avif_quality_label">
@@ -386,20 +403,7 @@
               </item>
              </layout>
             </item>
-            <item>
-             <spacer name="verticalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Orientation::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>75</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
+            <item row="3" column="0" colspan="2">
              <layout class="QHBoxLayout" name="horizontalLayout_7">
               <item>
                <widget class="QPushButton" name="avif_back_button">
@@ -422,6 +426,19 @@
                </spacer>
               </item>
              </layout>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <spacer name="verticalSpacer_4">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>75</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -492,7 +509,7 @@
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>75</height>
+                <height>40</height>
                </size>
               </property>
              </spacer>
@@ -550,7 +567,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_8">
                 <property name="text">
-                 <string>Optimize</string>
+                 <string>Optimize palette</string>
                 </property>
                 <property name="buddy">
                  <cstring>gif_optimize_check</cstring>

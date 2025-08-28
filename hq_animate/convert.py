@@ -128,7 +128,8 @@ class FormatOptions:
 
 
 class APNGOptions(FormatOptions):
-    def __init__(self, optimize: bool):
+    def __init__(self, compression_level: int, optimize: bool):
+        self.compression_level = compression_level
         self.optimize = optimize
 
 
@@ -245,7 +246,7 @@ def save(tar: list[Frame], o: Path, d: int, mp4: bool, webm: bool, mp4_codec: MP
         filename = f"{o}.apng"
         optimize = True
 
-        logger.info(f"Create APNG Path={filename}, Optimize={apng_options.optimize}")
+        logger.info(f"Create APNG Path={filename}, Compression={apng_options.compression_level}, Optimize={apng_options.optimize}")
         
         image.save(
             filename,
@@ -254,6 +255,7 @@ def save(tar: list[Frame], o: Path, d: int, mp4: bool, webm: bool, mp4_codec: MP
             append_images=frames[1:],
             duration=duration,
             loop=0,
+            compress_level=apng_options.compression_level,
             optimize=apng_options.optimize,
         )
 
