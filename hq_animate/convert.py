@@ -123,6 +123,49 @@ class MP4Codec(str, Enum):
     AVC = 2
 
 
+class FormatOptions:
+    pass
+
+
+class APNGOptions(FormatOptions):
+    def __init__(self, compression_level: int, optimize: bool):
+        self.compression_level = compression_level
+        self.optimize = optimize
+
+
+class AVIFOptions(FormatOptions):
+    def __init__(self, quality: int):
+        self.quality = quality
+
+
+class WebPOptions(FormatOptions):
+    def __init__(self, quality: int, lossless: bool):
+        self.quality = quality
+        self.lossless = lossless
+
+
+class GIFOptions(FormatOptions):
+    def __init__(self, optimize: bool):
+        self.optimize = optimize
+
+
+class MP4Options(FormatOptions):
+    def __init__(self, codec: MP4Codec):
+        self.codec = codec
+
+
+class WebMOptions(FormatOptions):
+    def __init__(self, codec: WebMCodec):
+        self.codec = codec
+
+
+class DerotationOptions:
+    def __init__(self, latitude: float, longitude: float, target: str):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.target = target
+
+
 def find_ffmpeg() -> list[Path]:
     exe_name = "ffmpeg.exe" if SYSTEM == "Windows" else "ffmpeg"
 
@@ -155,23 +198,26 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: MP4Codec, webm_codec: WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
-    logger.info(f"Start processing {len(tar)} frames, Output={o}, GIF={gif}, WebP={webp}, APNG={apng}, AVIF={avif}, MP4={mp4}, WebM={webm}, MP4 codec={mp4_codec}, WebM codec={webm_codec}, Quality={quality}, Lossless={lossless}, Field Derotation={derotate}, Target={target}, Latitude={int(latitude)}, Longitude={int(longitude)}")
+def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Start processing {len(tar)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
+    if derotation_options != None:
+        log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
+    logger.info(log_str)
     
     frames = []
-    observer = EarthLocation(lat=latitude * u.deg, lon=longitude * u.deg)
     t1 = None
     icc_profile = None
     for n in tar:
         rotation = 0
-        if derotate:
+        if derotation_options != None:
             with solar_system_ephemeris.set('builtin'):
+                observer = EarthLocation(lat=derotation_options.latitude * u.deg, lon=derotation_options.longitude * u.deg)
                 t2 = n.date_time
                 if t1 == None:
                     t1 = t2
                 else:
-                    a1 = get_body(target.lower(), t1, observer)
-                    a2 = get_body(target.lower(), t2, observer)
+                    a1 = get_body(derotation_options.target.lower(), t1, observer)
+                    a2 = get_body(derotation_options.target.lower(), t2, observer)
 
                     hadec1 = a1.transform_to(HADec(obstime=t1, location=observer))
                     hadec2 = a2.transform_to(HADec(obstime=t2, location=observer))
@@ -182,7 +228,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
                     ha2_rad = hadec2.ha.radian
                     dec2_rad = hadec2.dec.radian
 
-                    tan_lat_rad = np.tan(np.radians(latitude))
+                    tan_lat_rad = np.tan(np.radians(derotation_options.latitude))
 
                     q1 = np.degrees(np.arctan(np.sin(ha1_rad) / (tan_lat_rad) * np.cos(dec1_rad) - np.sin(dec1_rad) * np.cos(ha1_rad)))
                     q2 = np.degrees(np.arctan(np.sin(ha2_rad) / (tan_lat_rad) * np.cos(dec2_rad) - np.sin(dec2_rad) * np.cos(ha2_rad)))
@@ -201,7 +247,7 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
 
             if f.mode == 'I;16':
                 f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
-            if derotate:
+            if derotation_options != None:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
@@ -209,13 +255,12 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
 
     image = frames[0]
 
-    duration = int(1000 / d)
+    duration = int(1000 / frame_duration)
 
-    if apng:
-        filename = f"{o}.apng"
-        optimize = True
+    if apng_options != None:
+        filename = f"{out_path}.apng"
 
-        logger.info(f"Create APNG Path={filename}, Optimize={optimize}")
+        logger.info(f"Create APNG Path={filename}, Compression={apng_options.compression_level}, Optimize={apng_options.optimize}")
         
         image.save(
             filename,
@@ -224,15 +269,16 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=optimize,
+            compress_level=apng_options.compression_level,
+            optimize=apng_options.optimize,
             icc_profile=icc_profile,
         )
 
-    if avif:
-        filename = f"{o}.avif"
+    if avif_options != None:
+        filename = f"{out_path}.avif"
         subsampling = "4:4:4"
 
-        logger.info(f"Create AVIF Path={filename}, Quality={quality}, Subsampling={subsampling}")
+        logger.info(f"Create AVIF Path={filename}, Quality={avif_options.quality}, Subsampling={subsampling}")
         
         image.save(
             filename,
@@ -241,16 +287,16 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            quality=quality,
+            quality=avif_options.quality,
             subsampling=subsampling,
             icc_profile=icc_profile,
         )
 
-    if webp:
-        filename = f"{o}.webp"
+    if webp_options != None:
+        filename = f"{out_path}.webp"
         method = 3
 
-        logger.info(f"Create WebP Path={filename}, Quality={quality}, Lossless={lossless}, Method={method}")
+        logger.info(f"Create WebP Path={filename}, Quality={webp_options.quality}, Lossless={webp_options.lossless}, Method={method}")
 
         image.save(
             filename,
@@ -259,17 +305,16 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            lossless=lossless,
-            quality=quality,
+            lossless=webp_options.lossless,
+            quality=webp_options.quality,
             method=method,
             icc_profile=icc_profile,
         )
 
-    if gif:
-        filename = f"{o}.gif"
-        optimize = True
+    if gif_options != None:
+        filename = f"{out_path}.gif"
 
-        logger.info(f"Create GIF Path={filename}, Optimize={optimize}")
+        logger.info(f"Create GIF Path={filename}, Optimize={gif_options.optimize}")
 
         image.save(
             filename,
@@ -278,21 +323,21 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             append_images=frames[1:],
             duration=duration,
             loop=0,
-            optimize=optimize,
+            optimize=gif_options.optimize,
         )
     
-    if (mp4 or webm) and ffmpeg_path != None:
+    if (mp4_options != None or webm_options != None) and ffmpeg_path != None:
         ffmpeg_options = [
             str(ffmpeg_path), '-y',
             '-f', 'rawvideo',
             '-pixel_format', 'rgb24',
             '-video_size', f'{image.width}x{image.height}',
-            '-r', str(d),
+            '-r', str(frame_duration),
             '-i', 'pipe:0',
         ]
         output_options = [
             '-frames:v', str(len(frames)),
-            '-r', str(d),
+            '-r', str(frame_duration),
         ]
         avc_options = [
             '-c:v', 'libx264',
@@ -309,26 +354,36 @@ def save(tar: list[Frame], o: Path, d: int, gif: bool, webp: bool, apng: bool, a
             '-row-mt', '1',
             '-b:v', '0',
             '-crf', '0',
-            '-lossless', str(int(lossless)),
+            '-lossless', '1',
         ]
         
-        if mp4:
+        if mp4_options != None:
+            filename = f"{out_path}.mp4"
+            codec = mp4_options.codec
+
+            logger.info(f"Create MP4 Path={filename}, Codec={codec}")
+            
             ffmpeg_options += output_options
-            if mp4_codec == MP4Codec.AVC:
+            if codec == MP4Codec.AVC:
                 ffmpeg_options += avc_options
-            elif mp4_codec == MP4Codec.AV1:
+            elif codec == MP4Codec.AV1:
                 ffmpeg_options += av1_options
-            elif mp4_codec == MP4Codec.VP9:
+            elif codec == MP4Codec.VP9:
                 ffmpeg_options += vp9_options
-            ffmpeg_options += [f'{o}.mp4']
+            ffmpeg_options += [filename]
         
-        if webm:
+        if webm_options != None:
+            filename = f"{out_path}.webm"
+            codec = webm_options.codec
+
+            logger.info(f"Create WebM Path={filename}, Codec={codec}")
+
             ffmpeg_options += output_options
-            if webm_codec == WebMCodec.AV1:
+            if codec == WebMCodec.AV1:
                 ffmpeg_options += av1_options
-            elif webm_codec == WebMCodec.VP9:
+            elif codec == WebMCodec.VP9:
                 ffmpeg_options += vp9_options
-            ffmpeg_options += [f'{o}.webm']
+            ffmpeg_options += [filename]
 
         logger.info("Run FFmpeg: " + " ".join(ffmpeg_options))
         

@@ -51,20 +51,32 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.mp4_check.setChecked(self.settings.do_mp4)
         self.webm_check.setChecked(self.settings.do_webm)
 
-        self.duration_spinbox.setValue(self.settings.frame_length)
-        self.quality_spinbox.setValue(self.settings.quality)
-        self.enable_check.setChecked(self.settings.field_derotation)
-        self.latitude_spin.setValue(self.settings.latitude)
-        self.longitude_spin.setValue(self.settings.longitude)
-        self.lossless_check.setChecked(self.settings.lossless)
-        self.show_folder_check.setChecked(self.settings.show_folder)
-
         self.apng_check.stateChanged.connect(self.set_convert_button_state)
         self.avif_check.stateChanged.connect(self.set_convert_button_state)
         self.webp_check.stateChanged.connect(self.set_convert_button_state)
         self.gif_check.stateChanged.connect(self.set_convert_button_state)
         self.mp4_check.stateChanged.connect(self.set_convert_button_state)
         self.webm_check.stateChanged.connect(self.set_convert_button_state)
+
+        self.apng_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.apng_page))
+        self.avif_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.avif_page))
+        self.webp_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.webp_page))
+        self.gif_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.gif_page))
+        self.mp4_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.mp4_page))
+        self.webm_options_button.clicked.connect(lambda: self.formats_stack.setCurrentWidget(self.webm_page))
+
+        self.apng_back_button.clicked.connect(self.view_format_page)
+        self.avif_back_button.clicked.connect(self.view_format_page)
+        self.webp_back_button.clicked.connect(self.view_format_page)
+        self.gif_back_button.clicked.connect(self.view_format_page)
+        self.mp4_back_button.clicked.connect(self.view_format_page)
+        self.webm_back_button.clicked.connect(self.view_format_page)
+
+        self.duration_spinbox.setValue(self.settings.frame_length)
+        self.enable_check.setChecked(self.settings.field_derotation)
+        self.latitude_spin.setValue(self.settings.latitude)
+        self.longitude_spin.setValue(self.settings.longitude)
+        self.show_folder_check.setChecked(self.settings.show_folder)
 
         self.output_path_edit.textChanged.connect(self.set_convert_button_state)
         self.output_name_edit.textChanged.connect(self.set_convert_button_state)
@@ -229,30 +241,55 @@ class MainFrame(QFrame, Ui_MainFrame):
             else:
                 subprocess.Popen(('xdg-open', frame_path))
     
+    def view_format_page(self):
+        self.formats_stack.setCurrentWidget(self.formats_page)
+    
     def on_convert_start(self):
         logger.info("Disable GUI while processing frames.")
         self.setting_changed.emit()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
         self.setEnabled(False)
+
+        apng_options = None
+        if self.apng_check.isChecked():
+            apng_options = convert.APNGOptions(self.apng_compress_spinner.value(), self.apng_optimize_check.isChecked())
+        
+        avif_options = None
+        if self.avif_check.isChecked():
+            avif_options = convert.AVIFOptions(self.avif_quality_spinner.value())
+        
+        webp_options = None
+        if self.webp_check.isChecked():
+            webp_options = convert.WebPOptions(self.webp_quality_spinner.value(), self.webp_lossless_check.isChecked())
+        
+        gif_options = None
+        if self.gif_check.isChecked():
+            gif_options = convert.GIFOptions(self.gif_optimize_check.isChecked())
+        
+        mp4_options = None
+        if self.mp4_check.isChecked():
+            mp4_options = convert.MP4Options(convert.MP4Codec[self.mp4_codec_combo.currentText()])
+        
+        webm_options = None
+        if self.webm_check.isChecked():
+            webm_options = convert.WebMOptions(convert.WebMCodec[self.webm_codec_combo.currentText()])
+
+        derotation_options = None
+        if self.enable_check.isChecked():
+            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
+
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
             self.paths,
             Path(self.output_path_edit.text(), self.output_name_edit.text()),
             self.duration_spinbox.value(),
-            self.gif_check.isChecked(),
-            self.webp_check.isChecked(),
-            self.apng_check.isChecked(),
-            self.avif_check.isChecked(),
-            self.mp4_check.isChecked(),
-            self.webm_check.isChecked(),
-            convert.MP4Codec[self.mp4_codec_combo.currentText()],
-            convert.WebMCodec[self.webm_codec_combo.currentText()],
-            self.quality_spinbox.value(),
-            self.lossless_check.isChecked(),
-            self.enable_check.isChecked(),
-            self.latitude_spin.value(),
-            self.longitude_spin.value(),
-            self.target_combo.currentText(),
+            apng_options,
+            avif_options,
+            gif_options,
+            webp_options,
+            mp4_options,
+            webm_options,
+            derotation_options,
             Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
@@ -301,25 +338,18 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, gif: bool, webp: bool, apng: bool, avif: bool, mp4: bool, webm: bool, mp4_codec: convert.MP4Codec, webm_codec: convert.WebMCodec, quality: int, lossless: bool=True, derotate: bool=False, latitude: float=0, longitude: float=0, target: str=None, ffmpeg_path: Path=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
         self.duration = duration
-        self.gif = gif
-        self.webp = webp
-        self.apng = apng
-        self.avif = avif
-        self.mp4 = mp4
-        self.webm = webm
-        self.mp4_codec = mp4_codec
-        self.webm_codec = webm_codec
-        self.quality = quality
-        self.lossless = lossless
-        self.derotate = derotate
-        self.latitude = latitude
-        self.longitude = longitude
-        self.target = target
+        self.apng_options = apng_options
+        self.avif_options = avif_options
+        self.webp_options = webp_options
+        self.mp4_options = mp4_options
+        self.webm_options = webm_options
+        self.gif_options = gif_options
+        self.derotation_options = derotation_options
         self.ffmpeg_path = ffmpeg_path
 
 
@@ -329,20 +359,13 @@ class ConvertWorker(QObject):
                 self.paths,
                 self.output,
                 self.duration,
-                self.gif,
-                self.webp,
-                self.apng,
-                self.avif,
-                self.mp4,
-                self.webm,
-                self.mp4_codec,
-                self.webm_codec,
-                self.quality,
-                self.lossless,
-                self.derotate,
-                self.latitude,
-                self.longitude,
-                self.target,
+                self.apng_options,
+                self.avif_options,
+                self.gif_options,
+                self.webp_options,
+                self.mp4_options,
+                self.webm_options,
+                self.derotation_options,
                 self.ffmpeg_path,
             )
             self.finished.emit()
