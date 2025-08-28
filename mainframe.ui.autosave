@@ -110,7 +110,7 @@
            </sizepolicy>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="formats_page">
            <layout class="QGridLayout" name="gridLayout_2">
@@ -550,7 +550,7 @@
               <item row="0" column="0">
                <widget class="QLabel" name="label_8">
                 <property name="text">
-                 <string>Optimize</string>
+                 <string>Optimize palette</string>
                 </property>
                 <property name="buddy">
                  <cstring>gif_optimize_check</cstring>

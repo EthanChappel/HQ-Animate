@@ -355,6 +355,18 @@ class Ui_MainFrame(object):
 
         self.formLayout_8 = QFormLayout()
         self.formLayout_8.setObjectName(u"formLayout_8")
+        self.gif_optimize_check = QCheckBox(self.gif_page)
+        self.gif_optimize_check.setObjectName(u"gif_optimize_check")
+        sizePolicy1.setHeightForWidth(self.gif_optimize_check.sizePolicy().hasHeightForWidth())
+        self.gif_optimize_check.setSizePolicy(sizePolicy1)
+
+        self.formLayout_8.setWidget(0, QFormLayout.ItemRole.FieldRole, self.gif_optimize_check)
+
+        self.label_8 = QLabel(self.gif_page)
+        self.label_8.setObjectName(u"label_8")
+
+        self.formLayout_8.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_8)
+
 
         self.verticalLayout_9.addLayout(self.formLayout_8)
 
@@ -650,6 +662,7 @@ class Ui_MainFrame(object):
         self.avif_quality_label.setBuddy(self.avif_quality_spinner)
         self.webp_quality_label.setBuddy(self.webp_quality_spinner)
         self.webp_lossless_label.setBuddy(self.webp_lossless_check)
+        self.label_8.setBuddy(self.gif_optimize_check)
         self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
@@ -713,6 +726,8 @@ class Ui_MainFrame(object):
         self.webp_lossless_check.setText("")
         self.webp_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_5.setText(QCoreApplication.translate("MainFrame", u"GIF options", None))
+        self.gif_optimize_check.setText("")
+        self.label_8.setText(QCoreApplication.translate("MainFrame", u"Optimize", None))
         self.gif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_3.setText(QCoreApplication.translate("MainFrame", u"MP4 options", None))
         self.mp4_codec_label.setText(QCoreApplication.translate("MainFrame", u"Codec", None))
