@@ -9,7 +9,15 @@ Installation instructions for `pipx`: [https://pipx.pypa.io/stable/installation/
 
 Open a terminal and navigate to the project's root folder, where `pyproject.toml` is located, then run:
 ```
-pipx install .
+pipx install https://github.com/EthanChappel/HQ-Animate/archive/refs/heads/main.tar.gz
+```
+
+#### Upgrade
+
+To upgrade the program to the latest version, run:
+
+```
+pipx upgrade hq-animate
 ```
 
 ### Install with `pip`
@@ -18,7 +26,15 @@ Alternatively, install into the current Python environemt with `pip`.
 Open a terminal and navigate to the project's root folder, where pyproject.toml is located, then run:
 
 ```
-pip install .
+pip install https://github.com/EthanChappel/HQ-Animate/archive/refs/heads/main.tar.gz
+```
+
+#### Upgrade
+
+To upgrade the program to the latest version, run:
+
+```
+pip install --upgrade hq-animate
 ```
 
 ## Usage
