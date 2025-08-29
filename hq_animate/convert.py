@@ -207,6 +207,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
     frames = []
     t1 = None
     icc_profile = None
+    is_color = False
     for n in tar:
         rotation = 0
         if derotation_options != None:
@@ -247,6 +248,8 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
 
             if f.mode == 'I;16':
                 f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
+            if not is_color and 'RGB' in f.mode:
+                is_color = True
             if derotation_options != None:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
@@ -330,7 +333,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         ffmpeg_options = [
             str(ffmpeg_path), '-y',
             '-f', 'rawvideo',
-            '-pixel_format', 'rgb24',
+            '-pixel_format', 'rgb24' if is_color else 'gray',
             '-video_size', f'{image.width}x{image.height}',
             '-r', str(frame_duration),
             '-i', 'pipe:0',
