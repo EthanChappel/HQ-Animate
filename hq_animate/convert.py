@@ -33,7 +33,7 @@ from enum import Enum
 from PIL import Image, ImageSequence, ImageMath
 from astropy.io import fits
 from astropy.time import Time
-from astropy.coordinates import solar_system_ephemeris, EarthLocation, get_body, HADec
+from astropy.coordinates import AltAz, Angle, EarthLocation, solar_system_ephemeris, get_body, position_angle
 from astropy import units as u
 import numpy as np
 
@@ -198,6 +198,11 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
+def get_body_angle(body_name: str, time: Time, location: EarthLocation) -> Angle | None:
+    body = get_body(body_name, time, location).transform_to(AltAz(location=location, obstime=time))
+    return position_angle(body.az, body.alt, 0, location.lat.value * u.deg)
+
+
 def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
     log_str = f"Start processing {len(tar)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
     if derotation_options != None:
@@ -205,7 +210,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
     logger.info(log_str)
     
     frames = []
-    t1 = None
+    q1 = None
     icc_profile = None
     is_color = False
     for n in tar:
@@ -213,28 +218,12 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         if derotation_options != None:
             with solar_system_ephemeris.set('builtin'):
                 observer = EarthLocation(lat=derotation_options.latitude * u.deg, lon=derotation_options.longitude * u.deg)
-                t2 = n.date_time
-                if t1 == None:
-                    t1 = t2
+                if q1 == None:
+                    q1 = get_body_angle(derotation_options.target.lower(), n.date_time, observer)
                 else:
-                    a1 = get_body(derotation_options.target.lower(), t1, observer)
-                    a2 = get_body(derotation_options.target.lower(), t2, observer)
+                    q2 = get_body_angle(derotation_options.target.lower(), n.date_time, observer)
 
-                    hadec1 = a1.transform_to(HADec(obstime=t1, location=observer))
-                    hadec2 = a2.transform_to(HADec(obstime=t2, location=observer))
-
-                    ha1_rad = hadec1.ha.radian
-                    dec1_rad = hadec1.dec.radian
-
-                    ha2_rad = hadec2.ha.radian
-                    dec2_rad = hadec2.dec.radian
-
-                    tan_lat_rad = np.tan(np.radians(derotation_options.latitude))
-
-                    q1 = np.degrees(np.arctan(np.sin(ha1_rad) / (tan_lat_rad) * np.cos(dec1_rad) - np.sin(dec1_rad) * np.cos(ha1_rad)))
-                    q2 = np.degrees(np.arctan(np.sin(ha2_rad) / (tan_lat_rad) * np.cos(dec2_rad) - np.sin(dec2_rad) * np.cos(ha2_rad)))
-
-                    rotation = q2 - q1
+                    rotation = q2.deg - q1.deg
 
         image = Image.open(n.path)
         for i, frame in enumerate(ImageSequence.Iterator(image)):
