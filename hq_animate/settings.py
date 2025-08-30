@@ -1,7 +1,7 @@
 import logging
 import json
 from pathlib import Path
-from hq_animate.convert import MP4Codec, WebMCodec
+from hq_animate.convert import MP4Codec, WebMCodec, VideoOptions
 
 
 SCRIPT_PATH = Path(__file__).resolve().parent
@@ -26,7 +26,7 @@ logger = logging.getLogger("app")
 class Settings:
     _file_instances = {}
 
-    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
+    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, video_options: VideoOptions=VideoOptions(), ffmpeg_path: str=""):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
         if not LONGITUDE_MIN <= longitude and longitude <= LONGITUDE_MAX:
@@ -48,6 +48,7 @@ class Settings:
         self.mp4_codec = mp4_codec
         self.webm_codec = webm_codec
         self.show_folder = show_folder
+        self.video_options = video_options
         self.ffmpeg_path = ffmpeg_path
 
         logger.info(f"New Settings: {self.path}")
@@ -67,6 +68,7 @@ class Settings:
             'mp4_codec': self.mp4_codec.name if self.mp4_codec else "",
             'webm_codec': self.webm_codec.name if self.webm_codec else "",
             'show_folder': self.show_folder,
+            'video_options': self.video_options.__dict__,
             'ffmpeg_path': self.ffmpeg_path,
         }
 
@@ -105,6 +107,7 @@ class Settings:
                 MP4Codec[j['mp4_codec']] if j['mp4_codec'] else None,
                 WebMCodec[j['webm_codec']] if j['webm_codec'] else None,
                 j['show_folder'],
+                VideoOptions(**j.get('video_options', {})),
                 j['ffmpeg_path'],
             )
 

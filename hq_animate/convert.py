@@ -23,6 +23,7 @@ SOFTWARE.
 '''
 
 
+import itertools
 import os
 import subprocess
 import logging
@@ -149,6 +150,11 @@ class GIFOptions(FormatOptions):
         self.optimize = optimize
 
 
+class VideoOptions:
+    def __init__(self, loop: int=1):
+        self.loop = loop
+
+
 class MP4Options(FormatOptions):
     def __init__(self, codec: MP4Codec):
         self.codec = codec
@@ -203,7 +209,7 @@ def get_body_angle(body_name: str, time: Time, location: EarthLocation) -> Angle
     return position_angle(body.az, body.alt, 0, location.lat.value * u.deg)
 
 
-def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, ffmpeg_path: Path=None):
+def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, video_options: VideoOptions=None, ffmpeg_path: Path=None):
     log_str = f"Start processing {len(tar)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
@@ -319,6 +325,8 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         )
     
     if (mp4_options != None or webm_options != None) and ffmpeg_path != None:
+        video_length = len(frames) * video_options.loop
+
         ffmpeg_options = [
             str(ffmpeg_path), '-y',
             '-f', 'rawvideo',
@@ -328,7 +336,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             '-i', 'pipe:0',
         ]
         output_options = [
-            '-frames:v', str(len(frames)),
+            '-frames:v', str(video_length),
             '-r', str(frame_duration),
         ]
         avc_options = [
@@ -381,7 +389,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         
         process = subprocess.Popen(ffmpeg_options, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, stdin=subprocess.PIPE)
         
-        for f in frames:
+        for f in itertools.islice(itertools.cycle(frames), video_length):
             process.stdin.write(f.tobytes())
         process.stdin.close()
         process.wait()

@@ -73,6 +73,8 @@ class MainWindow(QMainWindow):
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 
+        self.settings.video_options.loop = self.main_frame.loop_spinner.value()
+
         self.settings.save()
         self.settings_updated.emit()
     
