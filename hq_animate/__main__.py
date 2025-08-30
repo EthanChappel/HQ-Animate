@@ -24,6 +24,7 @@ SOFTWARE.
 '''
 
 
+import sys
 from datetime import datetime, timezone
 import logging
 from importlib.metadata import version
@@ -46,7 +47,13 @@ logger.addHandler(file_handler)
 
 logger.info(f"HQ-Animate {__version__}")
 
+
+def log_unhandled_exception(exc_type, exc_value, exc_traceback):
+    logger.error("Unhandled exception:", exc_info=(exc_type, exc_value, exc_traceback))
+
 def main():
+    sys.excepthook = log_unhandled_exception
+
     logger.info(f"Starting application")
 
     app = QApplication()
