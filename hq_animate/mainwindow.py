@@ -82,6 +82,8 @@ class MainWindow(QMainWindow):
         self.settings.do_webm = self.main_frame.webm_check.isChecked()
         self.settings.webm_options.codec = convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()]
 
+        self.settings.video_options.loop = self.main_frame.loop_spinner.value()
+
         self.settings.save()
         self.settings_updated.emit()
     

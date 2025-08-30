@@ -114,6 +114,8 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.mp4_codec_combo.setCurrentText(self.settings.mp4_options.codec.name)
         if self.settings.webm_options:
             self.webm_codec_combo.setCurrentText(self.settings.webm_options.codec.name)
+        
+        self.loop_spinner.setValue(self.settings.video_options.loop)
 
     
     def set_input_frames(self, event):
@@ -193,12 +195,6 @@ class MainFrame(QFrame, Ui_MainFrame):
     
     def update_ffmpeg_widgets(self):
         is_valid_ffmpeg = convert.validate_ffmpeg(self.settings.ffmpeg_path)
-        
-        if not is_valid_ffmpeg["avc"] and not is_valid_ffmpeg["av1"] and not is_valid_ffmpeg["vp9"]:
-            self.video_stack.setCurrentIndex(1)
-            return
-
-        self.video_stack.setCurrentIndex(0)
 
         self.can_avc = is_valid_ffmpeg["avc"]
         self.can_av1 = is_valid_ffmpeg["av1"]
@@ -206,6 +202,16 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         can_mp4 = self.can_av1 or self.can_vp9 or self.can_avc
         can_webm = self.can_av1 and self.can_vp9
+        can_video = can_mp4 and can_webm
+
+        self.loop_label.setVisible(can_video)
+        self.loop_spinner.setVisible(can_video)
+        
+        if not can_video:
+            self.video_stack.setCurrentIndex(1)
+            return
+
+        self.video_stack.setCurrentIndex(0)
 
         self.mp4_check.setEnabled(can_mp4)
         self.webm_check.setEnabled(can_webm)
@@ -287,6 +293,8 @@ class MainFrame(QFrame, Ui_MainFrame):
         derotation_options = None
         if self.enable_check.isChecked():
             derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
+        
+        video_options = convert.VideoOptions(self.loop_spinner.value())
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
@@ -300,6 +308,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             mp4_options,
             webm_options,
             derotation_options,
+            video_options,
             Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
@@ -348,7 +357,7 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, ffmpeg_path: Path=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, video_options: convert.VideoOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
@@ -360,6 +369,7 @@ class ConvertWorker(QObject):
         self.webm_options = webm_options
         self.gif_options = gif_options
         self.derotation_options = derotation_options
+        self.video_options = video_options
         self.ffmpeg_path = ffmpeg_path
 
 
@@ -376,6 +386,7 @@ class ConvertWorker(QObject):
                 self.mp4_options,
                 self.webm_options,
                 self.derotation_options,
+                self.video_options,
                 self.ffmpeg_path,
             )
             self.finished.emit()

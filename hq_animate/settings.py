@@ -1,7 +1,7 @@
 import logging
 import json
 from pathlib import Path
-from hq_animate.convert import APNGOptions, AVIFOptions, WebPOptions, GIFOptions, MP4Options, WebMOptions
+from hq_animate.convert import APNGOptions, AVIFOptions, WebPOptions, GIFOptions, MP4Options, WebMOptions, VideoOptions
 
 
 SCRIPT_PATH = Path(__file__).resolve().parent
@@ -27,7 +27,7 @@ class Settings:
     _file_instances = {}
 
     def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, \
-                 do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, show_folder: bool=True, ffmpeg_path: str="", \
+                 do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, show_folder: bool=True, video_options: VideoOptions=VideoOptions(), ffmpeg_path: str="", \
                  apng_options: APNGOptions=APNGOptions(), avif_options: AVIFOptions=AVIFOptions(), gif_options: GIFOptions=GIFOptions(), webp_options: WebPOptions=WebPOptions(), mp4_options: MP4Options=MP4Options(), webm_options: WebMOptions=WebMOptions()):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
@@ -52,6 +52,7 @@ class Settings:
         self.mp4_options = mp4_options
         self.webm_options = webm_options
         self.show_folder = show_folder
+        self.video_options = video_options
         self.ffmpeg_path = ffmpeg_path
 
         logger.info(f"New Settings: {self.path}")
@@ -75,6 +76,7 @@ class Settings:
             'mp4_options': self.mp4_options.__dict__,
             'webm_options': self.webm_options.__dict__,
             'show_folder': self.show_folder,
+            'video_options': self.video_options.__dict__,
             'ffmpeg_path': self.ffmpeg_path,
         }
 
@@ -111,6 +113,7 @@ class Settings:
                 j['do_webm'],
                 j['frame_length'],
                 j['show_folder'],
+                VideoOptions(**j.get('video_options', {})),
                 j['ffmpeg_path'],
                 APNGOptions(**(j.get('apng_options', {}))),
                 AVIFOptions(**(j.get('avif_options', {}))),
