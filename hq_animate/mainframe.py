@@ -72,6 +72,16 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.mp4_back_button.clicked.connect(self.view_format_page)
         self.webm_back_button.clicked.connect(self.view_format_page)
 
+        self.apng_compress_spinner.setValue(self.settings.apng_options.compression_level)
+        self.apng_optimize_check.setChecked(self.settings.apng_options.optimize)
+
+        self.avif_quality_spinner.setValue(self.settings.avif_options.quality)
+
+        self.webp_quality_spinner.setValue(self.settings.webp_options.quality)
+        self.webp_lossless_check.setChecked(self.settings.webp_options.lossless)
+
+        self.gif_optimize_check.setChecked(self.settings.gif_options.optimize)
+
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.enable_check.setChecked(self.settings.field_derotation)
         self.latitude_spin.setValue(self.settings.latitude)
@@ -100,10 +110,10 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.update_ffmpeg_widgets()
         self.set_convert_button_state()
 
-        if self.settings.mp4_codec:
-            self.mp4_codec_combo.setCurrentText(self.settings.mp4_codec.name)
-        if self.settings.webm_codec:
-            self.webm_codec_combo.setCurrentText(self.settings.webm_codec.name)
+        if self.settings.mp4_options:
+            self.mp4_codec_combo.setCurrentText(self.settings.mp4_options.codec.name)
+        if self.settings.webm_options:
+            self.webm_codec_combo.setCurrentText(self.settings.webm_options.codec.name)
 
     
     def set_input_frames(self, event):

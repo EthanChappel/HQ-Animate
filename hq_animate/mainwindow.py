@@ -55,23 +55,32 @@ class MainWindow(QMainWindow):
         self.stack_frame.setCurrentWidget(self.settings_frame)
     
     def save_settings(self):
-        mp4_codec = self.main_frame.mp4_codec_combo.currentText()
-        webm_codec = self.main_frame.webm_codec_combo.currentText()
-
         self.settings.field_derotation = self.main_frame.enable_check.isChecked()
         self.settings.latitude = self.main_frame.latitude_spin.value()
         self.settings.longitude = self.main_frame.longitude_spin.value()
-        self.settings.do_apng = self.main_frame.apng_check.isChecked()
-        self.settings.do_avif = self.main_frame.avif_check.isChecked()
-        self.settings.do_webp = self.main_frame.webp_check.isChecked()
-        self.settings.do_gif = self.main_frame.gif_check.isChecked()
-        self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
-        self.settings.do_webm = self.main_frame.webm_check.isChecked()
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
-        self.settings.mp4_codec = convert.MP4Codec[mp4_codec] if mp4_codec else None
-        self.settings.webm_codec = convert.WebMCodec[webm_codec] if webm_codec else None
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
+
+        self.settings.do_apng = self.main_frame.apng_check.isChecked()
+        self.settings.apng_options.compression_level = self.main_frame.apng_compress_spinner.value()
+        self.settings.apng_options.optimize = self.main_frame.apng_optimize_check.isChecked()
+
+        self.settings.do_avif = self.main_frame.avif_check.isChecked()
+        self.settings.avif_options.quality = self.main_frame.avif_quality_spinner.value()
+
+        self.settings.do_gif = self.main_frame.gif_check.isChecked()
+        self.settings.gif_options.optimize = self.main_frame.gif_optimize_check.isChecked()
+
+        self.settings.do_webp = self.main_frame.webp_check.isChecked()
+        self.settings.webp_options.quality = self.main_frame.webp_quality_spinner.value()
+        self.settings.webp_options.lossless = self.main_frame.webp_lossless_check.isChecked()
+
+        self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
+        self.settings.mp4_options.codec = convert.MP4Codec[self.main_frame.mp4_codec_combo.currentText()]
+
+        self.settings.do_webm = self.main_frame.webm_check.isChecked()
+        self.settings.webm_options.codec = convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()]
 
         self.settings.save()
         self.settings_updated.emit()

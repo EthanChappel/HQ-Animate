@@ -1,7 +1,7 @@
 import logging
 import json
 from pathlib import Path
-from hq_animate.convert import MP4Codec, WebMCodec
+from hq_animate.convert import APNGOptions, AVIFOptions, WebPOptions, GIFOptions, MP4Options, WebMOptions
 
 
 SCRIPT_PATH = Path(__file__).resolve().parent
@@ -26,13 +26,13 @@ logger = logging.getLogger("app")
 class Settings:
     _file_instances = {}
 
-    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, mp4_codec: MP4Codec = MP4Codec.AVC, webm_codec: MP4Codec = WebMCodec.VP9, show_folder: bool=True, ffmpeg_path: str=""):
+    def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, latitude: float=0, longitude: float=0, \
+                 do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, show_folder: bool=True, ffmpeg_path: str="", \
+                 apng_options: APNGOptions=APNGOptions(), avif_options: AVIFOptions=AVIFOptions(), gif_options: GIFOptions=GIFOptions(), webp_options: WebPOptions=WebPOptions(), mp4_options: MP4Options=MP4Options(), webm_options: WebMOptions=WebMOptions()):
         if not LATITUDE_MIN <= latitude and latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
         if not LONGITUDE_MIN <= longitude and longitude <= LONGITUDE_MAX:
             raise ValueError(f"longitude is {longitude}, but must be within the range of {LONGITUDE_MIN} and {LONGITUDE_MAX}.")
-        if not FRAME_LENGTH_MIN <= frame_length and frame_length <= FRAME_LENGTH_MAX:
-            raise ValueError(f"frame_length is {frame_length}, but must be within the range of {FRAME_LENGTH_MIN} and {FRAME_LENGTH_MAX}.")
 
         self.path = path
         self.field_derotation = field_derotation
@@ -45,8 +45,12 @@ class Settings:
         self.do_mp4 = do_mp4
         self.do_webm = do_webm
         self.frame_length = frame_length
-        self.mp4_codec = mp4_codec
-        self.webm_codec = webm_codec
+        self.apng_options = apng_options
+        self.avif_options = avif_options
+        self.gif_options = gif_options
+        self.webp_options = webp_options
+        self.mp4_options = mp4_options
+        self.webm_options = webm_options
         self.show_folder = show_folder
         self.ffmpeg_path = ffmpeg_path
 
@@ -64,8 +68,12 @@ class Settings:
             'do_mp4': self.do_mp4,
             'do_webm': self.do_webm,
             'frame_length': self.frame_length,
-            'mp4_codec': self.mp4_codec.name if self.mp4_codec else "",
-            'webm_codec': self.webm_codec.name if self.webm_codec else "",
+            'apng_options': self.apng_options.__dict__,
+            'avif_options': self.avif_options.__dict__,
+            'gif_options': self.gif_options.__dict__,
+            'webp_options': self.webp_options.__dict__,
+            'mp4_options': self.mp4_options.__dict__,
+            'webm_options': self.webm_options.__dict__,
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
         }
@@ -102,10 +110,14 @@ class Settings:
                 j['do_mp4'],
                 j['do_webm'],
                 j['frame_length'],
-                MP4Codec[j['mp4_codec']] if j['mp4_codec'] else None,
-                WebMCodec[j['webm_codec']] if j['webm_codec'] else None,
                 j['show_folder'],
                 j['ffmpeg_path'],
+                APNGOptions(**(j.get('apng_options', {}))),
+                AVIFOptions(**(j.get('avif_options', {}))),
+                GIFOptions(**(j.get('gif_options', {}))),
+                WebPOptions(**(j.get('webp_options', {}))),
+                MP4Options(**(j.get('mp4_options', {}))),
+                WebMOptions(**(j.get('webm_options', {}))),
             )
 
             Settings._file_instances[path] = s
