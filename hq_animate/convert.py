@@ -128,34 +128,38 @@ class FormatOptions:
 
 
 class APNGOptions(FormatOptions):
-    def __init__(self, compression_level: int, optimize: bool):
+    def __init__(self, compression_level: int=9, optimize: bool=True):
         self.compression_level = compression_level
         self.optimize = optimize
 
 
 class AVIFOptions(FormatOptions):
-    def __init__(self, quality: int):
+    def __init__(self, quality: int=95):
         self.quality = quality
 
 
 class WebPOptions(FormatOptions):
-    def __init__(self, quality: int, lossless: bool):
+    def __init__(self, quality: int=95, lossless: bool=False):
         self.quality = quality
         self.lossless = lossless
 
 
 class GIFOptions(FormatOptions):
-    def __init__(self, optimize: bool):
+    def __init__(self, optimize: bool=True):
         self.optimize = optimize
 
 
 class MP4Options(FormatOptions):
-    def __init__(self, codec: MP4Codec):
+    def __init__(self, codec: MP4Codec|str=MP4Codec.AVC):
+        if isinstance(codec, str):
+            codec = MP4Codec(codec)
         self.codec = codec
 
 
 class WebMOptions(FormatOptions):
-    def __init__(self, codec: WebMCodec):
+    def __init__(self, codec: WebMCodec|str=WebMCodec.VP9):
+        if isinstance(codec, str):
+            codec = WebMCodec(codec)
         self.codec = codec
 
 
