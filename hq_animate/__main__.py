@@ -35,7 +35,8 @@ from hq_animate.mainwindow import MainWindow
 
 __version__ = version("hq_animate")
 
-log_path = Path(platformdirs.user_config_dir("hq-animate", "", version=__version__, ensure_exists=True), "logs")
+
+log_path = Path(platformdirs.user_log_dir("hq-animate", "", ensure_exists=True))
 Path.mkdir(log_path, exist_ok=True)
 
 logger = logging.getLogger("app")
