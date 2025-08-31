@@ -26,8 +26,8 @@ class Ui_MainFrame(object):
     def setupUi(self, MainFrame):
         if not MainFrame.objectName():
             MainFrame.setObjectName(u"MainFrame")
-        MainFrame.resize(650, 600)
-        MainFrame.setMinimumSize(QSize(650, 600))
+        MainFrame.resize(700, 650)
+        MainFrame.setMinimumSize(QSize(700, 650))
         MainFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(MainFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -78,7 +78,7 @@ class Ui_MainFrame(object):
         self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.formats_stack = QStackedWidget(self.formats_group)
         self.formats_stack.setObjectName(u"formats_stack")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Maximum)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Maximum)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
         sizePolicy3.setHeightForWidth(self.formats_stack.sizePolicy().hasHeightForWidth())
@@ -503,7 +503,6 @@ class Ui_MainFrame(object):
         self.parameters_group.setSizePolicy(sizePolicy2)
         self.formLayout_2 = QFormLayout(self.parameters_group)
         self.formLayout_2.setObjectName(u"formLayout_2")
-        self.formLayout_2.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
         self.duration_label = QLabel(self.parameters_group)
         self.duration_label.setObjectName(u"duration_label")
 
@@ -535,6 +534,40 @@ class Ui_MainFrame(object):
 
 
         self.horizontalLayout.addWidget(self.parameters_group)
+
+        self.method_groupbox = QGroupBox(MainFrame)
+        self.method_groupbox.setObjectName(u"method_groupbox")
+        sizePolicy2.setHeightForWidth(self.method_groupbox.sizePolicy().hasHeightForWidth())
+        self.method_groupbox.setSizePolicy(sizePolicy2)
+        self.formLayout_10 = QFormLayout(self.method_groupbox)
+        self.formLayout_10.setObjectName(u"formLayout_10")
+        self.label_16 = QLabel(self.method_groupbox)
+        self.label_16.setObjectName(u"label_16")
+
+        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_16)
+
+        self.average_spinner = QSpinBox(self.method_groupbox)
+        self.average_spinner.setObjectName(u"average_spinner")
+        sizePolicy4.setHeightForWidth(self.average_spinner.sizePolicy().hasHeightForWidth())
+        self.average_spinner.setSizePolicy(sizePolicy4)
+        self.average_spinner.setMinimum(1)
+
+        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.FieldRole, self.average_spinner)
+
+        self.label_15 = QLabel(self.method_groupbox)
+        self.label_15.setObjectName(u"label_15")
+
+        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_15)
+
+        self.subtract_combo = QComboBox(self.method_groupbox)
+        self.subtract_combo.setObjectName(u"subtract_combo")
+        sizePolicy4.setHeightForWidth(self.subtract_combo.sizePolicy().hasHeightForWidth())
+        self.subtract_combo.setSizePolicy(sizePolicy4)
+
+        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.FieldRole, self.subtract_combo)
+
+
+        self.horizontalLayout.addWidget(self.method_groupbox)
 
         self.derotation_group = QGroupBox(MainFrame)
         self.derotation_group.setObjectName(u"derotation_group")
@@ -681,11 +714,14 @@ class Ui_MainFrame(object):
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
         self.loop_label.setBuddy(self.loop_spinner)
+        self.label_16.setBuddy(self.average_spinner)
+        self.label_15.setBuddy(self.subtract_combo)
         self.enable_label.setBuddy(self.enable_check)
         self.target_label.setBuddy(self.target_combo)
         self.latitude_label.setBuddy(self.latitude_spin)
         self.longitude_label.setBuddy(self.longitude_spin)
         self.output_label.setBuddy(self.output_browse_button)
+        self.output_name_label.setBuddy(self.output_name_edit)
 #endif // QT_CONFIG(shortcut)
         QWidget.setTabOrder(self.frames_table, self.input_browse_button)
         QWidget.setTabOrder(self.input_browse_button, self.duration_spinbox)
@@ -752,6 +788,10 @@ class Ui_MainFrame(object):
         self.parameters_group.setTitle(QCoreApplication.translate("MainFrame", u"Parameters", None))
         self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))
         self.loop_label.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
+        self.method_groupbox.setTitle(QCoreApplication.translate("MainFrame", u"Process", None))
+        self.label_16.setText(QCoreApplication.translate("MainFrame", u"Average", None))
+        self.average_spinner.setPrefix("")
+        self.label_15.setText(QCoreApplication.translate("MainFrame", u"Subtract", None))
         self.derotation_group.setTitle(QCoreApplication.translate("MainFrame", u"Alt-az field derotation", None))
         self.enable_label.setText(QCoreApplication.translate("MainFrame", u"&Enable", None))
         self.target_label.setText(QCoreApplication.translate("MainFrame", u"&Target", None))
