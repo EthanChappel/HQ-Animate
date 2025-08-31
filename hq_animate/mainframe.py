@@ -296,6 +296,8 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
+        process_options = convert.ProcessOptions(self.average_spinner.value(), convert.SubtractMode[self.subtract_combo.currentText()])
+
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
             self.paths,
@@ -309,6 +311,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             webm_options,
             derotation_options,
             video_options,
+            process_options,
             Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
@@ -357,7 +360,7 @@ class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, video_options: convert.VideoOptions=None, ffmpeg_path: Path=None):
+    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, video_options: convert.VideoOptions=None, process_options: convert.ProcessOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
@@ -370,6 +373,7 @@ class ConvertWorker(QObject):
         self.gif_options = gif_options
         self.derotation_options = derotation_options
         self.video_options = video_options
+        self.process_options = process_options
         self.ffmpeg_path = ffmpeg_path
 
 
@@ -387,6 +391,7 @@ class ConvertWorker(QObject):
                 self.webm_options,
                 self.derotation_options,
                 self.video_options,
+                self.process_options,
                 self.ffmpeg_path,
             )
             self.finished.emit()
