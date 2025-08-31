@@ -263,7 +263,20 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
+            
             frames.append(f)
+    
+    average_frames = process_options.average_frames
+    if process_options.average_frames > 1:
+        tmp = []
+        for i in range(average_frames - 1, len(frames)):
+            cumulative = np.zeros((frames[0].height, frames[0].width, len(frames[0].getbands())), dtype=np.int32)
+            for j in range(average_frames):
+                print(f"{i} {j}")
+                cumulative += np.array(frames[i - j])
+            cumulative = (cumulative // np.int32(average_frames)).astype(np.int8)
+            tmp.append(Image.fromarray(cumulative, mode="RGB" if is_color else "L"))
+        frames = tmp
 
     image = frames[0]
 
