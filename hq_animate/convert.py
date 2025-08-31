@@ -123,6 +123,11 @@ class MP4Codec(str, Enum):
     AV1 = 1
     AVC = 2
 
+class SubtractMode(str, Enum):
+    No = 0
+    L = 1
+    RGB = 2
+
 
 class FormatOptions:
     pass
@@ -174,6 +179,11 @@ class DerotationOptions:
         self.latitude = latitude
         self.longitude = longitude
         self.target = target
+
+class ProcessOptions:
+    def __init__(self, average_frames: int=1, subtract_frames: SubtractMode=SubtractMode.No):
+        self.average_frames = average_frames
+        self.subtract_frames = subtract_frames
 
 
 def find_ffmpeg() -> list[Path]:
