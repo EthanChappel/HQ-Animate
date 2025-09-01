@@ -224,6 +224,45 @@ def get_body_angle(body_name: str, time: Time, location: EarthLocation) -> Angle
     return position_angle(body.az, body.alt, 0, location.lat.value * u.deg)
 
 
+def to_float32(image):
+    if image.mode == "F":
+        return image
+    if len(image.getbands()) > 1:
+        image = image.convert("L")
+    
+    a = np.array(image)
+
+    dtype_info = np.iinfo(a.dtype)
+
+    dtype_min = dtype_info.min
+    dtype_max = dtype_info.max
+    
+    a = ((a - dtype_min) / (dtype_max - dtype_min)).astype(np.float32)
+    
+    return Image.fromarray(a, mode="F")
+
+def to_uint8(image):
+    if image.mode == "L":
+        return image
+
+    a = np.array(image)
+
+    dtype_info = np.iinfo(np.uint8)
+
+    dtype_min = dtype_info.min
+    dtype_max = dtype_info.max
+
+    a_min = np.min(a)
+    if a_min < 0:
+        a -= a_min
+    
+    a = (a * (dtype_max - dtype_min) + dtype_min).astype(np.uint8)
+    
+    return Image.fromarray(a, mode="L")
+    
+
+
+
 def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, video_options: VideoOptions=None, process_options: ProcessOptions=None, ffmpeg_path: Path=None):
     log_str = f"Start processing {len(tar)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
     if derotation_options != None:
@@ -256,9 +295,9 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
 
             logger.info(f"Process frame {i} Mode={f.mode}, Rotation={rotation:0.2f}")
 
-            if f.mode == 'I;16':
-                f = ImageMath.eval('im >> 8', im=f.convert('I')).convert('L')
-            if not is_color and 'RGB' in f.mode:
+            if len(f.getbands()) == 1:
+                f = to_float32(f)
+            elif not is_color and 'RGB' in f.mode:
                 is_color = True
             if derotation_options != None:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
@@ -271,13 +310,23 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
     if process_options.average_frames > 1:
         tmp = []
         for i in range(average_frames - 1, len(frames)):
-            cumulative = np.zeros((frames[0].height, frames[0].width, len(frames[0].getbands())), dtype=np.int32)
+            shape = [frames[0].height, frames[0].width]
+            bands = len(frames[0].getbands())
+            if bands > 1:
+                shape.append(bands)
+            cumulative = np.zeros(shape, dtype=np.float32)
             for j in range(average_frames):
-                print(f"{i} {j}")
                 cumulative += np.array(frames[i - j])
-            cumulative = (cumulative // np.int32(average_frames)).astype(np.int8)
-            tmp.append(Image.fromarray(cumulative, mode="RGB" if is_color else "L"))
+            cumulative = (cumulative / average_frames).astype(np.uint8 if is_color else np.float32)
+            tmp.append(Image.fromarray(cumulative, mode="RGB" if is_color else "F"))
         frames = tmp
+    
+    tmp = []
+    for f in frames:
+        if not "RGB" in f.mode:
+            f = to_uint8(f)
+        tmp.append(f)
+    frames = tmp
 
     image = frames[0]
 
