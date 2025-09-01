@@ -181,9 +181,10 @@ class DerotationOptions:
         self.target = target
 
 class ProcessOptions:
-    def __init__(self, average_frames: int=1, subtract_frames: SubtractMode=SubtractMode.No):
+    def __init__(self, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1):
         self.average_frames = average_frames
         self.subtract_frames = subtract_frames
+        self.subtract_spread = subtract_spread
 
 
 def find_ffmpeg() -> list[Path]:

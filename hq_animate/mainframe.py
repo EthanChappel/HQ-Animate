@@ -296,7 +296,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
-        process_options = convert.ProcessOptions(self.average_spinner.value(), convert.SubtractMode[self.subtract_combo.currentText()])
+        process_options = convert.ProcessOptions(self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value())
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(

@@ -554,17 +554,44 @@ class Ui_MainFrame(object):
 
         self.formLayout_10.setWidget(0, QFormLayout.ItemRole.FieldRole, self.average_spinner)
 
+        self.line_3 = QFrame(self.method_groupbox)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setFrameShape(QFrame.Shape.HLine)
+        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.SpanningRole, self.line_3)
+
         self.label_15 = QLabel(self.method_groupbox)
         self.label_15.setObjectName(u"label_15")
 
-        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.LabelRole, self.label_15)
+        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_15)
 
-        self.subtract_combo = QComboBox(self.method_groupbox)
-        self.subtract_combo.setObjectName(u"subtract_combo")
-        sizePolicy4.setHeightForWidth(self.subtract_combo.sizePolicy().hasHeightForWidth())
-        self.subtract_combo.setSizePolicy(sizePolicy4)
+        self.horizontalLayout_10 = QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.subtract_check = QCheckBox(self.method_groupbox)
+        self.subtract_check.setObjectName(u"subtract_check")
+        sizePolicy1.setHeightForWidth(self.subtract_check.sizePolicy().hasHeightForWidth())
+        self.subtract_check.setSizePolicy(sizePolicy1)
 
-        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.FieldRole, self.subtract_combo)
+        self.horizontalLayout_10.addWidget(self.subtract_check)
+
+        self.horizontalSpacer_7 = QSpacerItem(0, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_10.addItem(self.horizontalSpacer_7)
+
+
+        self.formLayout_10.setLayout(2, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_10)
+
+        self.label_9 = QLabel(self.method_groupbox)
+        self.label_9.setObjectName(u"label_9")
+
+        self.formLayout_10.setWidget(3, QFormLayout.ItemRole.LabelRole, self.label_9)
+
+        self.spread_spinner = QSpinBox(self.method_groupbox)
+        self.spread_spinner.setObjectName(u"spread_spinner")
+        self.spread_spinner.setMinimum(1)
+
+        self.formLayout_10.setWidget(3, QFormLayout.ItemRole.FieldRole, self.spread_spinner)
 
 
         self.horizontalLayout.addWidget(self.method_groupbox)
@@ -715,7 +742,8 @@ class Ui_MainFrame(object):
         self.duration_label.setBuddy(self.duration_spinbox)
         self.loop_label.setBuddy(self.loop_spinner)
         self.label_16.setBuddy(self.average_spinner)
-        self.label_15.setBuddy(self.subtract_combo)
+        self.label_15.setBuddy(self.subtract_check)
+        self.label_9.setBuddy(self.spread_spinner)
         self.enable_label.setBuddy(self.enable_check)
         self.target_label.setBuddy(self.target_combo)
         self.latitude_label.setBuddy(self.latitude_spin)
@@ -792,6 +820,8 @@ class Ui_MainFrame(object):
         self.label_16.setText(QCoreApplication.translate("MainFrame", u"Average", None))
         self.average_spinner.setPrefix("")
         self.label_15.setText(QCoreApplication.translate("MainFrame", u"Subtract", None))
+        self.subtract_check.setText("")
+        self.label_9.setText(QCoreApplication.translate("MainFrame", u"Spread", None))
         self.derotation_group.setTitle(QCoreApplication.translate("MainFrame", u"Alt-az field derotation", None))
         self.enable_label.setText(QCoreApplication.translate("MainFrame", u"&Enable", None))
         self.target_label.setText(QCoreApplication.translate("MainFrame", u"&Target", None))
