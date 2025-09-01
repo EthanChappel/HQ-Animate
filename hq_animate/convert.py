@@ -321,6 +321,32 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             tmp.append(Image.fromarray(cumulative, mode="RGB" if is_color else "F"))
         frames = tmp
     
+    if process_options.subtract_frames:
+        tmp = []
+        subtract_spread = process_options.subtract_spread
+        for i in range(subtract_spread - 1, len(frames)):
+            f1 = frames[i - subtract_spread]
+            f2 = frames[i]
+
+            is_color = False
+            f1 = to_float32(f1)
+            f2 = to_float32(f2)
+
+            f1 = np.array(f1)
+            f2 = np.array(f2)
+
+            f = (f2 - f1).clip(0).astype(np.float32)
+
+            f_min = np.min(f)
+            f_max = np.max(f)
+            
+            f = ((f - f_min) / (f_max - f_min))
+
+            f = Image.fromarray(f, mode="F")
+
+            tmp.append(f)
+        frames = tmp
+    
     tmp = []
     for f in frames:
         if not "RGB" in f.mode:
