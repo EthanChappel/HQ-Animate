@@ -61,6 +61,7 @@ logger = logging.getLogger("app")
 class Frame:
     def __init__(self, path):
         self.path = Path(path)
+        self.image = Image.open(self.path)
         self.date_time = None
         self.target = None
 
@@ -268,6 +269,9 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
     logger.info(log_str)
+
+    max_width = max(f.image.width for f in tar)
+    max_height = max(f.image.height for f in tar)
     
     frames = []
     q1 = None
@@ -285,9 +289,13 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
 
                     rotation = q2.deg - q1.deg
 
-        image = Image.open(n.path)
-        for i, frame in enumerate(ImageSequence.Iterator(image)):
-            f = frame.copy()
+        for i, frame in enumerate(ImageSequence.Iterator(n.image)):
+            f = Image.new(frame.mode, (max_width, max_height))
+            
+            x_offset = (max_width - frame.width) // 2
+            y_offset = (max_height - frame.height) // 2
+
+            f.paste(frame, (x_offset, y_offset))
 
             icc = frame.info.get("icc_profile")
             if not icc_profile and icc:
