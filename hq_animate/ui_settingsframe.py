@@ -23,8 +23,8 @@ class Ui_SettingsFrame(object):
     def setupUi(self, SettingsFrame):
         if not SettingsFrame.objectName():
             SettingsFrame.setObjectName(u"SettingsFrame")
-        SettingsFrame.resize(700, 650)
-        SettingsFrame.setMinimumSize(QSize(700, 650))
+        SettingsFrame.resize(650, 700)
+        SettingsFrame.setMinimumSize(QSize(650, 700))
         SettingsFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(SettingsFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")

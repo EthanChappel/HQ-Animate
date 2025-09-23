@@ -26,8 +26,8 @@ class Ui_MainFrame(object):
     def setupUi(self, MainFrame):
         if not MainFrame.objectName():
             MainFrame.setObjectName(u"MainFrame")
-        MainFrame.resize(700, 650)
-        MainFrame.setMinimumSize(QSize(700, 650))
+        MainFrame.resize(650, 700)
+        MainFrame.setMinimumSize(QSize(650, 700))
         MainFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(MainFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
