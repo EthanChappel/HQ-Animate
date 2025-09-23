@@ -31,10 +31,10 @@ import platform
 import re
 from pathlib import Path
 from enum import Enum
-from PIL import Image, ImageSequence, ImageMath
+from PIL import Image, ImageSequence
 from astropy.io import fits
 from astropy.time import Time
-from astropy.coordinates import AltAz, Angle, EarthLocation, solar_system_ephemeris, get_body, position_angle
+from astropy.coordinates import AltAz, Angle, EarthLocation, BaseCoordinateFrame, RepresentationMapping, matrix_utilities, solar_system_ephemeris, get_body, position_angle
 from astropy import units as u
 import numpy as np
 
@@ -176,9 +176,11 @@ class WebMOptions(FormatOptions):
 
 
 class DerotationOptions:
-    def __init__(self, latitude: float, longitude: float, target: str):
+    def __init__(self, latitude: float=0, longitude: float=0, altitude_tilt: float=0, azimuth_tilt: float=0, target: str=""):
         self.latitude = latitude
         self.longitude = longitude
+        self.altitude_tilt = altitude_tilt
+        self.azimuth_tilt = azimuth_tilt
         self.target = target
 
 class ProcessOptions:
@@ -220,9 +222,22 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
     return features
 
 
-def get_body_angle(body_name: str, time: Time, location: EarthLocation) -> Angle | None:
+def get_body_angle(body_name: str, time: Time, derotation_options: DerotationOptions) -> Angle | None:
+    location = EarthLocation(lat=derotation_options.latitude * u.deg, lon=derotation_options.longitude * u.deg)
     body = get_body(body_name, time, location).transform_to(AltAz(location=location, obstime=time))
-    return position_angle(body.az, body.alt, 0, location.lat.value * u.deg)
+
+    rep = body.represent_as('spherical')
+
+    # Azimuth axis tilt around the east-west line, positive towards east (90 degrees azimuth).
+    az_matrix = matrix_utilities.rotation_matrix(-derotation_options.azimuth_tilt, axis='y') # Tilt towards West
+    
+    # Altitude axis tilt around the north-south line, positive towards north (0 degrees azimuth).
+    alt_matrix = matrix_utilities.rotation_matrix(derotation_options.altitude_tilt, axis='x')
+    
+    rotation_matrix = alt_matrix @ az_matrix
+    
+    tilted_rep = rep.transform(rotation_matrix)
+    return position_angle(tilted_rep.lon, tilted_rep.lat, 0, location.lat.value * u.deg)
 
 
 def to_float32(image):
@@ -281,11 +296,10 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         rotation = 0
         if derotation_options != None:
             with solar_system_ephemeris.set('builtin'):
-                observer = EarthLocation(lat=derotation_options.latitude * u.deg, lon=derotation_options.longitude * u.deg)
                 if q1 == None:
-                    q1 = get_body_angle(derotation_options.target.lower(), n.date_time, observer)
+                    q1 = get_body_angle(derotation_options.target.lower(), n.date_time, derotation_options)
                 else:
-                    q2 = get_body_angle(derotation_options.target.lower(), n.date_time, observer)
+                    q2 = get_body_angle(derotation_options.target.lower(), n.date_time, derotation_options)
 
                     rotation = q2.deg - q1.deg
 

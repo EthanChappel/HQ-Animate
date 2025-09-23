@@ -145,34 +145,45 @@ class Ui_MainFrame(object):
         self.formats_page.setObjectName(u"formats_page")
         self.gridLayout_2 = QGridLayout(self.formats_page)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.line_2 = QFrame(self.formats_page)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.Shape.VLine)
-        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
-
-        self.gridLayout_2.addWidget(self.line_2, 0, 2, 2, 1)
-
         self.webp_check = QCheckBox(self.formats_page)
         self.webp_check.setObjectName(u"webp_check")
 
-        self.gridLayout_2.addWidget(self.webp_check, 1, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.webp_check, 2, 0, 1, 1)
 
-        self.line = QFrame(self.formats_page)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.apng_check = QCheckBox(self.formats_page)
+        self.apng_check.setObjectName(u"apng_check")
 
-        self.gridLayout_2.addWidget(self.line, 2, 0, 1, 5)
+        self.gridLayout_2.addWidget(self.apng_check, 0, 0, 1, 1)
 
-        self.webp_options_button = QToolButton(self.formats_page)
-        self.webp_options_button.setObjectName(u"webp_options_button")
+        self.avif_options_button = QToolButton(self.formats_page)
+        self.avif_options_button.setObjectName(u"avif_options_button")
 
-        self.gridLayout_2.addWidget(self.webp_options_button, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.avif_options_button, 1, 1, 1, 1)
+
+        self.apng_options_button = QToolButton(self.formats_page)
+        self.apng_options_button.setObjectName(u"apng_options_button")
+
+        self.gridLayout_2.addWidget(self.apng_options_button, 0, 1, 1, 1)
+
+        self.gif_check = QCheckBox(self.formats_page)
+        self.gif_check.setObjectName(u"gif_check")
+
+        self.gridLayout_2.addWidget(self.gif_check, 3, 0, 1, 1)
 
         self.gif_options_button = QToolButton(self.formats_page)
         self.gif_options_button.setObjectName(u"gif_options_button")
 
-        self.gridLayout_2.addWidget(self.gif_options_button, 1, 4, 1, 1)
+        self.gridLayout_2.addWidget(self.gif_options_button, 3, 1, 1, 1)
+
+        self.webp_options_button = QToolButton(self.formats_page)
+        self.webp_options_button.setObjectName(u"webp_options_button")
+
+        self.gridLayout_2.addWidget(self.webp_options_button, 2, 1, 1, 1)
+
+        self.avif_check = QCheckBox(self.formats_page)
+        self.avif_check.setObjectName(u"avif_check")
+
+        self.gridLayout_2.addWidget(self.avif_check, 1, 0, 1, 1)
 
         self.video_stack = QStackedWidget(self.formats_page)
         self.video_stack.setObjectName(u"video_stack")
@@ -225,32 +236,7 @@ class Ui_MainFrame(object):
 
         self.video_stack.addWidget(self.page_4)
 
-        self.gridLayout_2.addWidget(self.video_stack, 3, 0, 1, 5)
-
-        self.apng_options_button = QToolButton(self.formats_page)
-        self.apng_options_button.setObjectName(u"apng_options_button")
-
-        self.gridLayout_2.addWidget(self.apng_options_button, 0, 1, 1, 1)
-
-        self.avif_check = QCheckBox(self.formats_page)
-        self.avif_check.setObjectName(u"avif_check")
-
-        self.gridLayout_2.addWidget(self.avif_check, 0, 3, 1, 1)
-
-        self.avif_options_button = QToolButton(self.formats_page)
-        self.avif_options_button.setObjectName(u"avif_options_button")
-
-        self.gridLayout_2.addWidget(self.avif_options_button, 0, 4, 1, 1)
-
-        self.apng_check = QCheckBox(self.formats_page)
-        self.apng_check.setObjectName(u"apng_check")
-
-        self.gridLayout_2.addWidget(self.apng_check, 0, 0, 1, 1)
-
-        self.gif_check = QCheckBox(self.formats_page)
-        self.gif_check.setObjectName(u"gif_check")
-
-        self.gridLayout_2.addWidget(self.gif_check, 1, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.video_stack, 4, 0, 1, 2)
 
         self.formats_stack.addWidget(self.formats_page)
         self.apng_page = QWidget()
@@ -702,6 +688,36 @@ class Ui_MainFrame(object):
 
         self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.longitude_spin)
 
+        self.az_tilt_spin = QDoubleSpinBox(self.derotation_group)
+        self.az_tilt_spin.setObjectName(u"az_tilt_spin")
+        sizePolicy5.setHeightForWidth(self.az_tilt_spin.sizePolicy().hasHeightForWidth())
+        self.az_tilt_spin.setSizePolicy(sizePolicy5)
+        self.az_tilt_spin.setMinimum(-90.000000000000000)
+        self.az_tilt_spin.setMaximum(90.000000000000000)
+        self.az_tilt_spin.setSingleStep(0.100000000000000)
+
+        self.formLayout.setWidget(4, QFormLayout.ItemRole.FieldRole, self.az_tilt_spin)
+
+        self.alt_tilt_label = QLabel(self.derotation_group)
+        self.alt_tilt_label.setObjectName(u"alt_tilt_label")
+
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.alt_tilt_label)
+
+        self.az_tilt_label = QLabel(self.derotation_group)
+        self.az_tilt_label.setObjectName(u"az_tilt_label")
+
+        self.formLayout.setWidget(4, QFormLayout.ItemRole.LabelRole, self.az_tilt_label)
+
+        self.alt_tilt_spin = QDoubleSpinBox(self.derotation_group)
+        self.alt_tilt_spin.setObjectName(u"alt_tilt_spin")
+        sizePolicy5.setHeightForWidth(self.alt_tilt_spin.sizePolicy().hasHeightForWidth())
+        self.alt_tilt_spin.setSizePolicy(sizePolicy5)
+        self.alt_tilt_spin.setMinimum(-90.000000000000000)
+        self.alt_tilt_spin.setMaximum(90.000000000000000)
+        self.alt_tilt_spin.setSingleStep(0.100000000000000)
+
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.alt_tilt_spin)
+
 
         self.horizontalLayout.addWidget(self.derotation_group)
 
@@ -792,6 +808,8 @@ class Ui_MainFrame(object):
         self.target_label.setBuddy(self.target_combo)
         self.latitude_label.setBuddy(self.latitude_spin)
         self.longitude_label.setBuddy(self.longitude_spin)
+        self.alt_tilt_label.setBuddy(self.alt_tilt_spin)
+        self.az_tilt_label.setBuddy(self.az_tilt_spin)
         self.output_label.setBuddy(self.output_browse_button)
         self.output_name_label.setBuddy(self.output_name_edit)
 #endif // QT_CONFIG(shortcut)
@@ -825,18 +843,18 @@ class Ui_MainFrame(object):
         self.toolButton_2.setText(QCoreApplication.translate("MainFrame", u">", None))
         self.formats_group.setTitle(QCoreApplication.translate("MainFrame", u"Formats", None))
         self.webp_check.setText(QCoreApplication.translate("MainFrame", u"&WebP", None))
-        self.webp_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.apng_check.setText(QCoreApplication.translate("MainFrame", u"A&PNG", None))
+        self.avif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.apng_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
         self.gif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.webp_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.avif_check.setText(QCoreApplication.translate("MainFrame", u"A&VIF", None))
         self.webm_check.setText(QCoreApplication.translate("MainFrame", u"Web&M", None))
         self.mp4_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.mp4_check.setText(QCoreApplication.translate("MainFrame", u"MP&4", None))
         self.webm_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.requires_ffmpeg_label.setText(QCoreApplication.translate("MainFrame", u"MP4 and WebM requires FFmpeg.", None))
-        self.apng_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
-        self.avif_check.setText(QCoreApplication.translate("MainFrame", u"A&VIF", None))
-        self.avif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
-        self.apng_check.setText(QCoreApplication.translate("MainFrame", u"A&PNG", None))
-        self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
         self.label.setText(QCoreApplication.translate("MainFrame", u"APNG options", None))
         self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize size", None))
         self.apng_optimize_check.setText("")
@@ -875,6 +893,10 @@ class Ui_MainFrame(object):
         self.latitude_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.longitude_label.setText(QCoreApplication.translate("MainFrame", u"Lo&ngitude", None))
         self.longitude_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
+        self.az_tilt_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
+        self.alt_tilt_label.setText(QCoreApplication.translate("MainFrame", u"North tilt", None))
+        self.az_tilt_label.setText(QCoreApplication.translate("MainFrame", u"East tilt", None))
+        self.alt_tilt_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.output_label.setText(QCoreApplication.translate("MainFrame", u"&Output folder", None))
         self.output_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
         self.output_name_label.setText(QCoreApplication.translate("MainFrame", u"Name", None))

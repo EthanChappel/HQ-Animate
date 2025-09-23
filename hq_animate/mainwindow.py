@@ -56,8 +56,10 @@ class MainWindow(QMainWindow):
     
     def save_settings(self):
         self.settings.field_derotation = self.main_frame.derotation_group.isChecked()
-        self.settings.latitude = self.main_frame.latitude_spin.value()
-        self.settings.longitude = self.main_frame.longitude_spin.value()
+        self.settings.derotation_options.latitude = self.main_frame.latitude_spin.value()
+        self.settings.derotation_options.longitude = self.main_frame.longitude_spin.value()
+        self.settings.derotation_options.altitude_tilt = self.main_frame.alt_tilt_spin.value()
+        self.settings.derotation_options.azimuth_tilt = self.main_frame.az_tilt_spin.value()
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()

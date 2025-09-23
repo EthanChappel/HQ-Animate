@@ -84,8 +84,10 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.derotation_group.setChecked(self.settings.field_derotation)
-        self.latitude_spin.setValue(self.settings.latitude)
-        self.longitude_spin.setValue(self.settings.longitude)
+        self.latitude_spin.setValue(self.settings.derotation_options.latitude)
+        self.longitude_spin.setValue(self.settings.derotation_options.longitude)
+        self.alt_tilt_spin.setValue(self.settings.derotation_options.altitude_tilt)
+        self.az_tilt_spin.setValue(self.settings.derotation_options.azimuth_tilt)
         self.show_folder_check.setChecked(self.settings.show_folder)
 
         self.output_path_edit.textChanged.connect(self.set_convert_button_state)
@@ -291,7 +293,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         derotation_options = None
         if self.derotation_group.isChecked():
-            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
+            derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.alt_tilt_spin.value(), self.az_tilt_spin.value(), self.target_combo.currentText())
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
