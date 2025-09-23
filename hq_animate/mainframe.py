@@ -83,7 +83,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.gif_optimize_check.setChecked(self.settings.gif_options.optimize)
 
         self.duration_spinbox.setValue(self.settings.frame_length)
-        self.enable_check.setChecked(self.settings.field_derotation)
+        self.derotation_group.setChecked(self.settings.field_derotation)
         self.latitude_spin.setValue(self.settings.latitude)
         self.longitude_spin.setValue(self.settings.longitude)
         self.show_folder_check.setChecked(self.settings.show_folder)
@@ -93,7 +93,7 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.input_browse_button.clicked.connect(self.set_input_frames)
         self.output_browse_button.clicked.connect(self.set_output_path)
-        self.enable_check.toggled.connect(self.set_field_derotation_state)
+        self.derotation_group.toggled.connect(self.set_field_derotation_state)
         self.settings_button.clicked.connect(self.switch_to_settings_page)
         self.convert_button.clicked.connect(self.on_convert_start)
         self.wildcards = " ".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
@@ -134,10 +134,9 @@ class MainFrame(QFrame, Ui_MainFrame):
                     target = f.target
                     enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
             self.frames_table.model().endResetModel()
-            self.enable_label.setEnabled(enable_field_rotation_option)
-            self.enable_check.setEnabled(enable_field_rotation_option)
+            self.derotation_group.setEnabled(enable_field_rotation_option)
             if not enable_field_rotation_option:
-                self.enable_check.setChecked(False)
+                self.derotation_group.setChecked(False)
             self.set_field_derotation_state()
             if target:
                 self.target_combo.setCurrentText(target)
@@ -160,7 +159,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.update_ffmpeg_widgets()
     
     def set_field_derotation_state(self, index=None):
-        is_checked = self.enable_check.isChecked()
+        is_checked = self.derotation_group.isChecked()
 
         for f in self.paths:
             if not f.date_time:
@@ -188,7 +187,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         has_input = self.frames_table.model().rowCount(0) > 0
         has_output_dir = out_dir.exists() and out_dir.is_absolute()
         has_output_name = len(self.output_name_edit.text()) > 0
-        do_derotate = self.enable_check.isChecked()
+        do_derotate = self.derotation_group.isChecked()
         derotate_and_target = (not do_derotate) or (do_derotate and not self.target_combo.currentText() not in convert.TARGETS.keys())
 
         self.convert_button.setEnabled((do_apng or do_avif or do_webp or do_gif or do_mp4 or do_webm) and has_input and has_output_dir and has_output_name and derotate_and_target)
@@ -291,7 +290,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             webm_options = convert.WebMOptions(convert.WebMCodec[self.webm_codec_combo.currentText()])
 
         derotation_options = None
-        if self.enable_check.isChecked():
+        if self.derotation_group.isChecked():
             derotation_options = convert.DerotationOptions(self.latitude_spin.value(), self.longitude_spin.value(), self.target_combo.currentText())
         
         video_options = convert.VideoOptions(self.loop_spinner.value())

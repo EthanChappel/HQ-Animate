@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         self.stack_frame.setCurrentWidget(self.settings_frame)
     
     def save_settings(self):
-        self.settings.field_derotation = self.main_frame.enable_check.isChecked()
+        self.settings.field_derotation = self.main_frame.derotation_group.isChecked()
         self.settings.latitude = self.main_frame.latitude_spin.value()
         self.settings.longitude = self.main_frame.longitude_spin.value()
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
