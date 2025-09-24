@@ -135,6 +135,8 @@ class MainFrame(QFrame, Ui_MainFrame):
                 if not target:
                     target = f.target
                     enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
+            if self.all_dates():
+                self.paths.sort(key=lambda f: f.date_time)
             self.frames_table.model().endResetModel()
             self.derotation_group.setEnabled(enable_field_rotation_option)
             if not enable_field_rotation_option:
@@ -160,14 +162,14 @@ class MainFrame(QFrame, Ui_MainFrame):
     def update_settings(self):
         self.update_ffmpeg_widgets()
     
-    def set_field_derotation_state(self, index=None):
-        is_checked = self.derotation_group.isChecked()
-
+    def all_dates(self):
         for f in self.paths:
             if not f.date_time:
-                is_checked = False
-                break
-
+                return False
+        return True
+    
+    def set_field_derotation_state(self, index=None):
+        is_checked = self.derotation_group.isChecked() and self.all_dates()
         self.derotation_group.setChecked(is_checked)
     
     def set_convert_button_state(self):
