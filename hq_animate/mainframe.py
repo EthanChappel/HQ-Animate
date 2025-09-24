@@ -168,14 +168,7 @@ class MainFrame(QFrame, Ui_MainFrame):
                 is_checked = False
                 break
 
-        self.latitude_label.setEnabled(is_checked)
-        self.latitude_spin.setEnabled(is_checked)
-        
-        self.longitude_label.setEnabled(is_checked)
-        self.longitude_spin.setEnabled(is_checked)
-
-        self.target_label.setEnabled(is_checked)
-        self.target_combo.setEnabled(is_checked)
+        self.derotation_group.setChecked(is_checked)
     
     def set_convert_button_state(self):
         out_dir = Path(self.output_path_edit.text())

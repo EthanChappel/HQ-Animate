@@ -642,6 +642,7 @@ class Ui_MainFrame(object):
 
         self.derotation_group = QGroupBox(MainFrame)
         self.derotation_group.setObjectName(u"derotation_group")
+        self.derotation_group.setEnabled(False)
         sizePolicy3.setHeightForWidth(self.derotation_group.sizePolicy().hasHeightForWidth())
         self.derotation_group.setSizePolicy(sizePolicy3)
         self.derotation_group.setCheckable(True)
