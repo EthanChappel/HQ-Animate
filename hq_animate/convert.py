@@ -261,20 +261,20 @@ def to_uint8(image):
     if image.mode == "L":
         return image
 
-    a = np.array(image)
-
     dtype_info = np.iinfo(np.uint8)
-
     dtype_min = dtype_info.min
     dtype_max = dtype_info.max
 
+    a = np.array(image)
     a_min = np.min(a)
-    if a_min < 0:
-        a -= a_min
+    a_max = np.max(a)
+
+    if a_max - a_min == 0:
+        return np.full_like(a, (a_min + a_max) / 2)
+
+    a = ((a - a_min) / (a_max - a_min)) * (dtype_max - dtype_min) + dtype_min
     
-    a = (a * (dtype_max - dtype_min) + dtype_min).astype(np.uint8)
-    
-    return Image.fromarray(a, mode="L")
+    return Image.fromarray(a.astype(np.uint8), mode="L")
     
 
 
