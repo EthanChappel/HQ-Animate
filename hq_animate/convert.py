@@ -265,18 +265,19 @@ def to_uint8(image):
     dtype_min = dtype_info.min
     dtype_max = dtype_info.max
 
-    a = np.array(image)
+    a = normalize_to_range(np.array(image), dtype_min, dtype_max).astype(np.uint8)
+    
+    return Image.fromarray(a, mode="L")
+    
+
+def normalize_to_range(a: np.ndarray, min_value: int, max_value: int):
     a_min = np.min(a)
     a_max = np.max(a)
 
     if a_max - a_min == 0:
         return np.full_like(a, (a_min + a_max) / 2)
 
-    a = ((a - a_min) / (a_max - a_min)) * (dtype_max - dtype_min) + dtype_min
-    
-    return Image.fromarray(a.astype(np.uint8), mode="L")
-    
-
+    return ((a - a_min) / (a_max - a_min)) * (max_value - min_value) + min_value
 
 
 def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, video_options: VideoOptions=None, process_options: ProcessOptions=None, ffmpeg_path: Path=None):
@@ -356,6 +357,8 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
 
             f1 = np.array(f1)
             f2 = np.array(f2)
+
+            f2 = normalize_to_range(f2, np.min(f2), np.max(f2))
 
             f = (f2 - f1).clip(0).astype(np.float32)
 
