@@ -139,8 +139,6 @@ class MainFrame(QFrame, Ui_MainFrame):
                 self.paths.sort(key=lambda f: f.date_time)
             self.frames_table.model().endResetModel()
             self.derotation_group.setEnabled(enable_field_rotation_option)
-            if not enable_field_rotation_option:
-                self.derotation_group.setChecked(False)
             self.set_field_derotation_state()
             if target:
                 self.target_combo.setCurrentText(target)
@@ -166,10 +164,13 @@ class MainFrame(QFrame, Ui_MainFrame):
         for f in self.paths:
             if not f.date_time:
                 return False
-        return True
+        return len(self.paths) > 0
     
     def set_field_derotation_state(self, index=None):
-        is_checked = self.derotation_group.isChecked() and self.all_dates()
+        is_enabled = self.all_dates()
+        is_checked = self.derotation_group.isChecked() and (is_enabled or len(self.paths) == 0)
+        
+        self.derotation_group.setEnabled(is_enabled)
         self.derotation_group.setChecked(is_checked)
     
     def set_convert_button_state(self):
