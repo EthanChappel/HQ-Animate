@@ -338,7 +338,10 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             right = (f.width + process_options.width) // 2
             bottom = (f.height + process_options.height) // 2
             f = f.crop((left, top, right, bottom))
-            
+
+            if f.mode == "RGBA":
+                f = f.convert("RGB")
+
             frames.append(f)
     
     average_frames = process_options.average_frames
