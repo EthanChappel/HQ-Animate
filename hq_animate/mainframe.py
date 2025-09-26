@@ -129,8 +129,12 @@ class MainFrame(QFrame, Ui_MainFrame):
             enable_field_rotation_option = True
             target = None
             self.frames_table.model().beginResetModel()
+            max_width = 0
+            max_height = 0
             for p in paths:
                 f = convert.Frame(p)
+                max_width = max(max_width, f.image.width)
+                max_height = max(max_height, f.image.height)
                 self.paths.append(f)
                 if not target:
                     target = f.target
@@ -143,6 +147,8 @@ class MainFrame(QFrame, Ui_MainFrame):
             if target:
                 self.target_combo.setCurrentText(target)
             self.output_path_edit.setText(str(self.paths[0].path.parent))
+            self.width_spinner.setValue(max_width)
+            self.height_spinner.setValue(max_height)
         
         self.set_convert_button_state()
     
@@ -293,7 +299,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
-        process_options = convert.ProcessOptions(self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value())
+        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value())
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(

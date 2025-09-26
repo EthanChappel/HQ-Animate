@@ -184,7 +184,9 @@ class DerotationOptions:
         self.target = target
 
 class ProcessOptions:
-    def __init__(self, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1):
+    def __init__(self, width: int, height: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1):
+        self.width = width
+        self.height = height
         self.average_frames = average_frames
         self.subtract_frames = subtract_frames
         self.subtract_spread = subtract_spread
@@ -326,6 +328,12 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC)
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
+            
+            left = (f.width - process_options.width) // 2
+            top = (f.height - process_options.height) // 2
+            right = (f.width + process_options.width) // 2
+            bottom = (f.height + process_options.height) // 2
+            f = f.crop((left, top, right, bottom))
             
             frames.append(f)
     
