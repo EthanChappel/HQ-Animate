@@ -307,7 +307,11 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                     rotation = q2.deg - q1.deg
 
         for i, frame in enumerate(ImageSequence.Iterator(n.image)):
-            f = Image.new(frame.mode, (max_width, max_height))
+            f = Image.new(frame.mode, (max_width, max_height), 'black')
+
+            if frame.mode == "RGBA":
+                bg = Image.new(frame.mode, (frame.width, frame.height), 'black')
+                frame = Image.alpha_composite(bg, frame).convert("RGB")
             
             x_offset = (max_width - frame.width) // 2
             y_offset = (max_height - frame.height) // 2
@@ -326,7 +330,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                 is_color = True
             if derotation_options != None:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
-                f = f.rotate(rotation, resample=Image.BICUBIC)
+                f = f.rotate(rotation, resample=Image.BICUBIC, fillcolor='black')
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
             
             left = (f.width - process_options.width) // 2
