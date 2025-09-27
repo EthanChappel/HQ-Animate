@@ -486,6 +486,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             '-c:v', 'libx264',
             '-profile:v', 'main',
             '-pix_fmt', 'yuv420p',
+            '-vf', r'crop=iw-mod(iw\,2):ih-mod(ih\,2)',
             '-crf', '1',
         ]
         av1_options = [
