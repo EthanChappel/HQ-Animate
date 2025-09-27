@@ -530,9 +530,15 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
 
         logger.info("Run FFmpeg: " + " ".join(ffmpeg_options))
         
-        process = subprocess.Popen(ffmpeg_options, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, stdin=subprocess.PIPE)
-        
-        for f in itertools.islice(itertools.cycle(frames), video_length):
-            process.stdin.write(f.tobytes())
-        process.stdin.close()
-        process.wait()
+        try:
+            process = subprocess.Popen(ffmpeg_options, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            for f in itertools.islice(itertools.cycle(frames), video_length):
+                process.stdin.write(f.tobytes())
+            
+            process.stdin.close()
+            process.stderr.close()
+            
+            process.wait()
+        except subprocess.CalledProcessError as e:
+            logger.error(f"FFmpeg failed with exit code {e.returncode}\n{e.stderr.strip()}")
