@@ -1,6 +1,8 @@
 # HQ Animate
 Create high quality animations from a sequence of image files.
 
+![Screenshot of H Q Animate graphical user internface](Screenshot.png)
+
 ## Installation
 
 Requires Python 3.12 or later.
