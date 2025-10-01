@@ -2,6 +2,9 @@
 Create high quality animations from a sequence of image files.
 
 ## Installation
+
+Requires Python 3.12 or later.
+
 ### Install with `pipx`
 `pipx` is recommended since it installs Python applications into isolated environments.
 
