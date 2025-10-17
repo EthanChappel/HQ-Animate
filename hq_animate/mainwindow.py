@@ -61,6 +61,7 @@ class MainWindow(QMainWindow):
         self.settings.derotation_options.altitude_tilt = self.main_frame.alt_tilt_spin.value()
         self.settings.derotation_options.azimuth_tilt = self.main_frame.az_tilt_spin.value()
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
+        self.settings.animation_mode = convert.AnimationMode[self.main_frame.mode_combo.currentText()]
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 

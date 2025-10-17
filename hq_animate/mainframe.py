@@ -82,6 +82,11 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.gif_optimize_check.setChecked(self.settings.gif_options.optimize)
 
+        for m in convert.AnimationMode:
+            self.mode_combo.addItem(m.name)
+        
+        self.mode_combo.setCurrentIndex(int(self.settings.animation_mode))
+
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.derotation_group.setChecked(self.settings.field_derotation)
         self.latitude_spin.setValue(self.settings.derotation_options.latitude)
@@ -299,7 +304,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
-        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value())
+        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value(), convert.AnimationMode[self.mode_combo.currentText()])
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(

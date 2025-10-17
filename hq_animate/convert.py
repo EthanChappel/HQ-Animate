@@ -130,6 +130,11 @@ class SubtractMode(str, Enum):
     RGB = 2
 
 
+class AnimationMode(str, Enum):
+    Loop = 0
+    Rock = 1
+
+
 class FormatOptions:
     pass
 
@@ -184,12 +189,13 @@ class DerotationOptions:
         self.target = target
 
 class ProcessOptions:
-    def __init__(self, width: int, height: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1):
+    def __init__(self, width: int, height: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1, animation_mode=AnimationMode.Loop):
         self.width = width
         self.height = height
         self.average_frames = average_frames
         self.subtract_frames = subtract_frames
         self.subtract_spread = subtract_spread
+        self.animation_mode = animation_mode
 
 
 def find_ffmpeg() -> list[Path]:
@@ -393,6 +399,9 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             f = to_uint8(f)
         tmp.append(f)
     frames = tmp
+
+    if process_options.animation_mode == AnimationMode.Rock:
+        frames.extend(frames[1:-1:][::-1])
 
     image = frames[0]
 
