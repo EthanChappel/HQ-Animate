@@ -62,6 +62,7 @@ class Frame:
     def __init__(self, path):
         self.path = Path(path)
         self.image = Image.open(self.path)
+        self.duration = self.image.info.get('duration', 0)
         self.date_time = None
         self.target = None
 

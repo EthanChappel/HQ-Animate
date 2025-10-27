@@ -138,6 +138,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.frames_table.model().beginResetModel()
             max_width = 0
             max_height = 0
+            duration = 0
             for p in paths:
                 f = convert.Frame(p)
                 max_width = max(max_width, f.image.width)
@@ -146,6 +147,8 @@ class MainFrame(QFrame, Ui_MainFrame):
                 if not target:
                     target = f.target
                     enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
+                if duration == 0:
+                    duration = f.duration
             if self.all_dates():
                 self.paths.sort(key=lambda f: f.date_time)
             self.frames_table.model().endResetModel()
@@ -156,6 +159,8 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.output_path_edit.setText(str(self.paths[0].path.parent))
             self.width_spinner.setValue(max_width)
             self.height_spinner.setValue(max_height)
+            if duration > 0:
+                self.duration_spinbox.setValue(duration)
         
         self.set_convert_button_state()
     
