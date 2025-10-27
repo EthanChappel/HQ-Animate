@@ -121,8 +121,10 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         if self.settings.mp4_options:
             self.mp4_codec_combo.setCurrentText(self.settings.mp4_options.codec.name)
+            self.mp4_quality_spinner.setValue(self.settings.mp4_options.quality)
         if self.settings.webm_options:
             self.webm_codec_combo.setCurrentText(self.settings.webm_options.codec.name)
+            self.webm_quality_spinner.setValue(self.settings.webm_options.quality)
         
         self.loop_spinner.setValue(self.settings.video_options.loop)
 
@@ -299,11 +301,11 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         mp4_options = None
         if self.mp4_check.isChecked():
-            mp4_options = convert.MP4Options(convert.MP4Codec[self.mp4_codec_combo.currentText()])
+            mp4_options = convert.MP4Options(self.mp4_quality_spinner.value(), convert.MP4Codec[self.mp4_codec_combo.currentText()])
         
         webm_options = None
         if self.webm_check.isChecked():
-            webm_options = convert.WebMOptions(convert.WebMCodec[self.webm_codec_combo.currentText()])
+            webm_options = convert.WebMOptions(self.webm_quality_spinner.value(), convert.WebMCodec[self.webm_codec_combo.currentText()])
 
         derotation_options = None
         if self.derotation_group.isChecked():

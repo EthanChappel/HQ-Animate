@@ -468,6 +468,19 @@ class Ui_MainFrame(object):
 
         self.formLayout_3.setWidget(0, QFormLayout.ItemRole.FieldRole, self.mp4_codec_combo)
 
+        self.mp4_quality_label = QLabel(self.mp4_page)
+        self.mp4_quality_label.setObjectName(u"mp4_quality_label")
+
+        self.formLayout_3.setWidget(1, QFormLayout.ItemRole.LabelRole, self.mp4_quality_label)
+
+        self.mp4_quality_spinner = QSpinBox(self.mp4_page)
+        self.mp4_quality_spinner.setObjectName(u"mp4_quality_spinner")
+        self.mp4_quality_spinner.setMinimum(1)
+        self.mp4_quality_spinner.setMaximum(100)
+        self.mp4_quality_spinner.setValue(95)
+
+        self.formLayout_3.setWidget(1, QFormLayout.ItemRole.FieldRole, self.mp4_quality_spinner)
+
 
         self.verticalLayout_6.addLayout(self.formLayout_3)
 
@@ -512,6 +525,19 @@ class Ui_MainFrame(object):
         self.webm_codec_label.setObjectName(u"webm_codec_label")
 
         self.formLayout_4.setWidget(0, QFormLayout.ItemRole.LabelRole, self.webm_codec_label)
+
+        self.webm_quality_label = QLabel(self.webm_page)
+        self.webm_quality_label.setObjectName(u"webm_quality_label")
+
+        self.formLayout_4.setWidget(1, QFormLayout.ItemRole.LabelRole, self.webm_quality_label)
+
+        self.webm_quality_spinner = QSpinBox(self.webm_page)
+        self.webm_quality_spinner.setObjectName(u"webm_quality_spinner")
+        self.webm_quality_spinner.setMinimum(1)
+        self.webm_quality_spinner.setMaximum(100)
+        self.webm_quality_spinner.setValue(95)
+
+        self.formLayout_4.setWidget(1, QFormLayout.ItemRole.FieldRole, self.webm_quality_spinner)
 
 
         self.verticalLayout_5.addLayout(self.formLayout_4)
@@ -853,7 +879,9 @@ class Ui_MainFrame(object):
         self.webp_lossless_label.setBuddy(self.webp_lossless_check)
         self.label_8.setBuddy(self.gif_optimize_check)
         self.mp4_codec_label.setBuddy(self.mp4_codec_combo)
+        self.mp4_quality_label.setBuddy(self.mp4_quality_spinner)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
+        self.webm_quality_label.setBuddy(self.webm_quality_spinner)
         self.duration_label.setBuddy(self.duration_spinbox)
         self.loop_label.setBuddy(self.loop_spinner)
         self.width_label.setBuddy(self.width_spinner)
@@ -976,9 +1004,11 @@ class Ui_MainFrame(object):
         self.gif_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_3.setText(QCoreApplication.translate("MainFrame", u"MP4 options", None))
         self.mp4_codec_label.setText(QCoreApplication.translate("MainFrame", u"Codec", None))
+        self.mp4_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
         self.mp4_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.label_4.setText(QCoreApplication.translate("MainFrame", u"WebM options", None))
         self.webm_codec_label.setText(QCoreApplication.translate("MainFrame", u"Codec", None))
+        self.webm_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
         self.webm_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.parameters_group.setTitle(QCoreApplication.translate("MainFrame", u"Parameters", None))
         self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))

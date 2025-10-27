@@ -81,9 +81,11 @@ class MainWindow(QMainWindow):
 
         self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
         self.settings.mp4_options.codec = convert.MP4Codec[self.main_frame.mp4_codec_combo.currentText()]
+        self.settings.mp4_options.quality = self.main_frame.mp4_quality_spinner.value()
 
         self.settings.do_webm = self.main_frame.webm_check.isChecked()
         self.settings.webm_options.codec = convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()]
+        self.settings.webm_options.quality = self.main_frame.webm_quality_spinner.value()
 
         self.settings.video_options.loop = self.main_frame.loop_spinner.value()
 
