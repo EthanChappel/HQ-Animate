@@ -97,6 +97,8 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.output_path_edit.textChanged.connect(self.set_convert_button_state)
         self.output_name_edit.textChanged.connect(self.set_convert_button_state)
+        self.derotation_group.toggled.connect(self.set_convert_button_state)
+        self.target_combo.currentIndexChanged.connect(self.set_convert_button_state)
 
         self.input_browse_button.clicked.connect(self.set_input_frames)
         self.output_browse_button.clicked.connect(self.set_output_path)
@@ -304,7 +306,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
-        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value(), convert.AnimationMode[self.mode_combo.currentText()])
+        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.rotate_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value(), convert.AnimationMode[self.mode_combo.currentText()])
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
