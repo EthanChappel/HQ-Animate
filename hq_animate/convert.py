@@ -167,14 +167,16 @@ class VideoOptions:
 
 
 class MP4Options(FormatOptions):
-    def __init__(self, codec: MP4Codec|str=MP4Codec.AVC):
+    def __init__(self, quality: int=95, codec: MP4Codec|str=MP4Codec.AVC):
+        self.quality = quality
         if isinstance(codec, str):
             codec = MP4Codec(codec)
         self.codec = codec
 
 
 class WebMOptions(FormatOptions):
-    def __init__(self, codec: WebMCodec|str=WebMCodec.VP9):
+    def __init__(self, quality: int=95, codec: WebMCodec|str=WebMCodec.VP9):
+        self.quality = quality
         if isinstance(codec, str):
             codec = WebMCodec(codec)
         self.codec = codec
@@ -287,6 +289,11 @@ def normalize_to_range(a: np.ndarray, min_value: int, max_value: int):
         return np.full_like(a, (a_min + a_max) / 2)
 
     return ((a - a_min) / (a_max - a_min)) * (max_value - min_value) + min_value
+
+
+def map_range(value, in_min, in_max, out_min, out_max):
+    normalized_value = (value - in_min) / (in_max - in_min)
+    return out_min + normalized_value * (out_max - out_min)
 
 
 def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, video_options: VideoOptions=None, process_options: ProcessOptions=None, ffmpeg_path: Path=None):
@@ -497,18 +504,14 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             '-profile:v', 'main',
             '-pix_fmt', 'yuv420p',
             '-vf', r'crop=iw-mod(iw\,2):ih-mod(ih\,2)',
-            '-crf', '1',
         ]
         av1_options = [
             '-c:v', 'librav1e',
-            '-qp', '0',
         ]
         vp9_options = [
             '-c:v', 'libvpx-vp9',
             '-row-mt', '1',
             '-b:v', '0',
-            '-crf', '0',
-            '-lossless', '1',
         ]
         
         if mp4_options != None:
@@ -520,10 +523,13 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             ffmpeg_options += output_options
             if codec == MP4Codec.AVC:
                 ffmpeg_options += avc_options
+                ffmpeg_options += ['-crf', str(int(np.round(map_range(mp4_options.quality, 1, 100, 51, 1))))]
             elif codec == MP4Codec.AV1:
                 ffmpeg_options += av1_options
+                ffmpeg_options += ['-qp', str(int(np.round(map_range(mp4_options.quality, 1, 100, 255, 0))))]
             elif codec == MP4Codec.VP9:
                 ffmpeg_options += vp9_options
+                ffmpeg_options += ['-crf', str(int(np.round(map_range(mp4_options.quality, 1, 100, 63, 0))))]
             ffmpeg_options += [filename]
         
         if webm_options != None:
@@ -535,8 +541,10 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
             ffmpeg_options += output_options
             if codec == WebMCodec.AV1:
                 ffmpeg_options += av1_options
+                ffmpeg_options += ['-qp', str(int(np.round(map_range(webm_options.quality, 1, 100, 255, 0))))]
             elif codec == WebMCodec.VP9:
                 ffmpeg_options += vp9_options
+                ffmpeg_options += ['-crf', str(int(np.round(map_range(webm_options.quality, 1, 100, 63, 0))))]
             ffmpeg_options += [filename]
 
         logger.info("Run FFmpeg: " + " ".join(ffmpeg_options))
