@@ -619,10 +619,10 @@ class Ui_MainFrame(object):
         self.method_groupbox.setSizePolicy(sizePolicy3)
         self.formLayout_10 = QFormLayout(self.method_groupbox)
         self.formLayout_10.setObjectName(u"formLayout_10")
-        self.label_16 = QLabel(self.method_groupbox)
-        self.label_16.setObjectName(u"label_16")
+        self.average_label = QLabel(self.method_groupbox)
+        self.average_label.setObjectName(u"average_label")
 
-        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_16)
+        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.LabelRole, self.average_label)
 
         self.average_spinner = QSpinBox(self.method_groupbox)
         self.average_spinner.setObjectName(u"average_spinner")
@@ -639,10 +639,10 @@ class Ui_MainFrame(object):
 
         self.formLayout_10.setWidget(3, QFormLayout.ItemRole.SpanningRole, self.line_3)
 
-        self.label_15 = QLabel(self.method_groupbox)
-        self.label_15.setObjectName(u"label_15")
+        self.subtract_label = QLabel(self.method_groupbox)
+        self.subtract_label.setObjectName(u"subtract_label")
 
-        self.formLayout_10.setWidget(4, QFormLayout.ItemRole.LabelRole, self.label_15)
+        self.formLayout_10.setWidget(4, QFormLayout.ItemRole.LabelRole, self.subtract_label)
 
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
@@ -660,10 +660,10 @@ class Ui_MainFrame(object):
 
         self.formLayout_10.setLayout(4, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_10)
 
-        self.label_9 = QLabel(self.method_groupbox)
-        self.label_9.setObjectName(u"label_9")
+        self.spread_label = QLabel(self.method_groupbox)
+        self.spread_label.setObjectName(u"spread_label")
 
-        self.formLayout_10.setWidget(5, QFormLayout.ItemRole.LabelRole, self.label_9)
+        self.formLayout_10.setWidget(5, QFormLayout.ItemRole.LabelRole, self.spread_label)
 
         self.spread_spinner = QSpinBox(self.method_groupbox)
         self.spread_spinner.setObjectName(u"spread_spinner")
@@ -859,9 +859,10 @@ class Ui_MainFrame(object):
         self.width_label.setBuddy(self.width_spinner)
         self.height_label.setBuddy(self.height_spinner)
         self.mode_label.setBuddy(self.mode_combo)
-        self.label_16.setBuddy(self.average_spinner)
-        self.label_15.setBuddy(self.subtract_check)
-        self.label_9.setBuddy(self.spread_spinner)
+        self.average_label.setBuddy(self.average_spinner)
+        self.subtract_label.setBuddy(self.subtract_check)
+        self.spread_label.setBuddy(self.spread_spinner)
+        self.rotate_label.setBuddy(self.rotate_spinner)
         self.target_label.setBuddy(self.target_combo)
         self.latitude_label.setBuddy(self.latitude_spin)
         self.longitude_label.setBuddy(self.longitude_spin)
@@ -944,11 +945,11 @@ class Ui_MainFrame(object):
         self.height_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"px", None))
         self.mode_label.setText(QCoreApplication.translate("MainFrame", u"Mode", None))
         self.method_groupbox.setTitle(QCoreApplication.translate("MainFrame", u"Process", None))
-        self.label_16.setText(QCoreApplication.translate("MainFrame", u"Average", None))
+        self.average_label.setText(QCoreApplication.translate("MainFrame", u"Average", None))
         self.average_spinner.setPrefix("")
-        self.label_15.setText(QCoreApplication.translate("MainFrame", u"Subtract", None))
+        self.subtract_label.setText(QCoreApplication.translate("MainFrame", u"Subtract", None))
         self.subtract_check.setText("")
-        self.label_9.setText(QCoreApplication.translate("MainFrame", u"Spread", None))
+        self.spread_label.setText(QCoreApplication.translate("MainFrame", u"Spread", None))
         self.rotate_label.setText(QCoreApplication.translate("MainFrame", u"Rotate", None))
         self.rotate_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.rotate_spinner.setPrefix("")
