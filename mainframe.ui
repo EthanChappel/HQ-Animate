@@ -1391,15 +1391,59 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>frames_table</tabstop>
+  <tabstop>input_browse_button</tabstop>
+  <tabstop>apng_check</tabstop>
+  <tabstop>apng_options_button</tabstop>
+  <tabstop>avif_check</tabstop>
+  <tabstop>avif_options_button</tabstop>
+  <tabstop>webp_check</tabstop>
+  <tabstop>webp_options_button</tabstop>
+  <tabstop>gif_check</tabstop>
+  <tabstop>gif_options_button</tabstop>
+  <tabstop>mp4_check</tabstop>
+  <tabstop>mp4_options_button</tabstop>
+  <tabstop>webm_check</tabstop>
+  <tabstop>webm_options_button</tabstop>
+  <tabstop>mode_combo</tabstop>
   <tabstop>duration_spinbox</tabstop>
+  <tabstop>loop_spinner</tabstop>
+  <tabstop>width_spinner</tabstop>
+  <tabstop>height_spinner</tabstop>
+  <tabstop>rotate_spinner</tabstop>
+  <tabstop>average_spinner</tabstop>
+  <tabstop>subtract_check</tabstop>
+  <tabstop>spread_spinner</tabstop>
+  <tabstop>derotation_group</tabstop>
   <tabstop>target_combo</tabstop>
   <tabstop>latitude_spin</tabstop>
   <tabstop>longitude_spin</tabstop>
+  <tabstop>alt_tilt_spin</tabstop>
+  <tabstop>az_tilt_spin</tabstop>
   <tabstop>output_path_edit</tabstop>
+  <tabstop>output_browse_button</tabstop>
   <tabstop>output_name_edit</tabstop>
   <tabstop>settings_button</tabstop>
   <tabstop>show_folder_check</tabstop>
   <tabstop>convert_button</tabstop>
+  <tabstop>gif_optimize_check</tabstop>
+  <tabstop>gif_back_button</tabstop>
+  <tabstop>mp4_codec_combo</tabstop>
+  <tabstop>mp4_back_button</tabstop>
+  <tabstop>webm_codec_combo</tabstop>
+  <tabstop>webm_back_button</tabstop>
+  <tabstop>pushButton</tabstop>
+  <tabstop>avif_back_button</tabstop>
+  <tabstop>toolButton_2</tabstop>
+  <tabstop>horizontalSlider</tabstop>
+  <tabstop>webp_quality_spinner</tabstop>
+  <tabstop>webp_lossless_check</tabstop>
+  <tabstop>apng_back_button</tabstop>
+  <tabstop>webp_back_button</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>apng_compress_spinner</tabstop>
+  <tabstop>apng_optimize_check</tabstop>
+  <tabstop>avif_quality_spinner</tabstop>
  </tabstops>
  <resources/>
  <connections/>
