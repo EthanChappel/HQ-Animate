@@ -622,7 +622,7 @@ class Ui_MainFrame(object):
         self.label_16 = QLabel(self.method_groupbox)
         self.label_16.setObjectName(u"label_16")
 
-        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.LabelRole, self.label_16)
+        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_16)
 
         self.average_spinner = QSpinBox(self.method_groupbox)
         self.average_spinner.setObjectName(u"average_spinner")
@@ -630,19 +630,19 @@ class Ui_MainFrame(object):
         self.average_spinner.setSizePolicy(sizePolicy5)
         self.average_spinner.setMinimum(1)
 
-        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.FieldRole, self.average_spinner)
+        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.FieldRole, self.average_spinner)
 
         self.line_3 = QFrame(self.method_groupbox)
         self.line_3.setObjectName(u"line_3")
         self.line_3.setFrameShape(QFrame.Shape.HLine)
         self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.SpanningRole, self.line_3)
+        self.formLayout_10.setWidget(3, QFormLayout.ItemRole.SpanningRole, self.line_3)
 
         self.label_15 = QLabel(self.method_groupbox)
         self.label_15.setObjectName(u"label_15")
 
-        self.formLayout_10.setWidget(2, QFormLayout.ItemRole.LabelRole, self.label_15)
+        self.formLayout_10.setWidget(4, QFormLayout.ItemRole.LabelRole, self.label_15)
 
         self.horizontalLayout_10 = QHBoxLayout()
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
@@ -658,18 +658,37 @@ class Ui_MainFrame(object):
         self.horizontalLayout_10.addItem(self.horizontalSpacer_7)
 
 
-        self.formLayout_10.setLayout(2, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_10)
+        self.formLayout_10.setLayout(4, QFormLayout.ItemRole.FieldRole, self.horizontalLayout_10)
 
         self.label_9 = QLabel(self.method_groupbox)
         self.label_9.setObjectName(u"label_9")
 
-        self.formLayout_10.setWidget(3, QFormLayout.ItemRole.LabelRole, self.label_9)
+        self.formLayout_10.setWidget(5, QFormLayout.ItemRole.LabelRole, self.label_9)
 
         self.spread_spinner = QSpinBox(self.method_groupbox)
         self.spread_spinner.setObjectName(u"spread_spinner")
         self.spread_spinner.setMinimum(1)
 
-        self.formLayout_10.setWidget(3, QFormLayout.ItemRole.FieldRole, self.spread_spinner)
+        self.formLayout_10.setWidget(5, QFormLayout.ItemRole.FieldRole, self.spread_spinner)
+
+        self.line = QFrame(self.method_groupbox)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.formLayout_10.setWidget(1, QFormLayout.ItemRole.SpanningRole, self.line)
+
+        self.rotate_label = QLabel(self.method_groupbox)
+        self.rotate_label.setObjectName(u"rotate_label")
+
+        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.LabelRole, self.rotate_label)
+
+        self.rotate_spinner = QSpinBox(self.method_groupbox)
+        self.rotate_spinner.setObjectName(u"rotate_spinner")
+        self.rotate_spinner.setMinimum(-359)
+        self.rotate_spinner.setMaximum(359)
+
+        self.formLayout_10.setWidget(0, QFormLayout.ItemRole.FieldRole, self.rotate_spinner)
 
 
         self.horizontalLayout.addWidget(self.method_groupbox)
@@ -930,6 +949,9 @@ class Ui_MainFrame(object):
         self.label_15.setText(QCoreApplication.translate("MainFrame", u"Subtract", None))
         self.subtract_check.setText("")
         self.label_9.setText(QCoreApplication.translate("MainFrame", u"Spread", None))
+        self.rotate_label.setText(QCoreApplication.translate("MainFrame", u"Rotate", None))
+        self.rotate_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
+        self.rotate_spinner.setPrefix("")
         self.derotation_group.setTitle(QCoreApplication.translate("MainFrame", u"Alt-az field d&erotation", None))
         self.target_label.setText(QCoreApplication.translate("MainFrame", u"&Target", None))
         self.latitude_label.setText(QCoreApplication.translate("MainFrame", u"L&atitude", None))

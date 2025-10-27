@@ -189,9 +189,10 @@ class DerotationOptions:
         self.target = target
 
 class ProcessOptions:
-    def __init__(self, width: int, height: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1, animation_mode=AnimationMode.Loop):
+    def __init__(self, width: int, height: int, rotation: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1, animation_mode=AnimationMode.Loop):
         self.width = width
         self.height = height
+        self.rotation = rotation
         self.average_frames = average_frames
         self.subtract_frames = subtract_frames
         self.subtract_spread = subtract_spread
@@ -302,7 +303,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
     icc_profile = None
     is_color = False
     for n in tar:
-        rotation = 0
+        rotation = -process_options.rotation
         if derotation_options != None:
             with solar_system_ephemeris.set('builtin'):
                 if q1 == None:
@@ -310,7 +311,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                 else:
                     q2 = get_body_angle(derotation_options.target.lower(), n.date_time, derotation_options)
 
-                    rotation = q2.deg - q1.deg
+                    rotation += q2.deg - q1.deg
 
         for i, frame in enumerate(ImageSequence.Iterator(n.image)):
             f = Image.new(frame.mode, (max_width, max_height), 'black')
@@ -334,7 +335,7 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                 f = to_float32(f)
             elif not is_color and 'RGB' in f.mode:
                 is_color = True
-            if derotation_options != None:
+            if rotation != 0:
                 f = f.resize((f.width * 4, f.height * 4), resample=Image.BICUBIC)
                 f = f.rotate(rotation, resample=Image.BICUBIC, fillcolor='black')
                 f = f.resize((f.width // 4, f.height // 4), resample=Image.BICUBIC)
