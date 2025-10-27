@@ -322,6 +322,9 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                     rotation += q2.deg - q1.deg
 
         for i, frame in enumerate(ImageSequence.Iterator(n.image)):
+            if frame.mode == 'P':
+                frame = frame.convert("RGBA")
+                
             f = Image.new(frame.mode, (max_width, max_height), 'black')
 
             if frame.mode == "RGBA":
