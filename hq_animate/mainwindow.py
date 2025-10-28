@@ -56,38 +56,31 @@ class MainWindow(QMainWindow):
     
     def save_settings(self):
         self.settings.field_derotation = self.main_frame.derotation_group.isChecked()
-        self.settings.derotation_options.latitude = self.main_frame.latitude_spin.value()
-        self.settings.derotation_options.longitude = self.main_frame.longitude_spin.value()
-        self.settings.derotation_options.altitude_tilt = self.main_frame.alt_tilt_spin.value()
-        self.settings.derotation_options.azimuth_tilt = self.main_frame.az_tilt_spin.value()
+        self.settings.derotation_options = convert.DerotationOptions(self.main_frame.latitude_spin.value(), self.main_frame.longitude_spin.value(), self.main_frame.alt_tilt_spin.value(), self.main_frame.az_tilt_spin.value())
         self.settings.frame_length = self.main_frame.duration_spinbox.value()
-        self.settings.animation_mode = convert.AnimationMode[self.main_frame.mode_combo.currentText()]
+        self.settings.animation_options = convert.AnimationOptions(convert.AnimationMode[self.main_frame.mode_combo.currentText()])
         self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 
         self.settings.do_apng = self.main_frame.apng_check.isChecked()
-        self.settings.apng_options.compression_level = self.main_frame.apng_compress_spinner.value()
-        self.settings.apng_options.optimize = self.main_frame.apng_optimize_check.isChecked()
+        self.settings.apng_options = convert.APNGOptions(self.main_frame.apng_compress_spinner.value(), self.main_frame.apng_optimize_check.isChecked())
 
         self.settings.do_avif = self.main_frame.avif_check.isChecked()
-        self.settings.avif_options.quality = self.main_frame.avif_quality_spinner.value()
+        self.settings.avif_options = convert.AVIFOptions(self.main_frame.avif_quality_spinner.value())
 
         self.settings.do_gif = self.main_frame.gif_check.isChecked()
-        self.settings.gif_options.optimize = self.main_frame.gif_optimize_check.isChecked()
+        self.settings.gif_options = convert.GIFOptions(self.main_frame.gif_optimize_check.isChecked())
 
         self.settings.do_webp = self.main_frame.webp_check.isChecked()
-        self.settings.webp_options.quality = self.main_frame.webp_quality_spinner.value()
-        self.settings.webp_options.lossless = self.main_frame.webp_lossless_check.isChecked()
+        self.settings.webp_options = convert.WebPOptions(self.main_frame.webp_quality_spinner.value(), self.main_frame.webp_lossless_check.isChecked())
 
         self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
-        self.settings.mp4_options.codec = convert.MP4Codec[self.main_frame.mp4_codec_combo.currentText()]
-        self.settings.mp4_options.quality = self.main_frame.mp4_quality_spinner.value()
+        self.settings.mp4_options = convert.MP4Options(self.main_frame.mp4_quality_spinner.value(), convert.MP4Codec[self.main_frame.mp4_codec_combo.currentText()])
 
         self.settings.do_webm = self.main_frame.webm_check.isChecked()
-        self.settings.webm_options.codec = convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()]
-        self.settings.webm_options.quality = self.main_frame.webm_quality_spinner.value()
+        self.settings.webm_options = convert.WebMOptions(self.main_frame.webm_quality_spinner.value(), convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()])
 
-        self.settings.video_options.loop = self.main_frame.loop_spinner.value()
+        self.settings.video_options = convert.VideoOptions(self.main_frame.loop_spinner.value())
 
         self.settings.save()
         self.settings_updated.emit()

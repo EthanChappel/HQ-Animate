@@ -85,7 +85,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         for m in convert.AnimationMode:
             self.mode_combo.addItem(m.name)
         
-        self.mode_combo.setCurrentIndex(int(self.settings.animation_mode))
+        self.mode_combo.setCurrentIndex(int(self.settings.animation_options.animation_mode))
 
         self.duration_spinbox.setValue(self.settings.frame_length)
         self.derotation_group.setChecked(self.settings.field_derotation)
@@ -143,8 +143,8 @@ class MainFrame(QFrame, Ui_MainFrame):
             duration = 0
             for p in paths:
                 f = convert.Frame(p)
-                max_width = max(max_width, f.image.width)
-                max_height = max(max_height, f.image.height)
+                max_width = max(max_width, f.width)
+                max_height = max(max_height, f.height)
                 self.paths.append(f)
                 if not target:
                     target = f.target
@@ -313,11 +313,12 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         video_options = convert.VideoOptions(self.loop_spinner.value())
 
-        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.rotate_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value(), convert.AnimationMode[self.mode_combo.currentText()])
+        process_options = convert.ProcessOptions(self.width_spinner.value(), self.height_spinner.value(), self.rotate_spinner.value(), self.average_spinner.value(), self.subtract_check.isChecked(), self.spread_spinner.value())
+        animation_options = convert.AnimationOptions(convert.AnimationMode[self.mode_combo.currentText()])
 
         self.worker_thread = QThread()
         self.worker = ConvertWorker(
-            self.paths,
+            tuple(self.paths),
             Path(self.output_path_edit.text(), self.output_name_edit.text()),
             self.duration_spinbox.value(),
             apng_options,
@@ -329,6 +330,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             derotation_options,
             video_options,
             process_options,
+            animation_options,
             Path(self.settings.ffmpeg_path),
         )
         self.worker.moveToThread(self.worker_thread)
@@ -372,12 +374,13 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.on_convert_end()
 
 
-
 class ConvertWorker(QObject):
     finished = Signal()
     error = Signal(str)
 
-    def __init__(self, paths: list[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, video_options: convert.VideoOptions=None, process_options: convert.ProcessOptions=None, ffmpeg_path: Path=None):
+    process_result: convert.ProcessResult = convert.ProcessResult()
+
+    def __init__(self, paths: tuple[convert.Frame], output: Path, duration: int, apng_options: convert.APNGOptions=None, avif_options: convert.AVIFOptions=None, gif_options: convert.GIFOptions=None, webp_options: convert.WebPOptions=None, mp4_options: convert.MP4Options=None, webm_options: convert.WebMOptions=None, derotation_options: convert.DerotationOptions=None, video_options: convert.VideoOptions=None, process_options: convert.ProcessOptions=None, animation_options: convert.AnimationOptions=None, ffmpeg_path: Path=None):
         super().__init__()
         self.paths = paths
         self.output = output
@@ -391,13 +394,27 @@ class ConvertWorker(QObject):
         self.derotation_options = derotation_options
         self.video_options = video_options
         self.process_options = process_options
+        self.animation_options = animation_options
         self.ffmpeg_path = ffmpeg_path
 
 
     def run(self):
         try:
-            convert.save(
-                self.paths,
+            image_paths = tuple(map(lambda x: x.path, self.paths))
+            newest_modified = max(map(lambda x: Path(x.path).stat().st_mtime, self.paths))
+
+            if image_paths == ConvertWorker.process_result.image_paths and newest_modified == ConvertWorker.process_result.newest_modified and self.derotation_options == ConvertWorker.process_result.derotation_options and self.process_options == ConvertWorker.process_result.process_options:
+                frames = ConvertWorker.process_result.frames
+                icc_profile = ConvertWorker.process_result.icc_profile
+                is_color = ConvertWorker.process_result.is_color
+            else:
+                frames, icc_profile, is_color = convert.process_frames(self.paths, self.derotation_options, self.process_options)
+                ConvertWorker.process_result = convert.ProcessResult(image_paths, newest_modified, self.derotation_options, self.process_options, frames, icc_profile, is_color)
+
+            convert.save_animations(
+                frames,
+                icc_profile,
+                is_color,
                 self.output,
                 self.duration,
                 self.apng_options,
@@ -405,10 +422,9 @@ class ConvertWorker(QObject):
                 self.gif_options,
                 self.webp_options,
                 self.mp4_options,
-                self.webm_options,
-                self.derotation_options,
                 self.video_options,
-                self.process_options,
+                self.webm_options,
+                self.animation_options,
                 self.ffmpeg_path,
             )
             self.finished.emit()

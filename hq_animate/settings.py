@@ -1,7 +1,7 @@
 import logging
 import json
 from pathlib import Path
-from hq_animate.convert import APNGOptions, AVIFOptions, WebPOptions, GIFOptions, MP4Options, WebMOptions, VideoOptions, DerotationOptions, AnimationMode
+from hq_animate.convert import APNGOptions, AVIFOptions, AnimationMode, WebPOptions, GIFOptions, MP4Options, WebMOptions, VideoOptions, DerotationOptions, AnimationOptions, MP4Codec, WebMCodec
 
 
 SCRIPT_PATH = Path(__file__).resolve().parent
@@ -27,7 +27,7 @@ class Settings:
     _file_instances = {}
 
     def __init__(self, path: Path=Path(SCRIPT_PATH, "settings.json"), field_derotation: bool=False, \
-                 do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, animation_mode: AnimationMode=AnimationMode.Loop, show_folder: bool=True, ffmpeg_path: str="", \
+                 do_apng: bool=False, do_avif: bool=False, do_webp: bool=False, do_gif: bool=False, do_mp4: bool=False, do_webm: bool=False, frame_length: int=10, animation_options: AnimationOptions=AnimationOptions(), show_folder: bool=True, ffmpeg_path: str="", \
                  derotation_options=DerotationOptions(), apng_options: APNGOptions=APNGOptions(), avif_options: AVIFOptions=AVIFOptions(), gif_options: GIFOptions=GIFOptions(), webp_options: WebPOptions=WebPOptions(), mp4_options: MP4Options=MP4Options(), webm_options: WebMOptions=WebMOptions(), video_options: VideoOptions=VideoOptions()):
         if not LATITUDE_MIN <= derotation_options.latitude and derotation_options.latitude <= LATITUDE_MAX:
             raise ValueError(f"latitude is {derotation_options.latitude}, but must be within the range of {LATITUDE_MIN} and {LATITUDE_MAX}.")
@@ -43,7 +43,7 @@ class Settings:
         self.do_mp4 = do_mp4
         self.do_webm = do_webm
         self.frame_length = frame_length
-        self.animation_mode = animation_mode
+        self.animation_options = animation_options
         self.derotation_options = derotation_options
         self.apng_options = apng_options
         self.avif_options = avif_options
@@ -67,7 +67,7 @@ class Settings:
             'do_mp4': self.do_mp4,
             'do_webm': self.do_webm,
             'frame_length': self.frame_length,
-            'animation_mode': self.animation_mode,
+            'animation_options': self.animation_options.__dict__,
             'show_folder': self.show_folder,
             'ffmpeg_path': self.ffmpeg_path,
             'derotation_options': self.derotation_options.__dict__,
@@ -100,6 +100,19 @@ class Settings:
         with open(path, 'r') as f:
             logger.info(f"Found settings file: {path}")
             j = json.load(f)
+
+            animation_options = j.get('animation_options', {})
+            if 'animation_mode' in animation_options.keys():
+                animation_options['animation_mode'] = AnimationMode(animation_options['animation_mode'])
+
+            mp4_options = j.get('mp4_options', {})
+            if 'codec' in mp4_options.keys():
+                mp4_options['codec'] = MP4Codec(mp4_options['codec'])
+
+            webm_options = j.get('webm_options', {})
+            if 'codec' in webm_options.keys():
+                webm_options['codec'] = WebMCodec(webm_options['codec'])
+
             s = Settings(
                 path,
                 j['field_derotation'],
@@ -110,7 +123,7 @@ class Settings:
                 j['do_mp4'],
                 j['do_webm'],
                 j['frame_length'],
-                j.get('animation_mode', AnimationMode.Loop),
+                AnimationOptions(**(animation_options)),
                 j['show_folder'],
                 j['ffmpeg_path'],
                 DerotationOptions(**(j.get('derotation_options', {}))),
@@ -118,8 +131,8 @@ class Settings:
                 AVIFOptions(**(j.get('avif_options', {}))),
                 GIFOptions(**(j.get('gif_options', {}))),
                 WebPOptions(**(j.get('webp_options', {}))),
-                MP4Options(**(j.get('mp4_options', {}))),
-                WebMOptions(**(j.get('webm_options', {}))),
+                MP4Options(**(mp4_options)),
+                WebMOptions(**(webm_options)),
                 VideoOptions(**j.get('video_options', {})),
             )
 

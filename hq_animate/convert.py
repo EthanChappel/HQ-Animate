@@ -29,6 +29,7 @@ import subprocess
 import logging
 import platform
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from enum import Enum
 from PIL import Image, ImageSequence
@@ -61,8 +62,11 @@ logger = logging.getLogger("app")
 class Frame:
     def __init__(self, path):
         self.path = Path(path)
-        self.image = Image.open(self.path)
-        self.duration = self.image.info.get('duration', 0)
+        image = Image.open(self.path)
+        self.width = image.width
+        self.height = image.height
+        self.duration = image.info.get('duration', 0)
+        self.modified_time = Path(self.path).stat().st_mtime
         self.date_time = None
         self.target = None
 
@@ -140,66 +144,78 @@ class FormatOptions:
     pass
 
 
+@dataclass(frozen=True)
 class APNGOptions(FormatOptions):
-    def __init__(self, compression_level: int=9, optimize: bool=True):
-        self.compression_level = compression_level
-        self.optimize = optimize
+    compression_level: int = 9
+    optimize: bool = True
 
 
+@dataclass(frozen=True)
 class AVIFOptions(FormatOptions):
-    def __init__(self, quality: int=95):
-        self.quality = quality
+    quality: int = 95
 
 
+@dataclass(frozen=True)
 class WebPOptions(FormatOptions):
-    def __init__(self, quality: int=95, lossless: bool=False):
-        self.quality = quality
-        self.lossless = lossless
+    quality: int = 95
+    lossless: bool = False
 
 
+@dataclass(frozen=True)
 class GIFOptions(FormatOptions):
-    def __init__(self, optimize: bool=True):
-        self.optimize = optimize
+    optimize: bool = True
 
 
+@dataclass(frozen=True)
 class VideoOptions:
-    def __init__(self, loop: int=1):
-        self.loop = loop
+    loop: int = 1
 
 
+@dataclass(frozen=True)
 class MP4Options(FormatOptions):
-    def __init__(self, quality: int=95, codec: MP4Codec|str=MP4Codec.AVC):
-        self.quality = quality
-        if isinstance(codec, str):
-            codec = MP4Codec(codec)
-        self.codec = codec
+    quality: int = 95
+    codec: MP4Codec = MP4Codec.AVC
 
 
+@dataclass(frozen=True)
 class WebMOptions(FormatOptions):
-    def __init__(self, quality: int=95, codec: WebMCodec|str=WebMCodec.VP9):
-        self.quality = quality
-        if isinstance(codec, str):
-            codec = WebMCodec(codec)
-        self.codec = codec
+    quality: int=95
+    codec: WebMCodec = WebMCodec.VP9
 
 
+@dataclass(frozen=True)
 class DerotationOptions:
-    def __init__(self, latitude: float=0, longitude: float=0, altitude_tilt: float=0, azimuth_tilt: float=0, target: str=""):
-        self.latitude = latitude
-        self.longitude = longitude
-        self.altitude_tilt = altitude_tilt
-        self.azimuth_tilt = azimuth_tilt
-        self.target = target
+    latitude: float = 0
+    longitude: float = 0
+    altitude_tilt: float = 0
+    azimuth_tilt: float = 0
+    target: str = ""
 
+
+@dataclass(frozen=True)
 class ProcessOptions:
-    def __init__(self, width: int, height: int, rotation: int, average_frames: int=1, subtract_frames: bool=False, subtract_spread: int=1, animation_mode=AnimationMode.Loop):
-        self.width = width
-        self.height = height
-        self.rotation = rotation
-        self.average_frames = average_frames
-        self.subtract_frames = subtract_frames
-        self.subtract_spread = subtract_spread
-        self.animation_mode = animation_mode
+    width: int
+    height: int
+    rotation: int
+    average_frames: int = 1
+    subtract_frames: bool = False
+    subtract_spread: int = 1
+
+
+@dataclass(frozen=True)
+class AnimationOptions:
+    animation_mode: AnimationMode = AnimationMode.Loop
+
+
+@dataclass(frozen=True)
+class ProcessResult:
+    image_paths: tuple[str] = tuple()
+    newest_modified: float = 0
+    derotation_options: DerotationOptions|None = None
+    process_options: ProcessOptions|None = None
+    frames: tuple = tuple()
+    icc_profile: object|None = None
+    is_color: bool|None = None
 
 
 def find_ffmpeg() -> list[Path]:
@@ -297,14 +313,14 @@ def map_range(value, in_min, in_max, out_min, out_max):
     return out_min + normalized_value * (out_max - out_min)
 
 
-def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, derotation_options: DerotationOptions=None, video_options: VideoOptions=None, process_options: ProcessOptions=None, ffmpeg_path: Path=None):
-    log_str = f"Start processing {len(tar)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
+def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None, process_options: ProcessOptions=None):
+    log_str = f"Process {len(tar)} frames"
     if derotation_options != None:
         log_str += f", Target={derotation_options.target}, Latitude={int(derotation_options.latitude)}, Longitude={int(derotation_options.longitude)}"
     logger.info(log_str)
 
-    max_width = max(f.image.width for f in tar)
-    max_height = max(f.image.height for f in tar)
+    max_width = max(f.width for f in tar)
+    max_height = max(f.height for f in tar)
     
     frames = []
     q1 = None
@@ -320,8 +336,9 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
                     q2 = get_body_angle(derotation_options.target.lower(), n.date_time, derotation_options)
 
                     rotation += q2.deg - q1.deg
-
-        for i, frame in enumerate(ImageSequence.Iterator(n.image)):
+        
+        image = Image.open(n.path)
+        for i, frame in enumerate(ImageSequence.Iterator(image)):
             if frame.mode == 'P':
                 frame = frame.convert("RGBA")
                 
@@ -410,10 +427,19 @@ def save(tar: list[Frame], out_path: Path, frame_duration: int, apng_options: AP
         if not "RGB" in f.mode:
             f = to_uint8(f)
         tmp.append(f)
-    frames = tmp
+    frames = tuple(tmp)
 
-    if process_options.animation_mode == AnimationMode.Rock:
+    return (frames, icc_profile, is_color)
+
+
+def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, video_options: VideoOptions=None, webm_options: WebMOptions=None, animation_options: AnimationOptions=None, ffmpeg_path: Path=None):
+    log_str = f"Save {len(frames)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
+    logger.info(log_str)
+
+    if animation_options.animation_mode == AnimationMode.Rock:
+        frames = list(frames)
         frames.extend(frames[1:-1:][::-1])
+        frames = tuple(frames)
 
     image = frames[0]
 
