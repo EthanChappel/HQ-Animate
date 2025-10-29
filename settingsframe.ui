@@ -80,9 +80,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QTextBrowser" name="dependencies_textbox">
-     <property name="openLinks">
-      <bool>false</bool>
+    <widget class="QPlainTextEdit" name="dependencies_textbox">
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'settingsframe.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
-    QLabel, QPushButton, QSizePolicy, QSpacerItem,
-    QTextBrowser, QVBoxLayout, QWidget)
+    QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_SettingsFrame(object):
     def setupUi(self, SettingsFrame):
@@ -71,9 +71,9 @@ class Ui_SettingsFrame(object):
 
         self.verticalLayout.addWidget(self.line)
 
-        self.dependencies_textbox = QTextBrowser(SettingsFrame)
+        self.dependencies_textbox = QPlainTextEdit(SettingsFrame)
         self.dependencies_textbox.setObjectName(u"dependencies_textbox")
-        self.dependencies_textbox.setOpenLinks(False)
+        self.dependencies_textbox.setReadOnly(True)
 
         self.verticalLayout.addWidget(self.dependencies_textbox)
 
