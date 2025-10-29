@@ -26,6 +26,12 @@
    <string>Frame</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -76,24 +82,80 @@
     </layout>
    </item>
    <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+    <widget class="QTabWidget" name="about_tab_widget">
+     <property name="currentIndex">
+      <number>0</number>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="version_label">
-     <property name="text">
-      <string/>
+     <property name="documentMode">
+      <bool>false</bool>
      </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPlainTextEdit" name="dependencies_textbox">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
+     <widget class="QWidget" name="about_tab">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTextEdit" name="about_textbox">
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Plain</enum>
+         </property>
+         <property name="undoRedoEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="libraries_tab">
+      <attribute name="title">
+       <string>Third-party libraries</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QPlainTextEdit" name="dependencies_textbox">
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Plain</enum>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
    <item>
@@ -144,7 +206,6 @@
  <tabstops>
   <tabstop>ffmpeg_path_combo</tabstop>
   <tabstop>ffmpeg_browse_button</tabstop>
-  <tabstop>dependencies_textbox</tabstop>
   <tabstop>back_button</tabstop>
   <tabstop>open_logs_button</tabstop>
  </tabstops>

@@ -17,7 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
     QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+    QSpacerItem, QTabWidget, QTextEdit, QVBoxLayout,
+    QWidget)
 
 class Ui_SettingsFrame(object):
     def setupUi(self, SettingsFrame):
@@ -28,6 +29,7 @@ class Ui_SettingsFrame(object):
         SettingsFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(SettingsFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(9, -1, 9, -1)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.ffmpeg_path_label = QLabel(SettingsFrame)
@@ -65,23 +67,40 @@ class Ui_SettingsFrame(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.line = QFrame(SettingsFrame)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.about_tab_widget = QTabWidget(SettingsFrame)
+        self.about_tab_widget.setObjectName(u"about_tab_widget")
+        self.about_tab_widget.setDocumentMode(False)
+        self.about_tab = QWidget()
+        self.about_tab.setObjectName(u"about_tab")
+        self.verticalLayout_3 = QVBoxLayout(self.about_tab)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.about_textbox = QTextEdit(self.about_tab)
+        self.about_textbox.setObjectName(u"about_textbox")
+        self.about_textbox.setFrameShape(QFrame.Shape.NoFrame)
+        self.about_textbox.setFrameShadow(QFrame.Shadow.Plain)
+        self.about_textbox.setUndoRedoEnabled(False)
+        self.about_textbox.setReadOnly(True)
 
-        self.verticalLayout.addWidget(self.line)
+        self.verticalLayout_3.addWidget(self.about_textbox)
 
-        self.version_label = QLabel(SettingsFrame)
-        self.version_label.setObjectName(u"version_label")
-
-        self.verticalLayout.addWidget(self.version_label)
-
-        self.dependencies_textbox = QPlainTextEdit(SettingsFrame)
+        self.about_tab_widget.addTab(self.about_tab, "")
+        self.libraries_tab = QWidget()
+        self.libraries_tab.setObjectName(u"libraries_tab")
+        self.verticalLayout_4 = QVBoxLayout(self.libraries_tab)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.dependencies_textbox = QPlainTextEdit(self.libraries_tab)
         self.dependencies_textbox.setObjectName(u"dependencies_textbox")
+        self.dependencies_textbox.setFrameShape(QFrame.Shape.NoFrame)
+        self.dependencies_textbox.setFrameShadow(QFrame.Shadow.Plain)
         self.dependencies_textbox.setReadOnly(True)
 
-        self.verticalLayout.addWidget(self.dependencies_textbox)
+        self.verticalLayout_4.addWidget(self.dependencies_textbox)
+
+        self.about_tab_widget.addTab(self.libraries_tab, "")
+
+        self.verticalLayout.addWidget(self.about_tab_widget)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -110,11 +129,13 @@ class Ui_SettingsFrame(object):
         self.ffmpeg_path_label.setBuddy(self.ffmpeg_browse_button)
 #endif // QT_CONFIG(shortcut)
         QWidget.setTabOrder(self.ffmpeg_path_combo, self.ffmpeg_browse_button)
-        QWidget.setTabOrder(self.ffmpeg_browse_button, self.dependencies_textbox)
-        QWidget.setTabOrder(self.dependencies_textbox, self.back_button)
+        QWidget.setTabOrder(self.ffmpeg_browse_button, self.back_button)
         QWidget.setTabOrder(self.back_button, self.open_logs_button)
 
         self.retranslateUi(SettingsFrame)
+
+        self.about_tab_widget.setCurrentIndex(0)
+
 
         QMetaObject.connectSlotsByName(SettingsFrame)
     # setupUi
@@ -123,7 +144,8 @@ class Ui_SettingsFrame(object):
         SettingsFrame.setWindowTitle(QCoreApplication.translate("SettingsFrame", u"Frame", None))
         self.ffmpeg_path_label.setText(QCoreApplication.translate("SettingsFrame", u"&FFmpeg path", None))
         self.ffmpeg_browse_button.setText(QCoreApplication.translate("SettingsFrame", u"Browse...", None))
-        self.version_label.setText("")
+        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.about_tab), QCoreApplication.translate("SettingsFrame", u"About", None))
+        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.libraries_tab), QCoreApplication.translate("SettingsFrame", u"Third-party libraries", None))
         self.back_button.setText(QCoreApplication.translate("SettingsFrame", u"&Back", None))
         self.open_logs_button.setText(QCoreApplication.translate("SettingsFrame", u"Open logs folder...", None))
     # retranslateUi
