@@ -58,6 +58,7 @@ class Ui_SettingsFrame(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.ffmpeg_browse_button.sizePolicy().hasHeightForWidth())
         self.ffmpeg_browse_button.setSizePolicy(sizePolicy2)
+        self.ffmpeg_browse_button.setAutoDefault(True)
 
         self.horizontalLayout.addWidget(self.ffmpeg_browse_button)
 
@@ -71,6 +72,11 @@ class Ui_SettingsFrame(object):
 
         self.verticalLayout.addWidget(self.line)
 
+        self.version_label = QLabel(SettingsFrame)
+        self.version_label.setObjectName(u"version_label")
+
+        self.verticalLayout.addWidget(self.version_label)
+
         self.dependencies_textbox = QPlainTextEdit(SettingsFrame)
         self.dependencies_textbox.setObjectName(u"dependencies_textbox")
         self.dependencies_textbox.setReadOnly(True)
@@ -83,6 +89,7 @@ class Ui_SettingsFrame(object):
         self.back_button.setObjectName(u"back_button")
         sizePolicy2.setHeightForWidth(self.back_button.sizePolicy().hasHeightForWidth())
         self.back_button.setSizePolicy(sizePolicy2)
+        self.back_button.setAutoDefault(True)
 
         self.horizontalLayout_2.addWidget(self.back_button)
 
@@ -92,6 +99,7 @@ class Ui_SettingsFrame(object):
 
         self.open_logs_button = QPushButton(SettingsFrame)
         self.open_logs_button.setObjectName(u"open_logs_button")
+        self.open_logs_button.setAutoDefault(True)
 
         self.horizontalLayout_2.addWidget(self.open_logs_button)
 
@@ -101,6 +109,10 @@ class Ui_SettingsFrame(object):
 #if QT_CONFIG(shortcut)
         self.ffmpeg_path_label.setBuddy(self.ffmpeg_browse_button)
 #endif // QT_CONFIG(shortcut)
+        QWidget.setTabOrder(self.ffmpeg_path_combo, self.ffmpeg_browse_button)
+        QWidget.setTabOrder(self.ffmpeg_browse_button, self.dependencies_textbox)
+        QWidget.setTabOrder(self.dependencies_textbox, self.back_button)
+        QWidget.setTabOrder(self.back_button, self.open_logs_button)
 
         self.retranslateUi(SettingsFrame)
 
@@ -111,6 +123,7 @@ class Ui_SettingsFrame(object):
         SettingsFrame.setWindowTitle(QCoreApplication.translate("SettingsFrame", u"Frame", None))
         self.ffmpeg_path_label.setText(QCoreApplication.translate("SettingsFrame", u"&FFmpeg path", None))
         self.ffmpeg_browse_button.setText(QCoreApplication.translate("SettingsFrame", u"Browse...", None))
+        self.version_label.setText("")
         self.back_button.setText(QCoreApplication.translate("SettingsFrame", u"&Back", None))
         self.open_logs_button.setText(QCoreApplication.translate("SettingsFrame", u"Open logs folder...", None))
     # retranslateUi

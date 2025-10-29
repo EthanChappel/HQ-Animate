@@ -68,6 +68,9 @@
        <property name="text">
         <string>Browse...</string>
        </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
@@ -76,6 +79,13 @@
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="version_label">
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
@@ -99,6 +109,9 @@
        <property name="text">
         <string>&amp;Back</string>
        </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -119,12 +132,22 @@
        <property name="text">
         <string>Open logs folder...</string>
        </property>
+       <property name="autoDefault">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>ffmpeg_path_combo</tabstop>
+  <tabstop>ffmpeg_browse_button</tabstop>
+  <tabstop>dependencies_textbox</tabstop>
+  <tabstop>back_button</tabstop>
+  <tabstop>open_logs_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

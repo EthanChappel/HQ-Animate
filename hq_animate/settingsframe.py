@@ -1,5 +1,6 @@
 import logging
 import platform
+from importlib.metadata import version
 from pathlib import Path
 import subprocess
 from PySide6.QtCore import Signal
@@ -23,6 +24,12 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         self.setupUi(self)
 
         self.settings = parent.settings
+
+        self.version_label.setText(
+            "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:700;\">HQ Animate</span><br/>"
+            f"<span style=\" font-weight:700;\"></span><span>{version("hq_animate")}</span><br/>"
+            "</span>©2025 Ethan Chappel</p></body></html>"
+        )
         
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.dependencies_textbox.setPlainText(f.read())
