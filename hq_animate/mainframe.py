@@ -163,6 +163,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             enable_field_rotation_option = True
             target = None
             self.frames_table.model().beginResetModel()
+            self.frames_table.hideColumn(1)
             max_width = 0
             max_height = 0
             duration = 0
@@ -174,6 +175,8 @@ class MainFrame(QFrame, Ui_MainFrame):
                 if not target:
                     target = f.target
                     enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
+                if f.date_time:
+                    self.frames_table.showColumn(1)
                 if duration == 0:
                     duration = f.duration
             if self.all_dates():
