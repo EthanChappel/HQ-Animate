@@ -53,7 +53,7 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         self.about_textbox.setText(
             "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:700;\">HQ Animate</span><br/>"
             f"<span style=\" font-weight:700;\"></span><span>{version("hq_animate")}</span><br/>"
-            "</span>©2025 Ethan Chappel</p></body></html>"
+            "</span>©2019-2025 Ethan Chappel</p></body></html>"
         )
         
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
