@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainframe.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBo
     QHBoxLayout, QHeaderView, QLabel, QLayout,
     QLineEdit, QPushButton, QSizePolicy, QSlider,
     QSpacerItem, QSpinBox, QStackedWidget, QTableView,
-    QToolButton, QVBoxLayout, QWidget)
+    QVBoxLayout, QWidget)
 
 class Ui_MainFrame(object):
     def setupUi(self, MainFrame):
@@ -92,27 +92,29 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout_12 = QHBoxLayout()
         self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.pushButton = QPushButton(self.page_2)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setCheckable(True)
+        self.loop_frames_button = QPushButton(self.page_2)
+        self.loop_frames_button.setObjectName(u"loop_frames_button")
+        self.loop_frames_button.setCheckable(True)
 
-        self.horizontalLayout_12.addWidget(self.pushButton)
+        self.horizontalLayout_12.addWidget(self.loop_frames_button)
 
-        self.toolButton = QToolButton(self.page_2)
-        self.toolButton.setObjectName(u"toolButton")
+        self.previous_frame_button = QPushButton(self.page_2)
+        self.previous_frame_button.setObjectName(u"previous_frame_button")
+        self.previous_frame_button.setMaximumSize(QSize(24, 16777215))
 
-        self.horizontalLayout_12.addWidget(self.toolButton)
+        self.horizontalLayout_12.addWidget(self.previous_frame_button)
 
-        self.toolButton_2 = QToolButton(self.page_2)
-        self.toolButton_2.setObjectName(u"toolButton_2")
+        self.next_frame_button = QPushButton(self.page_2)
+        self.next_frame_button.setObjectName(u"next_frame_button")
+        self.next_frame_button.setMaximumSize(QSize(24, 16777215))
 
-        self.horizontalLayout_12.addWidget(self.toolButton_2)
+        self.horizontalLayout_12.addWidget(self.next_frame_button)
 
-        self.horizontalSlider = QSlider(self.page_2)
-        self.horizontalSlider.setObjectName(u"horizontalSlider")
-        self.horizontalSlider.setOrientation(Qt.Orientation.Horizontal)
+        self.frames_slider = QSlider(self.page_2)
+        self.frames_slider.setObjectName(u"frames_slider")
+        self.frames_slider.setOrientation(Qt.Orientation.Horizontal)
 
-        self.horizontalLayout_12.addWidget(self.horizontalSlider)
+        self.horizontalLayout_12.addWidget(self.frames_slider)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_12)
@@ -155,30 +157,10 @@ class Ui_MainFrame(object):
 
         self.gridLayout_2.addWidget(self.apng_check, 0, 0, 1, 1)
 
-        self.avif_options_button = QToolButton(self.formats_page)
-        self.avif_options_button.setObjectName(u"avif_options_button")
-
-        self.gridLayout_2.addWidget(self.avif_options_button, 1, 1, 1, 1)
-
-        self.apng_options_button = QToolButton(self.formats_page)
-        self.apng_options_button.setObjectName(u"apng_options_button")
-
-        self.gridLayout_2.addWidget(self.apng_options_button, 0, 1, 1, 1)
-
         self.gif_check = QCheckBox(self.formats_page)
         self.gif_check.setObjectName(u"gif_check")
 
         self.gridLayout_2.addWidget(self.gif_check, 3, 0, 1, 1)
-
-        self.gif_options_button = QToolButton(self.formats_page)
-        self.gif_options_button.setObjectName(u"gif_options_button")
-
-        self.gridLayout_2.addWidget(self.gif_options_button, 3, 1, 1, 1)
-
-        self.webp_options_button = QToolButton(self.formats_page)
-        self.webp_options_button.setObjectName(u"webp_options_button")
-
-        self.gridLayout_2.addWidget(self.webp_options_button, 2, 1, 1, 1)
 
         self.avif_check = QCheckBox(self.formats_page)
         self.avif_check.setObjectName(u"avif_check")
@@ -202,20 +184,28 @@ class Ui_MainFrame(object):
 
         self.gridLayout_3.addWidget(self.webm_check, 1, 0, 1, 1)
 
-        self.mp4_options_button = QToolButton(self.page_3)
-        self.mp4_options_button.setObjectName(u"mp4_options_button")
-
-        self.gridLayout_3.addWidget(self.mp4_options_button, 0, 1, 1, 1)
-
         self.mp4_check = QCheckBox(self.page_3)
         self.mp4_check.setObjectName(u"mp4_check")
 
         self.gridLayout_3.addWidget(self.mp4_check, 0, 0, 1, 1)
 
-        self.webm_options_button = QToolButton(self.page_3)
+        self.webm_options_button = QPushButton(self.page_3)
         self.webm_options_button.setObjectName(u"webm_options_button")
+        sizePolicy1.setHeightForWidth(self.webm_options_button.sizePolicy().hasHeightForWidth())
+        self.webm_options_button.setSizePolicy(sizePolicy1)
+        self.webm_options_button.setMaximumSize(QSize(24, 24))
+        self.webm_options_button.setAutoDefault(True)
 
         self.gridLayout_3.addWidget(self.webm_options_button, 1, 1, 1, 1)
+
+        self.mp4_options_button = QPushButton(self.page_3)
+        self.mp4_options_button.setObjectName(u"mp4_options_button")
+        sizePolicy1.setHeightForWidth(self.mp4_options_button.sizePolicy().hasHeightForWidth())
+        self.mp4_options_button.setSizePolicy(sizePolicy1)
+        self.mp4_options_button.setMaximumSize(QSize(24, 24))
+        self.mp4_options_button.setAutoDefault(True)
+
+        self.gridLayout_3.addWidget(self.mp4_options_button, 0, 1, 1, 1)
 
         self.video_stack.addWidget(self.page_3)
         self.page_4 = QWidget()
@@ -238,6 +228,36 @@ class Ui_MainFrame(object):
 
         self.gridLayout_2.addWidget(self.video_stack, 4, 0, 1, 2)
 
+        self.gif_options_button = QPushButton(self.formats_page)
+        self.gif_options_button.setObjectName(u"gif_options_button")
+        sizePolicy1.setHeightForWidth(self.gif_options_button.sizePolicy().hasHeightForWidth())
+        self.gif_options_button.setSizePolicy(sizePolicy1)
+        self.gif_options_button.setMaximumSize(QSize(24, 24))
+        self.gif_options_button.setAutoDefault(True)
+
+        self.gridLayout_2.addWidget(self.gif_options_button, 3, 1, 1, 1)
+
+        self.webp_options_button = QPushButton(self.formats_page)
+        self.webp_options_button.setObjectName(u"webp_options_button")
+        self.webp_options_button.setMaximumSize(QSize(24, 24))
+        self.webp_options_button.setAutoDefault(True)
+
+        self.gridLayout_2.addWidget(self.webp_options_button, 2, 1, 1, 1)
+
+        self.avif_options_button = QPushButton(self.formats_page)
+        self.avif_options_button.setObjectName(u"avif_options_button")
+        self.avif_options_button.setMaximumSize(QSize(24, 24))
+        self.avif_options_button.setAutoDefault(True)
+
+        self.gridLayout_2.addWidget(self.avif_options_button, 1, 1, 1, 1)
+
+        self.apng_options_button = QPushButton(self.formats_page)
+        self.apng_options_button.setObjectName(u"apng_options_button")
+        self.apng_options_button.setMaximumSize(QSize(24, 24))
+        self.apng_options_button.setAutoDefault(True)
+
+        self.gridLayout_2.addWidget(self.apng_options_button, 0, 1, 1, 1)
+
         self.formats_stack.addWidget(self.formats_page)
         self.apng_page = QWidget()
         self.apng_page.setObjectName(u"apng_page")
@@ -259,6 +279,7 @@ class Ui_MainFrame(object):
         self.apng_optimize_check.setObjectName(u"apng_optimize_check")
         sizePolicy1.setHeightForWidth(self.apng_optimize_check.sizePolicy().hasHeightForWidth())
         self.apng_optimize_check.setSizePolicy(sizePolicy1)
+        self.apng_optimize_check.setMinimumSize(QSize(25, 0))
 
         self.formLayout_6.setWidget(1, QFormLayout.ItemRole.FieldRole, self.apng_optimize_check)
 
@@ -285,6 +306,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.apng_back_button = QPushButton(self.apng_page)
         self.apng_back_button.setObjectName(u"apng_back_button")
+        self.apng_back_button.setAutoDefault(True)
 
         self.horizontalLayout_6.addWidget(self.apng_back_button)
 
@@ -327,6 +349,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.avif_back_button = QPushButton(self.avif_page)
         self.avif_back_button.setObjectName(u"avif_back_button")
+        self.avif_back_button.setAutoDefault(True)
 
         self.horizontalLayout_7.addWidget(self.avif_back_button)
 
@@ -375,6 +398,7 @@ class Ui_MainFrame(object):
         self.webp_lossless_check.setObjectName(u"webp_lossless_check")
         sizePolicy1.setHeightForWidth(self.webp_lossless_check.sizePolicy().hasHeightForWidth())
         self.webp_lossless_check.setSizePolicy(sizePolicy1)
+        self.webp_lossless_check.setMaximumSize(QSize(25, 16777215))
 
         self.formLayout_9.setWidget(1, QFormLayout.ItemRole.FieldRole, self.webp_lossless_check)
 
@@ -389,6 +413,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
         self.webp_back_button = QPushButton(self.webp_page)
         self.webp_back_button.setObjectName(u"webp_back_button")
+        self.webp_back_button.setAutoDefault(True)
 
         self.horizontalLayout_9.addWidget(self.webp_back_button)
 
@@ -415,6 +440,7 @@ class Ui_MainFrame(object):
         self.gif_optimize_check.setObjectName(u"gif_optimize_check")
         sizePolicy1.setHeightForWidth(self.gif_optimize_check.sizePolicy().hasHeightForWidth())
         self.gif_optimize_check.setSizePolicy(sizePolicy1)
+        self.gif_optimize_check.setMaximumSize(QSize(25, 16777215))
 
         self.formLayout_8.setWidget(0, QFormLayout.ItemRole.FieldRole, self.gif_optimize_check)
 
@@ -434,6 +460,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.gif_back_button = QPushButton(self.gif_page)
         self.gif_back_button.setObjectName(u"gif_back_button")
+        self.gif_back_button.setAutoDefault(True)
 
         self.horizontalLayout_8.addWidget(self.gif_back_button)
 
@@ -492,6 +519,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.mp4_back_button = QPushButton(self.mp4_page)
         self.mp4_back_button.setObjectName(u"mp4_back_button")
+        self.mp4_back_button.setAutoDefault(True)
 
         self.horizontalLayout_5.addWidget(self.mp4_back_button)
 
@@ -550,6 +578,7 @@ class Ui_MainFrame(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.webm_back_button = QPushButton(self.webm_page)
         self.webm_back_button.setObjectName(u"webm_back_button")
+        self.webm_back_button.setAutoDefault(True)
 
         self.horizontalLayout_3.addWidget(self.webm_back_button)
 
@@ -676,6 +705,7 @@ class Ui_MainFrame(object):
         self.subtract_check.setObjectName(u"subtract_check")
         sizePolicy1.setHeightForWidth(self.subtract_check.sizePolicy().hasHeightForWidth())
         self.subtract_check.setSizePolicy(sizePolicy1)
+        self.subtract_check.setMinimumSize(QSize(25, 0))
 
         self.horizontalLayout_10.addWidget(self.subtract_check)
 
@@ -907,12 +937,9 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.avif_options_button, self.webp_check)
         QWidget.setTabOrder(self.webp_check, self.webp_options_button)
         QWidget.setTabOrder(self.webp_options_button, self.gif_check)
-        QWidget.setTabOrder(self.gif_check, self.gif_options_button)
-        QWidget.setTabOrder(self.gif_options_button, self.mp4_check)
-        QWidget.setTabOrder(self.mp4_check, self.mp4_options_button)
-        QWidget.setTabOrder(self.mp4_options_button, self.webm_check)
-        QWidget.setTabOrder(self.webm_check, self.webm_options_button)
-        QWidget.setTabOrder(self.webm_options_button, self.mode_combo)
+        QWidget.setTabOrder(self.gif_check, self.mp4_check)
+        QWidget.setTabOrder(self.mp4_check, self.webm_check)
+        QWidget.setTabOrder(self.webm_check, self.mode_combo)
         QWidget.setTabOrder(self.mode_combo, self.duration_spinbox)
         QWidget.setTabOrder(self.duration_spinbox, self.loop_spinner)
         QWidget.setTabOrder(self.loop_spinner, self.width_spinner)
@@ -939,16 +966,16 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.mp4_codec_combo, self.mp4_back_button)
         QWidget.setTabOrder(self.mp4_back_button, self.webm_codec_combo)
         QWidget.setTabOrder(self.webm_codec_combo, self.webm_back_button)
-        QWidget.setTabOrder(self.webm_back_button, self.pushButton)
-        QWidget.setTabOrder(self.pushButton, self.avif_back_button)
-        QWidget.setTabOrder(self.avif_back_button, self.toolButton_2)
-        QWidget.setTabOrder(self.toolButton_2, self.horizontalSlider)
-        QWidget.setTabOrder(self.horizontalSlider, self.webp_quality_spinner)
+        QWidget.setTabOrder(self.webm_back_button, self.loop_frames_button)
+        QWidget.setTabOrder(self.loop_frames_button, self.avif_back_button)
+        QWidget.setTabOrder(self.avif_back_button, self.next_frame_button)
+        QWidget.setTabOrder(self.next_frame_button, self.frames_slider)
+        QWidget.setTabOrder(self.frames_slider, self.webp_quality_spinner)
         QWidget.setTabOrder(self.webp_quality_spinner, self.webp_lossless_check)
         QWidget.setTabOrder(self.webp_lossless_check, self.apng_back_button)
         QWidget.setTabOrder(self.apng_back_button, self.webp_back_button)
-        QWidget.setTabOrder(self.webp_back_button, self.toolButton)
-        QWidget.setTabOrder(self.toolButton, self.apng_compress_spinner)
+        QWidget.setTabOrder(self.webp_back_button, self.previous_frame_button)
+        QWidget.setTabOrder(self.previous_frame_button, self.apng_compress_spinner)
         QWidget.setTabOrder(self.apng_compress_spinner, self.apng_optimize_check)
         QWidget.setTabOrder(self.apng_optimize_check, self.avif_quality_spinner)
 
@@ -968,23 +995,23 @@ class Ui_MainFrame(object):
         self.input_label.setText(QCoreApplication.translate("MainFrame", u"&Input frames", None))
         self.input_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
         self.label_10.setText("")
-        self.pushButton.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
-        self.toolButton.setText(QCoreApplication.translate("MainFrame", u"<", None))
-        self.toolButton_2.setText(QCoreApplication.translate("MainFrame", u">", None))
+        self.loop_frames_button.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
+        self.previous_frame_button.setText(QCoreApplication.translate("MainFrame", u"<", None))
+        self.next_frame_button.setText(QCoreApplication.translate("MainFrame", u">", None))
         self.formats_group.setTitle(QCoreApplication.translate("MainFrame", u"Formats", None))
         self.webp_check.setText(QCoreApplication.translate("MainFrame", u"&WebP", None))
         self.apng_check.setText(QCoreApplication.translate("MainFrame", u"A&PNG", None))
-        self.avif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
-        self.apng_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.gif_check.setText(QCoreApplication.translate("MainFrame", u"&GIF", None))
-        self.gif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
-        self.webp_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.avif_check.setText(QCoreApplication.translate("MainFrame", u"A&VIF", None))
         self.webm_check.setText(QCoreApplication.translate("MainFrame", u"Web&M", None))
-        self.mp4_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.mp4_check.setText(QCoreApplication.translate("MainFrame", u"MP&4", None))
         self.webm_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.mp4_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.requires_ffmpeg_label.setText(QCoreApplication.translate("MainFrame", u"MP4 and WebM requires FFmpeg.", None))
+        self.gif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.webp_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.avif_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
+        self.apng_options_button.setText(QCoreApplication.translate("MainFrame", u"...", None))
         self.label.setText(QCoreApplication.translate("MainFrame", u"APNG options", None))
         self.label_7.setText(QCoreApplication.translate("MainFrame", u"Optimize size", None))
         self.apng_optimize_check.setText("")

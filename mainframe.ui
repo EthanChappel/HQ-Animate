@@ -136,7 +136,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_12">
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="loop_frames_button">
            <property name="text">
             <string>Loop</string>
            </property>
@@ -146,21 +146,33 @@
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButton">
+          <widget class="QPushButton" name="previous_frame_button">
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>&lt;</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QToolButton" name="toolButton_2">
+          <widget class="QPushButton" name="next_frame_button">
+           <property name="maximumSize">
+            <size>
+             <width>24</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="text">
             <string>&gt;</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="horizontalSlider">
+          <widget class="QSlider" name="frames_slider">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
            </property>
@@ -228,38 +240,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QToolButton" name="avif_options_button">
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QToolButton" name="apng_options_button">
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="0">
              <widget class="QCheckBox" name="gif_check">
               <property name="text">
                <string>&amp;GIF</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QToolButton" name="gif_options_button">
-              <property name="text">
-               <string>...</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QToolButton" name="webp_options_button">
-              <property name="text">
-               <string>...</string>
               </property>
              </widget>
             </item>
@@ -302,13 +286,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <widget class="QToolButton" name="mp4_options_button">
-                  <property name="text">
-                   <string>...</string>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="0">
                  <widget class="QCheckBox" name="mp4_check">
                   <property name="text">
@@ -317,9 +294,46 @@
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QToolButton" name="webm_options_button">
+                 <widget class="QPushButton" name="webm_options_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>...</string>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="mp4_options_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>24</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>...</string>
+                  </property>
+                  <property name="autoDefault">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -359,6 +373,76 @@
               </widget>
              </widget>
             </item>
+            <item row="3" column="1">
+             <widget class="QPushButton" name="gif_options_button">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QPushButton" name="webp_options_button">
+              <property name="maximumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPushButton" name="avif_options_button">
+              <property name="maximumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="apng_options_button">
+              <property name="maximumSize">
+               <size>
+                <width>24</width>
+                <height>24</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+              <property name="autoDefault">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
            </layout>
           </widget>
           <widget class="QWidget" name="apng_page">
@@ -389,6 +473,12 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>25</width>
+                  <height>0</height>
+                 </size>
                 </property>
                 <property name="text">
                  <string/>
@@ -433,6 +523,9 @@
                <widget class="QPushButton" name="apng_back_button">
                 <property name="text">
                  <string>Back</string>
+                </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -495,6 +588,9 @@
                <widget class="QPushButton" name="avif_back_button">
                 <property name="text">
                  <string>Back</string>
+                </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -580,6 +676,12 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -606,6 +708,9 @@
                <widget class="QPushButton" name="webp_back_button">
                 <property name="text">
                  <string>Back</string>
+                </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -645,6 +750,12 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>25</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string/>
                 </property>
@@ -681,6 +792,9 @@
                <widget class="QPushButton" name="gif_back_button">
                 <property name="text">
                  <string>Back</string>
+                </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -780,6 +894,9 @@
                 <property name="text">
                  <string>Back</string>
                 </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
+                </property>
                </widget>
               </item>
               <item>
@@ -874,6 +991,9 @@
                <widget class="QPushButton" name="webm_back_button">
                 <property name="text">
                  <string>Back</string>
+                </property>
+                <property name="autoDefault">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -1092,6 +1212,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>25</width>
+              <height>0</height>
+             </size>
             </property>
             <property name="text">
              <string/>
@@ -1446,11 +1572,8 @@
   <tabstop>webp_check</tabstop>
   <tabstop>webp_options_button</tabstop>
   <tabstop>gif_check</tabstop>
-  <tabstop>gif_options_button</tabstop>
   <tabstop>mp4_check</tabstop>
-  <tabstop>mp4_options_button</tabstop>
   <tabstop>webm_check</tabstop>
-  <tabstop>webm_options_button</tabstop>
   <tabstop>mode_combo</tabstop>
   <tabstop>duration_spinbox</tabstop>
   <tabstop>loop_spinner</tabstop>
@@ -1478,15 +1601,15 @@
   <tabstop>mp4_back_button</tabstop>
   <tabstop>webm_codec_combo</tabstop>
   <tabstop>webm_back_button</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>loop_frames_button</tabstop>
   <tabstop>avif_back_button</tabstop>
-  <tabstop>toolButton_2</tabstop>
-  <tabstop>horizontalSlider</tabstop>
+  <tabstop>next_frame_button</tabstop>
+  <tabstop>frames_slider</tabstop>
   <tabstop>webp_quality_spinner</tabstop>
   <tabstop>webp_lossless_check</tabstop>
   <tabstop>apng_back_button</tabstop>
   <tabstop>webp_back_button</tabstop>
-  <tabstop>toolButton</tabstop>
+  <tabstop>previous_frame_button</tabstop>
   <tabstop>apng_compress_spinner</tabstop>
   <tabstop>apng_optimize_check</tabstop>
   <tabstop>avif_quality_spinner</tabstop>
