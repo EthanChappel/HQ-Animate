@@ -122,44 +122,49 @@ class Settings:
             s = Settings(path)
             Settings._file_instances[path] = s
             return s
-        with open(path, 'r') as f:
-            logger.info(f"Found settings file: {path}")
-            j = json.load(f)
+        try:
+            with open(path, 'r') as f:
+                logger.info(f"Found settings file: {path}")
+                j = json.load(f)
 
-            animation_options = j.get('animation_options', {})
-            if 'animation_mode' in animation_options.keys():
-                animation_options['animation_mode'] = AnimationMode(animation_options['animation_mode'])
+                animation_options = j.get('animation_options', {})
+                if 'animation_mode' in animation_options.keys():
+                    animation_options['animation_mode'] = AnimationMode(animation_options['animation_mode'])
 
-            mp4_options = j.get('mp4_options', {})
-            if 'codec' in mp4_options.keys():
-                mp4_options['codec'] = MP4Codec(mp4_options['codec'])
+                mp4_options = j.get('mp4_options', {})
+                if 'codec' in mp4_options.keys():
+                    mp4_options['codec'] = MP4Codec(mp4_options['codec'])
 
-            webm_options = j.get('webm_options', {})
-            if 'codec' in webm_options.keys():
-                webm_options['codec'] = WebMCodec(webm_options['codec'])
+                webm_options = j.get('webm_options', {})
+                if 'codec' in webm_options.keys():
+                    webm_options['codec'] = WebMCodec(webm_options['codec'])
 
-            s = Settings(
-                path,
-                j['field_derotation'],
-                j['do_apng'],
-                j['do_avif'],
-                j['do_webp'],
-                j['do_gif'],
-                j['do_mp4'],
-                j['do_webm'],
-                j['frame_length'],
-                AnimationOptions(**(animation_options)),
-                j['show_folder'],
-                j['ffmpeg_path'],
-                DerotationOptions(**(j.get('derotation_options', {}))),
-                APNGOptions(**(j.get('apng_options', {}))),
-                AVIFOptions(**(j.get('avif_options', {}))),
-                GIFOptions(**(j.get('gif_options', {}))),
-                WebPOptions(**(j.get('webp_options', {}))),
-                MP4Options(**(mp4_options)),
-                WebMOptions(**(webm_options)),
-                VideoOptions(**j.get('video_options', {})),
-            )
+                s = Settings(
+                    path,
+                    j['field_derotation'],
+                    j['do_apng'],
+                    j['do_avif'],
+                    j['do_webp'],
+                    j['do_gif'],
+                    j['do_mp4'],
+                    j['do_webm'],
+                    j['frame_length'],
+                    AnimationOptions(**(animation_options)),
+                    j['show_folder'],
+                    j['ffmpeg_path'],
+                    DerotationOptions(**(j.get('derotation_options', {}))),
+                    APNGOptions(**(j.get('apng_options', {}))),
+                    AVIFOptions(**(j.get('avif_options', {}))),
+                    GIFOptions(**(j.get('gif_options', {}))),
+                    WebPOptions(**(j.get('webp_options', {}))),
+                    MP4Options(**(mp4_options)),
+                    WebMOptions(**(webm_options)),
+                    VideoOptions(**j.get('video_options', {})),
+                )
 
+                Settings._file_instances[path] = s
+                return s
+        except:
+            s = Settings(path)
             Settings._file_instances[path] = s
             return s
