@@ -50,11 +50,9 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
 
         self.settings = parent.settings
 
-        self.about_textbox.setText(
-            "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:700;\">HQ Animate</span><br/>"
-            f"<span style=\" font-weight:700;\"></span><span>{version("hq_animate")}</span><br/>"
-            "</span>©2019-2025 Ethan Chappel</p></body></html>"
-        )
+        with open(Path(SCRIPT_PATH, "about.html"), "r", encoding='utf-16-le') as f:
+            text = f.read().replace("0.0.0", version("hq_animate"))
+            self.about_textbox.setText(text)
         
         with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
             self.dependencies_textbox.setPlainText(f.read())

@@ -17,7 +17,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QHBoxLayout,
     QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QTabWidget, QTextEdit, QVBoxLayout,
+    QSpacerItem, QTabWidget, QTextBrowser, QVBoxLayout,
     QWidget)
 
 class Ui_SettingsFrame(object):
@@ -75,12 +75,13 @@ class Ui_SettingsFrame(object):
         self.verticalLayout_3 = QVBoxLayout(self.about_tab)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.about_textbox = QTextEdit(self.about_tab)
+        self.about_textbox = QTextBrowser(self.about_tab)
         self.about_textbox.setObjectName(u"about_textbox")
         self.about_textbox.setFrameShape(QFrame.Shape.NoFrame)
         self.about_textbox.setFrameShadow(QFrame.Shadow.Plain)
         self.about_textbox.setUndoRedoEnabled(False)
         self.about_textbox.setReadOnly(True)
+        self.about_textbox.setOpenExternalLinks(True)
 
         self.verticalLayout_3.addWidget(self.about_textbox)
 
