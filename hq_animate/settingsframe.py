@@ -31,7 +31,7 @@ import subprocess
 from PySide6.QtCore import QFile, QIODevice, QTextStream, Signal
 from PySide6.QtWidgets import QFrame, QFileDialog
 from hq_animate.ui_settingsframe import Ui_SettingsFrame
-import resources_rc
+import hq_animate.resources_rc
 
 
 SYSTEM = platform.system()
