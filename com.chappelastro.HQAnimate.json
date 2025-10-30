@@ -1,0 +1,40 @@
+{
+    "id": "com.chappelastro.HQAnimate",
+    "runtime": "org.kde.Platform",
+    "runtime-version": "6.9",
+    "sdk": "org.kde.Sdk",
+    "base": "io.qt.PySide.BaseApp",
+    "base-version": "6.9",
+    "command": "python hq_animate",
+    "build-options": {
+        "env": {
+            "BASEAPP_REMOVE_WEBENGINE": "1"
+        }
+    },
+    "finish-args": [
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--device=dri",
+    "--socket=pulseaudio"
+    ],
+    "modules": [
+        "python3-modules.json",
+        {
+            "name": "app",
+            "buildsystem" : "simple",
+            "build-commands" : [
+                "python -m pip install --no-build-isolation --prefix=/app ."
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "."
+                }
+            ]
+        }
+    ],
+    "cleanup-commands": [
+        "/app/cleanup-BaseApp.sh"
+    ]
+}
