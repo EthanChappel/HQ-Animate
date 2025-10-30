@@ -15,8 +15,7 @@
     "--share=ipc",
     "--socket=fallback-x11",
     "--socket=wayland",
-    "--device=dri",
-    "--socket=pulseaudio"
+    "--device=dri"
     ],
     "modules": [
         "python3-modules.json",
