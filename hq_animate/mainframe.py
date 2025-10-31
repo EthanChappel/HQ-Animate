@@ -51,6 +51,7 @@ class MainFrame(QFrame, Ui_MainFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
+        self.setAcceptDrops(True)
 
         self.worker_thread = None
         self.worker = None
@@ -125,12 +126,13 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.derotation_group.toggled.connect(self.set_convert_button_state)
         self.target_combo.currentIndexChanged.connect(self.set_convert_button_state)
 
-        self.input_browse_button.clicked.connect(self.set_input_frames)
+        self.input_browse_button.clicked.connect(self.select_input_frames_dialog)
         self.output_browse_button.clicked.connect(self.set_output_path)
         self.derotation_group.toggled.connect(self.set_field_derotation_state)
         self.settings_button.clicked.connect(self.switch_to_settings_page)
         self.convert_button.clicked.connect(self.on_convert_start)
-        self.wildcards = " ".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
+        self.supports_open = {ex for ex, f in Image.registered_extensions().items() if f in Image.OPEN}
+        self.wildcards = " ".join(sorted({f"*{ex}" for ex in self.supports_open}))
 
         self.can_avc = False
         self.can_av1 = False
@@ -152,45 +154,47 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.webm_quality_spinner.setValue(self.settings.webm_options.quality)
         
         self.loop_spinner.setValue(self.settings.video_options.loop)
-
     
-    def set_input_frames(self, event):
+    def select_input_frames_dialog(self, event):
         paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", self.output_path_edit.text(), f"Images ({self.wildcards})")
 
         if paths:
-            self.paths.clear()
-            self.frames_table.horizontalHeader().setVisible(True)
-            enable_field_rotation_option = True
-            target = None
-            self.frames_table.model().beginResetModel()
-            self.frames_table.hideColumn(1)
-            max_width = 0
-            max_height = 0
-            duration = 0
-            for p in paths:
-                f = convert.Frame(p)
-                max_width = max(max_width, f.width)
-                max_height = max(max_height, f.height)
-                self.paths.append(f)
-                if not target:
-                    target = f.target
-                    enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
-                if f.date_time:
-                    self.frames_table.showColumn(1)
-                if duration == 0:
-                    duration = f.duration
-            if self.all_dates():
-                self.paths.sort(key=lambda f: f.date_time)
-            self.frames_table.model().endResetModel()
-            self.derotation_group.setEnabled(enable_field_rotation_option)
-            self.set_field_derotation_state()
-            if target:
-                self.target_combo.setCurrentText(target)
-            self.output_path_edit.setText(str(self.paths[0].path.parent))
-            self.width_spinner.setValue(max_width)
-            self.height_spinner.setValue(max_height)
-            if duration > 0:
-                self.duration_spinbox.setValue(duration)
+            self.set_input_frames(paths)
+
+    def set_input_frames(self, paths: list[str]):
+        self.paths.clear()
+        self.frames_table.horizontalHeader().setVisible(True)
+        enable_field_rotation_option = True
+        target = None
+        self.frames_table.model().beginResetModel()
+        self.frames_table.hideColumn(1)
+        max_width = 0
+        max_height = 0
+        duration = 0
+        for p in paths:
+            f = convert.Frame(p)
+            max_width = max(max_width, f.width)
+            max_height = max(max_height, f.height)
+            self.paths.append(f)
+            if not target:
+                target = f.target
+                enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
+            if f.date_time:
+                self.frames_table.showColumn(1)
+            if duration == 0:
+                duration = f.duration
+        if self.all_dates():
+            self.paths.sort(key=lambda f: f.date_time)
+        self.frames_table.model().endResetModel()
+        self.derotation_group.setEnabled(enable_field_rotation_option)
+        self.set_field_derotation_state()
+        if target:
+            self.target_combo.setCurrentText(target)
+        self.output_path_edit.setText(str(self.paths[0].path.parent))
+        self.width_spinner.setValue(max_width)
+        self.height_spinner.setValue(max_height)
+        if duration > 0:
+            self.duration_spinbox.setValue(duration)
         
         self.set_convert_button_state()
     
@@ -403,6 +407,76 @@ class MainFrame(QFrame, Ui_MainFrame):
         messagebox.exec()
 
         self.on_convert_end()
+    
+    def ignore_drag_drop(self, event, message: str):
+        self.drag_drop_label.setText(message)
+        self.drag_drop_label.setVisible(True)
+        event.ignore()
+    
+    def dragEnterEvent(self, event):
+        if not event.mimeData().hasUrls():
+            event.ignore()
+            return
+        
+        not_supported_exts = set()
+
+        paths = [Path(u.toLocalFile()) for u in event.mimeData().urls() if u.isLocalFile()]
+        
+        if len(paths) == 1 and paths[0].is_dir():
+            paths = [p for p in paths[0].iterdir() if p.is_file()]
+        
+        dir_count = 0
+        for path in paths:
+            if path.is_dir():
+                dir_count += 1
+
+            suffix = path.suffix
+            if not suffix in self.supports_open and path.is_file():
+                not_supported_exts.add(suffix)
+        
+        paths_len = len(paths)
+        not_supported_exts_len = len(not_supported_exts)
+        joined_not_supported_exts = " ".join(not_supported_exts)
+        
+        if paths_len == 0:
+            self.ignore_drag_drop(event, "Folder has no files")
+            return
+        elif dir_count > 1 and dir_count == paths_len:
+            self.ignore_drag_drop(event, "Multiple folders are not supported")
+            return
+        elif dir_count > 0 and paths_len > 1:
+            self.ignore_drag_drop(event, "Selecting files and folders is not supported")
+            return
+        elif not_supported_exts_len > 1:
+            self.ignore_drag_drop(event, f"File types{joined_not_supported_exts} are not supported")
+            return
+        elif not_supported_exts_len > 0:
+            self.ignore_drag_drop(event, f"File type {joined_not_supported_exts} is not supported")
+            return
+        
+        event.acceptProposedAction()
+    
+    def dragLeaveEvent(self, event):
+        if self.drag_drop_label.isVisible():
+            self.drag_drop_label.setVisible(False)
+        event.accept()
+    
+    def dropEvent(self, event):
+        if not event.mimeData().hasUrls():
+            event.ignore()
+            return
+        
+        paths = [Path(u.toLocalFile()) for u in event.mimeData().urls() if u.isLocalFile()]
+
+        if len(paths) == 1 and paths[0].is_dir():
+            paths = [p for p in paths[0].iterdir() if p.is_file()]
+
+        if len(paths) == 0:
+            event.ignore()
+            return
+
+        self.set_input_frames([str(p) for p in paths])
+        event.acceptProposedAction()
 
 
 class ConvertWorker(QObject):
