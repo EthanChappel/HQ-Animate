@@ -125,7 +125,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.derotation_group.toggled.connect(self.set_convert_button_state)
         self.target_combo.currentIndexChanged.connect(self.set_convert_button_state)
 
-        self.input_browse_button.clicked.connect(self.set_input_frames)
+        self.input_browse_button.clicked.connect(self.select_input_frames_dialog)
         self.output_browse_button.clicked.connect(self.set_output_path)
         self.derotation_group.toggled.connect(self.set_field_derotation_state)
         self.settings_button.clicked.connect(self.switch_to_settings_page)
@@ -152,45 +152,47 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.webm_quality_spinner.setValue(self.settings.webm_options.quality)
         
         self.loop_spinner.setValue(self.settings.video_options.loop)
-
     
-    def set_input_frames(self, event):
+    def select_input_frames_dialog(self, event):
         paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", self.output_path_edit.text(), f"Images ({self.wildcards})")
 
         if paths:
-            self.paths.clear()
-            self.frames_table.horizontalHeader().setVisible(True)
-            enable_field_rotation_option = True
-            target = None
-            self.frames_table.model().beginResetModel()
-            self.frames_table.hideColumn(1)
-            max_width = 0
-            max_height = 0
-            duration = 0
-            for p in paths:
-                f = convert.Frame(p)
-                max_width = max(max_width, f.width)
-                max_height = max(max_height, f.height)
-                self.paths.append(f)
-                if not target:
-                    target = f.target
-                    enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
-                if f.date_time:
-                    self.frames_table.showColumn(1)
-                if duration == 0:
-                    duration = f.duration
-            if self.all_dates():
-                self.paths.sort(key=lambda f: f.date_time)
-            self.frames_table.model().endResetModel()
-            self.derotation_group.setEnabled(enable_field_rotation_option)
-            self.set_field_derotation_state()
-            if target:
-                self.target_combo.setCurrentText(target)
-            self.output_path_edit.setText(str(self.paths[0].path.parent))
-            self.width_spinner.setValue(max_width)
-            self.height_spinner.setValue(max_height)
-            if duration > 0:
-                self.duration_spinbox.setValue(duration)
+            self.set_input_frames(paths)
+
+    def set_input_frames(self, paths: list[str]):
+        self.paths.clear()
+        self.frames_table.horizontalHeader().setVisible(True)
+        enable_field_rotation_option = True
+        target = None
+        self.frames_table.model().beginResetModel()
+        self.frames_table.hideColumn(1)
+        max_width = 0
+        max_height = 0
+        duration = 0
+        for p in paths:
+            f = convert.Frame(p)
+            max_width = max(max_width, f.width)
+            max_height = max(max_height, f.height)
+            self.paths.append(f)
+            if not target:
+                target = f.target
+                enable_field_rotation_option = enable_field_rotation_option and f.date_time is not None and f.target is not None
+            if f.date_time:
+                self.frames_table.showColumn(1)
+            if duration == 0:
+                duration = f.duration
+        if self.all_dates():
+            self.paths.sort(key=lambda f: f.date_time)
+        self.frames_table.model().endResetModel()
+        self.derotation_group.setEnabled(enable_field_rotation_option)
+        self.set_field_derotation_state()
+        if target:
+            self.target_combo.setCurrentText(target)
+        self.output_path_edit.setText(str(self.paths[0].path.parent))
+        self.width_spinner.setValue(max_width)
+        self.height_spinner.setValue(max_height)
+        if duration > 0:
+            self.duration_spinbox.setValue(duration)
         
         self.set_convert_button_state()
     
