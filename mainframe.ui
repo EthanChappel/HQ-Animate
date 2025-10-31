@@ -185,10 +185,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="sizeConstraint">
-      <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_13">
      <item>
       <widget class="QGroupBox" name="formats_group">
        <property name="sizePolicy">
@@ -1108,6 +1105,12 @@
         </item>
         <item row="3" column="1">
          <widget class="QSpinBox" name="width_spinner">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="suffix">
            <string>px</string>
           </property>
@@ -1121,6 +1124,12 @@
         </item>
         <item row="4" column="1">
          <widget class="QSpinBox" name="height_spinner">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="suffix">
            <string>px</string>
           </property>
@@ -1133,7 +1142,14 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QComboBox" name="mode_combo"/>
+         <widget class="QComboBox" name="mode_combo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="mode_label">
@@ -1251,6 +1267,12 @@
         </item>
         <item row="5" column="1">
          <widget class="QSpinBox" name="spread_spinner">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -1275,6 +1297,12 @@
         </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="rotate_spinner">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="suffix">
            <string>°</string>
           </property>
