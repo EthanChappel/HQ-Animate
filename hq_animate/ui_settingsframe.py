@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'settingsframe.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.10.0
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -29,7 +29,6 @@ class Ui_SettingsFrame(object):
         SettingsFrame.setMaximumSize(QSize(16777215, 16777215))
         self.verticalLayout = QVBoxLayout(SettingsFrame)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(9, -1, 9, -1)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.ffmpeg_path_label = QLabel(SettingsFrame)
