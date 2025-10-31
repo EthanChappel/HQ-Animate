@@ -436,7 +436,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         paths_len = len(paths)
         not_supported_exts_len = len(not_supported_exts)
-        joined_not_supported_exts = " ".join(not_supported_exts)
+        joined_not_supported_exts = " ".join(not_supported_exts).strip()
         
         if paths_len == 0:
             self.ignore_drag_drop(event, "Folder has no files")
@@ -448,7 +448,7 @@ class MainFrame(QFrame, Ui_MainFrame):
             self.ignore_drag_drop(event, "Selecting files and folders is not supported")
             return
         elif not_supported_exts_len > 1:
-            self.ignore_drag_drop(event, f"File types{joined_not_supported_exts} are not supported")
+            self.ignore_drag_drop(event, f"File types {joined_not_supported_exts} are not supported")
             return
         elif not_supported_exts_len > 0:
             self.ignore_drag_drop(event, f"File type {joined_not_supported_exts} is not supported")
