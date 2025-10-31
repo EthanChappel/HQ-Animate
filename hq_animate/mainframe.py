@@ -246,8 +246,8 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.can_vp9 = is_valid_ffmpeg["vp9"]
 
         can_mp4 = self.can_av1 or self.can_vp9 or self.can_avc
-        can_webm = self.can_av1 and self.can_vp9
-        can_video = can_mp4 and can_webm
+        can_webm = self.can_av1 or self.can_vp9
+        can_video = can_mp4 or can_webm
 
         self.loop_label.setVisible(can_video)
         self.loop_spinner.setVisible(can_video)
@@ -258,8 +258,11 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         self.video_stack.setCurrentIndex(0)
 
-        self.mp4_check.setEnabled(can_mp4)
-        self.webm_check.setEnabled(can_webm)
+        self.mp4_check.setVisible(can_mp4)
+        self.mp4_options_button.setVisible(can_mp4)
+
+        self.webm_check.setVisible(can_webm)
+        self.webm_options_button.setVisible(can_webm)
 
         if not can_mp4:
             self.mp4_check.setChecked(False)
