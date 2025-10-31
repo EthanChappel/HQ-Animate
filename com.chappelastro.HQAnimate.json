@@ -13,6 +13,7 @@
         }
     },
     "finish-args": [
+    "--filesystem=home",
     "--share=ipc",
     "--socket=fallback-x11",
     "--socket=wayland",
