@@ -40,7 +40,7 @@ class Ui_MainFrame(object):
         self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
         self.input_label = QLabel(self.page)
         self.input_label.setObjectName(u"input_label")
-        self.input_label.setMinimumSize(QSize(0, 24))
+        self.input_label.setMinimumSize(QSize(0, 0))
 
         self.verticalLayout_8.addWidget(self.input_label)
 
