@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainframe.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.10.0
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -17,10 +17,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QDoubleSpinBox,
     QFormLayout, QFrame, QGridLayout, QGroupBox,
-    QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QLineEdit, QPushButton, QSizePolicy, QSlider,
-    QSpacerItem, QSpinBox, QStackedWidget, QTableView,
-    QVBoxLayout, QWidget)
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QPushButton, QSizePolicy, QSlider, QSpacerItem,
+    QSpinBox, QStackedWidget, QTableView, QVBoxLayout,
+    QWidget)
 
 class Ui_MainFrame(object):
     def setupUi(self, MainFrame):
@@ -123,9 +123,8 @@ class Ui_MainFrame(object):
 
         self.verticalLayout.addWidget(self.stackedWidget)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.horizontalLayout_13 = QHBoxLayout()
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.formats_group = QGroupBox(MainFrame)
         self.formats_group.setObjectName(u"formats_group")
         sizePolicy3 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -594,7 +593,7 @@ class Ui_MainFrame(object):
         self.verticalLayout_4.addWidget(self.formats_stack)
 
 
-        self.horizontalLayout.addWidget(self.formats_group)
+        self.horizontalLayout_13.addWidget(self.formats_group)
 
         self.parameters_group = QGroupBox(MainFrame)
         self.parameters_group.setObjectName(u"parameters_group")
@@ -643,6 +642,8 @@ class Ui_MainFrame(object):
 
         self.width_spinner = QSpinBox(self.parameters_group)
         self.width_spinner.setObjectName(u"width_spinner")
+        sizePolicy5.setHeightForWidth(self.width_spinner.sizePolicy().hasHeightForWidth())
+        self.width_spinner.setSizePolicy(sizePolicy5)
         self.width_spinner.setMinimum(1)
         self.width_spinner.setMaximum(16383)
 
@@ -650,6 +651,8 @@ class Ui_MainFrame(object):
 
         self.height_spinner = QSpinBox(self.parameters_group)
         self.height_spinner.setObjectName(u"height_spinner")
+        sizePolicy5.setHeightForWidth(self.height_spinner.sizePolicy().hasHeightForWidth())
+        self.height_spinner.setSizePolicy(sizePolicy5)
         self.height_spinner.setMinimum(1)
         self.height_spinner.setMaximum(16383)
 
@@ -657,6 +660,8 @@ class Ui_MainFrame(object):
 
         self.mode_combo = QComboBox(self.parameters_group)
         self.mode_combo.setObjectName(u"mode_combo")
+        sizePolicy5.setHeightForWidth(self.mode_combo.sizePolicy().hasHeightForWidth())
+        self.mode_combo.setSizePolicy(sizePolicy5)
 
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.mode_combo)
 
@@ -666,7 +671,7 @@ class Ui_MainFrame(object):
         self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.mode_label)
 
 
-        self.horizontalLayout.addWidget(self.parameters_group)
+        self.horizontalLayout_13.addWidget(self.parameters_group)
 
         self.method_groupbox = QGroupBox(MainFrame)
         self.method_groupbox.setObjectName(u"method_groupbox")
@@ -723,6 +728,8 @@ class Ui_MainFrame(object):
 
         self.spread_spinner = QSpinBox(self.method_groupbox)
         self.spread_spinner.setObjectName(u"spread_spinner")
+        sizePolicy5.setHeightForWidth(self.spread_spinner.sizePolicy().hasHeightForWidth())
+        self.spread_spinner.setSizePolicy(sizePolicy5)
         self.spread_spinner.setMinimum(1)
 
         self.formLayout_10.setWidget(5, QFormLayout.ItemRole.FieldRole, self.spread_spinner)
@@ -741,13 +748,15 @@ class Ui_MainFrame(object):
 
         self.rotate_spinner = QSpinBox(self.method_groupbox)
         self.rotate_spinner.setObjectName(u"rotate_spinner")
+        sizePolicy5.setHeightForWidth(self.rotate_spinner.sizePolicy().hasHeightForWidth())
+        self.rotate_spinner.setSizePolicy(sizePolicy5)
         self.rotate_spinner.setMinimum(-359)
         self.rotate_spinner.setMaximum(359)
 
         self.formLayout_10.setWidget(0, QFormLayout.ItemRole.FieldRole, self.rotate_spinner)
 
 
-        self.horizontalLayout.addWidget(self.method_groupbox)
+        self.horizontalLayout_13.addWidget(self.method_groupbox)
 
         self.derotation_group = QGroupBox(MainFrame)
         self.derotation_group.setObjectName(u"derotation_group")
@@ -829,10 +838,10 @@ class Ui_MainFrame(object):
         self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.alt_tilt_spin)
 
 
-        self.horizontalLayout.addWidget(self.derotation_group)
+        self.horizontalLayout_13.addWidget(self.derotation_group)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout.addLayout(self.horizontalLayout_13)
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
