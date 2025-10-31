@@ -51,6 +51,7 @@ class MainFrame(QFrame, Ui_MainFrame):
     def __init__(self, parent):
         super().__init__(parent)
         self.setupUi(self)
+        self.setAcceptDrops(True)
 
         self.worker_thread = None
         self.worker = None
@@ -130,7 +131,8 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.derotation_group.toggled.connect(self.set_field_derotation_state)
         self.settings_button.clicked.connect(self.switch_to_settings_page)
         self.convert_button.clicked.connect(self.on_convert_start)
-        self.wildcards = " ".join(sorted({f"*{ex}" for ex, f in Image.registered_extensions().items() if f in Image.OPEN}))
+        self.supports_open = {ex for ex, f in Image.registered_extensions().items() if f in Image.OPEN}
+        self.wildcards = " ".join(sorted({f"*{ex}" for ex in self.supports_open}))
 
         self.can_avc = False
         self.can_av1 = False
@@ -405,6 +407,76 @@ class MainFrame(QFrame, Ui_MainFrame):
         messagebox.exec()
 
         self.on_convert_end()
+    
+    def ignore_drag_drop(self, event, message: str):
+        self.drag_drop_label.setText(message)
+        self.drag_drop_label.setVisible(True)
+        event.ignore()
+    
+    def dragEnterEvent(self, event):
+        if not event.mimeData().hasUrls():
+            event.ignore()
+            return
+        
+        not_supported_exts = set()
+
+        paths = [Path(u.toLocalFile()) for u in event.mimeData().urls() if u.isLocalFile()]
+        
+        if len(paths) == 1 and paths[0].is_dir():
+            paths = [p for p in paths[0].iterdir() if p.is_file()]
+        
+        dir_count = 0
+        for path in paths:
+            if path.is_dir():
+                dir_count += 1
+
+            suffix = path.suffix
+            if not suffix in self.supports_open and path.is_file():
+                not_supported_exts.add(suffix)
+        
+        paths_len = len(paths)
+        not_supported_exts_len = len(not_supported_exts)
+        joined_not_supported_exts = " ".join(not_supported_exts)
+        
+        if paths_len == 0:
+            self.ignore_drag_drop(event, "Folder has no files")
+            return
+        elif dir_count > 1 and dir_count == paths_len:
+            self.ignore_drag_drop(event, "Multiple folders are not supported")
+            return
+        elif dir_count > 0 and paths_len > 1:
+            self.ignore_drag_drop(event, "Selecting files and folders is not supported")
+            return
+        elif not_supported_exts_len > 1:
+            self.ignore_drag_drop(event, f"File types{joined_not_supported_exts} are not supported")
+            return
+        elif not_supported_exts_len > 0:
+            self.ignore_drag_drop(event, f"File type {joined_not_supported_exts} is not supported")
+            return
+        
+        event.acceptProposedAction()
+    
+    def dragLeaveEvent(self, event):
+        if self.drag_drop_label.isVisible():
+            self.drag_drop_label.setVisible(False)
+        event.accept()
+    
+    def dropEvent(self, event):
+        if not event.mimeData().hasUrls():
+            event.ignore()
+            return
+        
+        paths = [Path(u.toLocalFile()) for u in event.mimeData().urls() if u.isLocalFile()]
+
+        if len(paths) == 1 and paths[0].is_dir():
+            paths = [p for p in paths[0].iterdir() if p.is_file()]
+
+        if len(paths) == 0:
+            event.ignore()
+            return
+
+        self.set_input_frames([str(p) for p in paths])
+        event.acceptProposedAction()
 
 
 class ConvertWorker(QObject):

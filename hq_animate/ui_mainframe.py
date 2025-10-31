@@ -56,6 +56,11 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout_11 = QHBoxLayout()
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.drag_drop_label = QLabel(self.page)
+        self.drag_drop_label.setObjectName(u"drag_drop_label")
+
+        self.horizontalLayout_11.addWidget(self.drag_drop_label)
+
         self.horizontalSpacer_8 = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_11.addItem(self.horizontalSpacer_8)
@@ -1002,6 +1007,7 @@ class Ui_MainFrame(object):
     def retranslateUi(self, MainFrame):
         MainFrame.setWindowTitle(QCoreApplication.translate("MainFrame", u"Frame", None))
         self.input_label.setText(QCoreApplication.translate("MainFrame", u"&Input frames", None))
+        self.drag_drop_label.setText("")
         self.input_browse_button.setText(QCoreApplication.translate("MainFrame", u"Browse...", None))
         self.label_10.setText("")
         self.loop_frames_button.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
