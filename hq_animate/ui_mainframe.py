@@ -659,6 +659,18 @@ class Ui_MainFrame(object):
         self.parameters_group.setSizePolicy(sizePolicy4)
         self.formLayout_2 = QFormLayout(self.parameters_group)
         self.formLayout_2.setObjectName(u"formLayout_2")
+        self.mode_label = QLabel(self.parameters_group)
+        self.mode_label.setObjectName(u"mode_label")
+
+        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.mode_label)
+
+        self.mode_combo = QComboBox(self.parameters_group)
+        self.mode_combo.setObjectName(u"mode_combo")
+        sizePolicy6.setHeightForWidth(self.mode_combo.sizePolicy().hasHeightForWidth())
+        self.mode_combo.setSizePolicy(sizePolicy6)
+
+        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.mode_combo)
+
         self.duration_label = QLabel(self.parameters_group)
         self.duration_label.setObjectName(u"duration_label")
 
@@ -674,29 +686,10 @@ class Ui_MainFrame(object):
 
         self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.duration_spinbox)
 
-        self.loop_label = QLabel(self.parameters_group)
-        self.loop_label.setObjectName(u"loop_label")
-
-        self.formLayout_2.setWidget(2, QFormLayout.ItemRole.LabelRole, self.loop_label)
-
-        self.loop_spinner = QSpinBox(self.parameters_group)
-        self.loop_spinner.setObjectName(u"loop_spinner")
-        sizePolicy6.setHeightForWidth(self.loop_spinner.sizePolicy().hasHeightForWidth())
-        self.loop_spinner.setSizePolicy(sizePolicy6)
-        self.loop_spinner.setMinimum(1)
-        self.loop_spinner.setMaximum(100)
-
-        self.formLayout_2.setWidget(2, QFormLayout.ItemRole.FieldRole, self.loop_spinner)
-
         self.width_label = QLabel(self.parameters_group)
         self.width_label.setObjectName(u"width_label")
 
-        self.formLayout_2.setWidget(3, QFormLayout.ItemRole.LabelRole, self.width_label)
-
-        self.height_label = QLabel(self.parameters_group)
-        self.height_label.setObjectName(u"height_label")
-
-        self.formLayout_2.setWidget(4, QFormLayout.ItemRole.LabelRole, self.height_label)
+        self.formLayout_2.setWidget(2, QFormLayout.ItemRole.LabelRole, self.width_label)
 
         self.width_spinner = QSpinBox(self.parameters_group)
         self.width_spinner.setObjectName(u"width_spinner")
@@ -705,7 +698,12 @@ class Ui_MainFrame(object):
         self.width_spinner.setMinimum(1)
         self.width_spinner.setMaximum(16383)
 
-        self.formLayout_2.setWidget(3, QFormLayout.ItemRole.FieldRole, self.width_spinner)
+        self.formLayout_2.setWidget(2, QFormLayout.ItemRole.FieldRole, self.width_spinner)
+
+        self.height_label = QLabel(self.parameters_group)
+        self.height_label.setObjectName(u"height_label")
+
+        self.formLayout_2.setWidget(3, QFormLayout.ItemRole.LabelRole, self.height_label)
 
         self.height_spinner = QSpinBox(self.parameters_group)
         self.height_spinner.setObjectName(u"height_spinner")
@@ -714,19 +712,21 @@ class Ui_MainFrame(object):
         self.height_spinner.setMinimum(1)
         self.height_spinner.setMaximum(16383)
 
-        self.formLayout_2.setWidget(4, QFormLayout.ItemRole.FieldRole, self.height_spinner)
+        self.formLayout_2.setWidget(3, QFormLayout.ItemRole.FieldRole, self.height_spinner)
 
-        self.mode_combo = QComboBox(self.parameters_group)
-        self.mode_combo.setObjectName(u"mode_combo")
-        sizePolicy6.setHeightForWidth(self.mode_combo.sizePolicy().hasHeightForWidth())
-        self.mode_combo.setSizePolicy(sizePolicy6)
+        self.loop_label = QLabel(self.parameters_group)
+        self.loop_label.setObjectName(u"loop_label")
 
-        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.mode_combo)
+        self.formLayout_2.setWidget(4, QFormLayout.ItemRole.LabelRole, self.loop_label)
 
-        self.mode_label = QLabel(self.parameters_group)
-        self.mode_label.setObjectName(u"mode_label")
+        self.loop_spinner = QSpinBox(self.parameters_group)
+        self.loop_spinner.setObjectName(u"loop_spinner")
+        sizePolicy6.setHeightForWidth(self.loop_spinner.sizePolicy().hasHeightForWidth())
+        self.loop_spinner.setSizePolicy(sizePolicy6)
+        self.loop_spinner.setMinimum(1)
+        self.loop_spinner.setMaximum(100)
 
-        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.mode_label)
+        self.formLayout_2.setWidget(4, QFormLayout.ItemRole.FieldRole, self.loop_spinner)
 
 
         self.horizontalLayout_13.addWidget(self.parameters_group)
@@ -979,11 +979,11 @@ class Ui_MainFrame(object):
         self.mp4_quality_label.setBuddy(self.mp4_quality_spinner)
         self.webm_codec_label.setBuddy(self.webm_codec_combo)
         self.webm_quality_label.setBuddy(self.webm_quality_spinner)
+        self.mode_label.setBuddy(self.mode_combo)
         self.duration_label.setBuddy(self.duration_spinbox)
-        self.loop_label.setBuddy(self.loop_spinner)
         self.width_label.setBuddy(self.width_spinner)
         self.height_label.setBuddy(self.height_spinner)
-        self.mode_label.setBuddy(self.mode_combo)
+        self.loop_label.setBuddy(self.loop_spinner)
         self.average_label.setBuddy(self.average_spinner)
         self.subtract_label.setBuddy(self.subtract_check)
         self.spread_label.setBuddy(self.spread_spinner)
@@ -1002,9 +1002,7 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.webm_check, self.mode_combo)
         QWidget.setTabOrder(self.mode_combo, self.duration_spinbox)
         QWidget.setTabOrder(self.duration_spinbox, self.loop_spinner)
-        QWidget.setTabOrder(self.loop_spinner, self.width_spinner)
-        QWidget.setTabOrder(self.width_spinner, self.height_spinner)
-        QWidget.setTabOrder(self.height_spinner, self.rotate_spinner)
+        QWidget.setTabOrder(self.loop_spinner, self.rotate_spinner)
         QWidget.setTabOrder(self.rotate_spinner, self.average_spinner)
         QWidget.setTabOrder(self.average_spinner, self.subtract_check)
         QWidget.setTabOrder(self.subtract_check, self.spread_spinner)
@@ -1099,13 +1097,13 @@ class Ui_MainFrame(object):
         self.webm_quality_label.setText(QCoreApplication.translate("MainFrame", u"Quality", None))
         self.webm_back_button.setText(QCoreApplication.translate("MainFrame", u"Back", None))
         self.parameters_group.setTitle(QCoreApplication.translate("MainFrame", u"Parameters", None))
-        self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))
-        self.loop_label.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
-        self.width_label.setText(QCoreApplication.translate("MainFrame", u"Width", None))
-        self.height_label.setText(QCoreApplication.translate("MainFrame", u"Height", None))
-        self.width_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"px", None))
-        self.height_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"px", None))
         self.mode_label.setText(QCoreApplication.translate("MainFrame", u"Mode", None))
+        self.duration_label.setText(QCoreApplication.translate("MainFrame", u"&FPS", None))
+        self.width_label.setText(QCoreApplication.translate("MainFrame", u"Width", None))
+        self.width_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"px", None))
+        self.height_label.setText(QCoreApplication.translate("MainFrame", u"Height", None))
+        self.height_spinner.setSuffix(QCoreApplication.translate("MainFrame", u"px", None))
+        self.loop_label.setText(QCoreApplication.translate("MainFrame", u"Loop", None))
         self.method_groupbox.setTitle(QCoreApplication.translate("MainFrame", u"Process", None))
         self.average_label.setText(QCoreApplication.translate("MainFrame", u"Average", None))
         self.average_spinner.setPrefix("")
