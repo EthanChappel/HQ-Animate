@@ -241,7 +241,7 @@ def validate_ffmpeg(path: str) -> dict[str, bool]:
         proc = subprocess.Popen(popen_cmd, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, **popen_parameters)
         stdout, stderr = proc.communicate()
         features["avc"] = bool(re.search(r"^ V[\.FSXBD]{5} libx264", stdout, flags=re.MULTILINE))
-        features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} librav1e", stdout, flags=re.MULTILINE))
+        features["av1"] = bool(re.search(r"^ V[\.FSXBD]{5} libsvtav1", stdout, flags=re.MULTILINE))
         features["vp9"] = bool(re.search(r"^ V[\.FSXBD]{5} libvpx-vp9", stdout, flags=re.MULTILINE))
         logger.info(f"FFmpeg features: {features}")
     except:
@@ -536,7 +536,8 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
             '-vf', r'crop=iw-mod(iw\,2):ih-mod(ih\,2)',
         ]
         av1_options = [
-            '-c:v', 'librav1e',
+            '-c:v', 'libsvtav1',
+            '-preset', '8',
         ]
         vp9_options = [
             '-c:v', 'libvpx-vp9',
@@ -556,7 +557,7 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
                 ffmpeg_options += ['-crf', str(int(np.round(map_range(mp4_options.quality, 1, 100, 51, 1))))]
             elif codec == MP4Codec.AV1:
                 ffmpeg_options += av1_options
-                ffmpeg_options += ['-qp', str(int(np.round(map_range(mp4_options.quality, 1, 100, 255, 0))))]
+                ffmpeg_options += ['-qp', str(int(np.round(map_range(mp4_options.quality, 1, 100, 63, 0))))]
             elif codec == MP4Codec.VP9:
                 ffmpeg_options += vp9_options
                 ffmpeg_options += ['-crf', str(int(np.round(map_range(mp4_options.quality, 1, 100, 63, 0))))]
@@ -571,7 +572,7 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
             ffmpeg_options += output_options
             if codec == WebMCodec.AV1:
                 ffmpeg_options += av1_options
-                ffmpeg_options += ['-qp', str(int(np.round(map_range(webm_options.quality, 1, 100, 255, 0))))]
+                ffmpeg_options += ['-qp', str(int(np.round(map_range(webm_options.quality, 1, 100, 63, 0))))]
             elif codec == WebMCodec.VP9:
                 ffmpeg_options += vp9_options
                 ffmpeg_options += ['-crf', str(int(np.round(map_range(webm_options.quality, 1, 100, 63, 0))))]
