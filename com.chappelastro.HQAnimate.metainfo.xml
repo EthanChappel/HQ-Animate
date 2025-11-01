@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.chappelastro.HQAnimate</id>
+  <name>HQ Animate</name>
+  <summary>Create high quality animations from a sequence of planetary images</summary>
+  <description><p>Create high quality animations from a sequence of planetary images.</p></description>
+  <project_license>MIT</project_license>
+  <metadata_license>CC0-1.0</metadata_license>
+  <content_rating type="oars-1.0">none</content_rating>
+
+  <categories>
+    <category>Video</category>
+    <category>AudioVideo</category>
+  </categories>
+
+  <launchable type="desktop-id">com.chappelastro.HQAnimate.desktop</launchable>
+  <provides>
+    <binary>hq-animate</binary>
+  </provides>
+</component>
