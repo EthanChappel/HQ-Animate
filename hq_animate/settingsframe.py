@@ -28,9 +28,10 @@ import platform
 from importlib.metadata import version
 from pathlib import Path
 import subprocess
-from PySide6.QtCore import Signal
+from PySide6.QtCore import QFile, QIODevice, QTextStream, Signal
 from PySide6.QtWidgets import QFrame, QFileDialog
 from hq_animate.ui_settingsframe import Ui_SettingsFrame
+import hq_animate.resources_rc
 
 
 SYSTEM = platform.system()
@@ -50,12 +51,19 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
 
         self.settings = parent.settings
 
-        with open(Path(SCRIPT_PATH, "about.html"), "r", encoding='utf-16-le') as f:
-            text = f.read().replace("0.0.0", version("hq_animate"))
-            self.about_textbox.setText(text)
-        
-        with open(Path(SCRIPT_PATH, "dep-terms.txt"), "r", encoding='utf-16-le') as f:
-            self.dependencies_textbox.setPlainText(f.read())
+        file = QFile(":/text/about.html")
+        file.open(QIODevice.ReadOnly | QIODevice.Text)
+        stream = QTextStream(file)
+        about_text = stream.readAll().replace("0.0.0", version("hq_animate"))
+        self.about_textbox.setText(about_text)
+        file.close()
+
+        file = QFile(":/text/dep-terms.txt")
+        file.open(QIODevice.ReadOnly | QIODevice.Text)
+        stream = QTextStream(file)
+        deps_text = stream.readAll()
+        self.dependencies_textbox.setPlainText(deps_text)
+        file.close()
         
         ffmpeg = Path(self.settings.ffmpeg_path).absolute()
 

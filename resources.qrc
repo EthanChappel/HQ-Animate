@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/text">
+        <file>about.html</file>
+        <file>dep-terms.txt</file>
+    </qresource>
+</RCC>
