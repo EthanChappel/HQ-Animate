@@ -582,9 +582,10 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
         
         process = subprocess.Popen(ffmpeg_options, creationflags=subprocess.CREATE_NO_WINDOW if SYSTEM == "Windows" else 0, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         
-        for f in itertools.islice(itertools.cycle(frames), video_length):
-            process.stdin.write(f.tobytes())
-        
-        _, stderr_data = process.communicate()
+        in_bytes = b""
+        for f in frames:
+            in_bytes += f.tobytes()
+
+        _, stderr_data = process.communicate(input=video_options.loop * in_bytes)
 
         logger.error(stderr_data.decode('utf-8'))
