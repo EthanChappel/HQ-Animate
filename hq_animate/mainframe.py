@@ -156,7 +156,11 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.loop_spinner.setValue(self.settings.video_options.loop)
     
     def select_input_frames_dialog(self, event):
-        paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", self.output_path_edit.text(), f"Images ({self.wildcards})")
+        initial_dir = self.output_path_edit.text()
+        if len(initial_dir) == 0:
+            initial_dir = str(Path.home())
+
+        paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", initial_dir, f"Images ({self.wildcards})")
 
         if paths:
             self.set_input_frames(paths)
