@@ -548,6 +548,12 @@
               </item>
               <item row="0" column="1">
                <widget class="QSpinBox" name="apng_compress_spinner">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="maximum">
                  <number>9</number>
                 </property>
@@ -650,6 +656,12 @@
               </item>
               <item row="0" column="1">
                <widget class="QSpinBox" name="avif_quality_spinner">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="maximum">
                  <number>100</number>
                 </property>
@@ -748,6 +760,12 @@
               </item>
               <item row="0" column="1">
                <widget class="QSpinBox" name="webp_quality_spinner">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="maximum">
                  <number>100</number>
                 </property>
@@ -1005,6 +1023,12 @@
               </item>
               <item row="1" column="1">
                <widget class="QSpinBox" name="mp4_quality_spinner">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>
@@ -1123,6 +1147,12 @@
               </item>
               <item row="1" column="1">
                <widget class="QSpinBox" name="webm_quality_spinner">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimum">
                  <number>1</number>
                 </property>

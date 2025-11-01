@@ -312,6 +312,8 @@ class Ui_MainFrame(object):
 
         self.apng_compress_spinner = QSpinBox(self.groupBox)
         self.apng_compress_spinner.setObjectName(u"apng_compress_spinner")
+        sizePolicy6.setHeightForWidth(self.apng_compress_spinner.sizePolicy().hasHeightForWidth())
+        self.apng_compress_spinner.setSizePolicy(sizePolicy6)
         self.apng_compress_spinner.setMaximum(9)
         self.apng_compress_spinner.setValue(9)
 
@@ -368,6 +370,8 @@ class Ui_MainFrame(object):
 
         self.avif_quality_spinner = QSpinBox(self.groupBox_2)
         self.avif_quality_spinner.setObjectName(u"avif_quality_spinner")
+        sizePolicy6.setHeightForWidth(self.avif_quality_spinner.sizePolicy().hasHeightForWidth())
+        self.avif_quality_spinner.setSizePolicy(sizePolicy6)
         self.avif_quality_spinner.setMaximum(100)
         self.avif_quality_spinner.setSingleStep(5)
         self.avif_quality_spinner.setValue(95)
@@ -420,6 +424,8 @@ class Ui_MainFrame(object):
 
         self.webp_quality_spinner = QSpinBox(self.groupBox_3)
         self.webp_quality_spinner.setObjectName(u"webp_quality_spinner")
+        sizePolicy6.setHeightForWidth(self.webp_quality_spinner.sizePolicy().hasHeightForWidth())
+        self.webp_quality_spinner.setSizePolicy(sizePolicy6)
         self.webp_quality_spinner.setMaximum(100)
         self.webp_quality_spinner.setSingleStep(5)
         self.webp_quality_spinner.setValue(95)
@@ -554,6 +560,8 @@ class Ui_MainFrame(object):
 
         self.mp4_quality_spinner = QSpinBox(self.groupBox_5)
         self.mp4_quality_spinner.setObjectName(u"mp4_quality_spinner")
+        sizePolicy6.setHeightForWidth(self.mp4_quality_spinner.sizePolicy().hasHeightForWidth())
+        self.mp4_quality_spinner.setSizePolicy(sizePolicy6)
         self.mp4_quality_spinner.setMinimum(1)
         self.mp4_quality_spinner.setMaximum(100)
         self.mp4_quality_spinner.setValue(95)
@@ -618,6 +626,8 @@ class Ui_MainFrame(object):
 
         self.webm_quality_spinner = QSpinBox(self.groupBox_6)
         self.webm_quality_spinner.setObjectName(u"webm_quality_spinner")
+        sizePolicy6.setHeightForWidth(self.webm_quality_spinner.sizePolicy().hasHeightForWidth())
+        self.webm_quality_spinner.setSizePolicy(sizePolicy6)
         self.webm_quality_spinner.setMinimum(1)
         self.webm_quality_spinner.setMaximum(100)
         self.webm_quality_spinner.setValue(95)
