@@ -3,4 +3,8 @@
         <file>about.html</file>
         <file>dep-terms.txt</file>
     </qresource>
+    <qresource prefix="/icon">
+        <file>icons/com.chappelastro.HQAnimate.ico</file>
+        <file>icons/128x128/com.chappelastro.HQAnimate.png</file>
+    </qresource>
 </RCC>
