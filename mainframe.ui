@@ -1564,7 +1564,7 @@
               </sizepolicy>
              </property>
              <property name="suffix">
-              <string>ￂﾰ</string>
+              <string>°</string>
              </property>
              <property name="prefix">
               <string/>
@@ -1670,7 +1670,7 @@
               </sizepolicy>
              </property>
              <property name="suffix">
-              <string>ￂﾰ</string>
+              <string>°</string>
              </property>
              <property name="minimum">
               <double>-90.000000000000000</double>
@@ -1699,7 +1699,7 @@
               </sizepolicy>
              </property>
              <property name="suffix">
-              <string>ￂﾰ</string>
+              <string>°</string>
              </property>
              <property name="minimum">
               <double>-180.000000000000000</double>
@@ -1718,7 +1718,7 @@
               </sizepolicy>
              </property>
              <property name="suffix">
-              <string>ￂﾰ</string>
+              <string>°</string>
              </property>
              <property name="minimum">
               <double>-90.000000000000000</double>
@@ -1760,7 +1760,7 @@
               </sizepolicy>
              </property>
              <property name="suffix">
-              <string>ￂﾰ</string>
+              <string>°</string>
              </property>
              <property name="minimum">
               <double>-90.000000000000000</double>
