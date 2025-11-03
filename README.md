@@ -1,7 +1,13 @@
-# HQ Animate
-Create high quality animations from a sequence of image files.
+<p align="center">
+    <img src="./icons/128x128/com.chappelastro.HQAnimate.png" alt="H Q Animate icon." />
+</p>
 
-![Screenshot of H Q Animate graphical user internface](Screenshot.png)
+# <center>HQ Animate</center>
+<p align="center">Create high quality animations from a sequence of image files.</p>
+
+<center>
+    <img src="./Screenshot.png" alt="H Q Animate screenshot." />
+</center>
 
 ## Installation
 

@@ -29,11 +29,13 @@ import platform
 from pathlib import Path
 import platformdirs
 from PySide6.QtCore import Signal
+from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from hq_animate import convert
 from hq_animate.mainframe import MainFrame
 from hq_animate.settings import Settings
 from hq_animate.settingsframe import SettingsFrame
+import hq_animate.resources_rc
 
 
 SYSTEM = platform.system()
@@ -59,6 +61,7 @@ class MainWindow(QMainWindow):
                 self.settings.ffmpeg_path = ffmpeg_paths[0]
 
         self.setWindowTitle("HQ Animate")
+        self.setWindowIcon(QIcon(":/icon/icons/com.chappelastro.HQAnimate.ico"))
 
         self.stack_frame = QStackedWidget()
 
