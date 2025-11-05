@@ -27,7 +27,7 @@
             "build-commands" : [
                 "python -m pip install --no-build-isolation --prefix=/app .",
                 "install -Dm644 ./com.chappelastro.HQAnimate.desktop -t ${FLATPAK_DEST}/share/applications/",
-                "install -Dm644 ./com.chappelastro.HQAnimate.metainfo.xml ${FLATPAK_DEST}/share/metainfo/",
+                "install -Dm644 ./com.chappelastro.HQAnimate.metainfo.xml -t ${FLATPAK_DEST}/share/metainfo/",
                 "install -Dm644 ./icons/16x16/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/",
                 "install -Dm644 ./icons/24x24/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/24x24/apps/",
                 "install -Dm644 ./icons/32x32/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/",
