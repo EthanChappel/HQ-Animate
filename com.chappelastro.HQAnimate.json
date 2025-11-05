@@ -26,7 +26,16 @@
             "buildsystem" : "simple",
             "build-commands" : [
                 "python -m pip install --no-build-isolation --prefix=/app .",
-                "install -Dm0644 com.chappelastro.HQAnimate.metainfo.xml ${FLATPAK_DEST}/share/metainfo/com.chappelastro.HQAnimate.metainfo.xml"
+                "install -Dm0644 com.chappelastro.HQAnimate.metainfo.xml ${FLATPAK_DEST}/share/metainfo/",
+                "install -Dm644 ./icons/16x16/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/16x16/apps/",
+                "install -Dm644 ./icons/24x24/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/24x24/apps/",
+                "install -Dm644 ./icons/32x32/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/32x32/apps/",
+                "install -Dm644 ./icons/48x48/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/48x48/apps/",
+                "install -Dm644 ./icons/64x64/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/64x64/apps/",
+                "install -Dm644 ./icons/128x128/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/128x128/apps/",
+                "install -Dm644 ./icons/256x256/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/",
+                "install -Dm644 ./icons/512x512/com.chappelastro.HQAnimate.png -t ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/",
+                "install -Dm644 ./icons/scalable/com.chappelastro.HQAnimate.svg -t ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/"
             ],
             "sources": [
                 {

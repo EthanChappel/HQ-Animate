@@ -14,6 +14,15 @@
   </categories>
 
   <launchable type="desktop-id">com.chappelastro.HQAnimate.desktop</launchable>
+  <icon type="cached" width="16" height="16">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="24" height="24">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="32" height="32">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="48" height="48">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="64" height="64">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="128" height="128">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="256" height="256">com.chappelastro.HQAnimate</icon>
+  <icon type="cached" width="512" height="512">com.chappelastro.HQAnimate</icon>
+  <icon type="cached">com.chappelastro.HQAnimate</icon>
   <provides>
     <binary>hq-animate</binary>
   </provides>
