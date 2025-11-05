@@ -1083,6 +1083,8 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.apng_optimize_check, self.avif_quality_spinner)
 
         self.retranslateUi(MainFrame)
+        self.subtract_check.toggled.connect(self.spread_label.setVisible)
+        self.subtract_check.toggled.connect(self.spread_spinner.setVisible)
 
         self.stackedWidget.setCurrentIndex(0)
         self.formats_stack.setCurrentIndex(0)
