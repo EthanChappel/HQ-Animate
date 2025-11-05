@@ -142,6 +142,10 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         parent.settings_updated.connect(self.update_settings)
 
+        show_spread = self.subtract_check.isChecked()
+        self.spread_label.setVisible(show_spread)
+        self.spread_spinner.setVisible(show_spread)
+
         self.set_field_derotation_state()
         self.update_ffmpeg_widgets()
         self.set_convert_button_state()

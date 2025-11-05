@@ -1989,5 +1989,38 @@ No effect if set to 1.</string>
   <tabstop>avif_quality_spinner</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>subtract_check</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spread_label</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>387</x>
+     <y>529</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>subtract_check</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spread_spinner</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>527</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
