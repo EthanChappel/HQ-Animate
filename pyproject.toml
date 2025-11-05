@@ -25,6 +25,9 @@ platformdirs = "^4.5.0"
 cx_freeze = "^8.4.1"
 pip-licenses = "^5.5.0"
 
+[tool.setuptools]
+packages = ["hq_animate"]
+
 [build-system]
 requires = ["setuptools>=80.9"]
 build-backend = "setuptools.build_meta"
