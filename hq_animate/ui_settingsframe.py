@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'settingsframe.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.1
+## Created by: Qt User Interface Compiler version 6.10.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -143,6 +143,12 @@ class Ui_SettingsFrame(object):
     def retranslateUi(self, SettingsFrame):
         SettingsFrame.setWindowTitle(QCoreApplication.translate("SettingsFrame", u"Frame", None))
         self.ffmpeg_path_label.setText(QCoreApplication.translate("SettingsFrame", u"&FFmpeg path", None))
+#if QT_CONFIG(tooltip)
+        self.ffmpeg_path_combo.setToolTip(QCoreApplication.translate("SettingsFrame", u"Location of FFmpeg executable, which allows for the creation of more output formats such as MP4 and WebM.", None))
+#endif // QT_CONFIG(tooltip)
+#if QT_CONFIG(tooltip)
+        self.ffmpeg_browse_button.setToolTip(QCoreApplication.translate("SettingsFrame", u"Browse for FFmpeg executable file.", None))
+#endif // QT_CONFIG(tooltip)
         self.ffmpeg_browse_button.setText(QCoreApplication.translate("SettingsFrame", u"Browse...", None))
         self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.about_tab), QCoreApplication.translate("SettingsFrame", u"About", None))
         self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.libraries_tab), QCoreApplication.translate("SettingsFrame", u"Third-party libraries", None))
