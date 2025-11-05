@@ -107,6 +107,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="toolTip">
+            <string>Browse for input frames.
+
+Supported images or folders with multiple images can also be dropped anywhere on this window to add them as input frames.</string>
+           </property>
            <property name="text">
             <string>Browse...</string>
            </property>
@@ -1276,6 +1281,13 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Type of animation to create.
+
+Loop will begin on the first frame and end on the last.
+
+Rock will play the frames in normal order, followed by a repeat in reverse order.</string>
+             </property>
             </widget>
            </item>
            <item row="1" column="0">
@@ -1295,6 +1307,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Number of frames to progress per one second.</string>
              </property>
              <property name="minimum">
               <number>1</number>
@@ -1325,6 +1340,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Horizontal width in pixels of the animation.</string>
+             </property>
              <property name="suffix">
               <string>px</string>
              </property>
@@ -1354,6 +1372,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Vertical height in pixels of the animation.</string>
+             </property>
              <property name="suffix">
               <string>px</string>
              </property>
@@ -1382,6 +1403,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Number of times to repeat animation for MP4 and WebM formats.</string>
              </property>
              <property name="minimum">
               <number>1</number>
@@ -1454,6 +1478,11 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Each frame of the output animation is a result of a moving average of input frames.
+
+No effect if set to 1.</string>
+             </property>
              <property name="prefix">
               <string/>
              </property>
@@ -1495,6 +1524,9 @@
                  <height>0</height>
                 </size>
                </property>
+               <property name="toolTip">
+                <string>Each frame of the output animation becomes the subtraction of one frame from another. Color frames will be converted to monochrome.</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -1533,6 +1565,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>How many frames apart the frame to subtract with is from the input frame.</string>
+             </property>
              <property name="minimum">
               <number>1</number>
              </property>
@@ -1562,6 +1597,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>Rotate each frame by an arbitrary amount in degrees. Positive values rotate clockwise and negative rotate counterclockwise.</string>
              </property>
              <property name="suffix">
               <string>°</string>
@@ -1669,6 +1707,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Decimal degrees of latitude. Positive is north and negative is south.</string>
+             </property>
              <property name="suffix">
               <string>°</string>
              </property>
@@ -1698,6 +1739,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>Decimal degrees of longitude. Positive is east and negative is west.</string>
+             </property>
              <property name="suffix">
               <string>°</string>
              </property>
@@ -1716,6 +1760,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="toolTip">
+              <string>When an alt-az telescope is not leveled, field derotation will not work perfectly and a slight drift in rotation will occur over a timelapse. Positive when telescope is tilted towards east and negative towards west.</string>
              </property>
              <property name="suffix">
               <string>°</string>
@@ -1759,6 +1806,9 @@
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="toolTip">
+              <string>When an alt-az telescope is not leveled, field derotation will not work perfectly and a slight drift in rotation will occur over a timelapse. Positive when telescope is tilted towards north and negative towards south.</string>
+             </property>
              <property name="suffix">
               <string>°</string>
              </property>
@@ -1801,10 +1851,16 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Folder to output animation files to.</string>
+       </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="output_browse_button">
+       <property name="toolTip">
+        <string>Browse for output folder.</string>
+       </property>
        <property name="text">
         <string>Browse...</string>
        </property>
@@ -1831,6 +1887,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Base name for the output animations. File extensions will be added automatically.</string>
+       </property>
       </widget>
      </item>
     </layout>
@@ -1855,6 +1914,9 @@
      </item>
      <item alignment="Qt::AlignmentFlag::AlignRight">
       <widget class="QCheckBox" name="show_folder_check">
+       <property name="toolTip">
+        <string>Open the output folder after all animations are created</string>
+       </property>
        <property name="text">
         <string>Show folder when &amp;done</string>
        </property>
