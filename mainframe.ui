@@ -1948,10 +1948,22 @@ No effect if set to 1.</string>
  <tabstops>
   <tabstop>frames_table</tabstop>
   <tabstop>input_browse_button</tabstop>
+  <tabstop>apng_check</tabstop>
+  <tabstop>apng_options_button</tabstop>
+  <tabstop>avif_check</tabstop>
+  <tabstop>avif_options_button</tabstop>
+  <tabstop>webp_check</tabstop>
+  <tabstop>webp_options_button</tabstop>
+  <tabstop>gif_check</tabstop>
+  <tabstop>gif_options_button</tabstop>
   <tabstop>mp4_check</tabstop>
+  <tabstop>mp4_options_button</tabstop>
   <tabstop>webm_check</tabstop>
+  <tabstop>webm_options_button</tabstop>
   <tabstop>mode_combo</tabstop>
   <tabstop>duration_spinbox</tabstop>
+  <tabstop>width_spinner</tabstop>
+  <tabstop>height_spinner</tabstop>
   <tabstop>loop_spinner</tabstop>
   <tabstop>rotate_spinner</tabstop>
   <tabstop>average_spinner</tabstop>
@@ -1969,24 +1981,26 @@ No effect if set to 1.</string>
   <tabstop>settings_button</tabstop>
   <tabstop>show_folder_check</tabstop>
   <tabstop>convert_button</tabstop>
-  <tabstop>gif_optimize_check</tabstop>
-  <tabstop>gif_back_button</tabstop>
-  <tabstop>mp4_codec_combo</tabstop>
-  <tabstop>mp4_back_button</tabstop>
-  <tabstop>webm_codec_combo</tabstop>
-  <tabstop>webm_back_button</tabstop>
-  <tabstop>loop_frames_button</tabstop>
-  <tabstop>avif_back_button</tabstop>
-  <tabstop>next_frame_button</tabstop>
-  <tabstop>frames_slider</tabstop>
-  <tabstop>webp_quality_spinner</tabstop>
-  <tabstop>webp_lossless_check</tabstop>
   <tabstop>apng_back_button</tabstop>
   <tabstop>webp_back_button</tabstop>
   <tabstop>previous_frame_button</tabstop>
   <tabstop>apng_compress_spinner</tabstop>
   <tabstop>apng_optimize_check</tabstop>
   <tabstop>avif_quality_spinner</tabstop>
+  <tabstop>webp_quality_spinner</tabstop>
+  <tabstop>gif_back_button</tabstop>
+  <tabstop>webp_lossless_check</tabstop>
+  <tabstop>avif_back_button</tabstop>
+  <tabstop>mp4_back_button</tabstop>
+  <tabstop>gif_optimize_check</tabstop>
+  <tabstop>mp4_codec_combo</tabstop>
+  <tabstop>next_frame_button</tabstop>
+  <tabstop>frames_slider</tabstop>
+  <tabstop>webm_codec_combo</tabstop>
+  <tabstop>mp4_quality_spinner</tabstop>
+  <tabstop>webm_quality_spinner</tabstop>
+  <tabstop>webm_back_button</tabstop>
+  <tabstop>loop_frames_button</tabstop>
  </tabstops>
  <resources/>
  <connections>
