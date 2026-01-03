@@ -204,6 +204,7 @@ class ProcessOptions:
 
 @dataclass(frozen=True)
 class AnimationOptions:
+    fps: int = 10
     animation_mode: AnimationMode = AnimationMode.Loop
 
 
@@ -432,7 +433,12 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
     return (frames, icc_profile, is_color)
 
 
-def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, video_options: VideoOptions=None, webm_options: WebMOptions=None, animation_options: AnimationOptions=None, ffmpeg_path: Path=None):
+def save_animations(process_result: ProcessResult, out_path: Path, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, video_options: VideoOptions=None, animation_options: AnimationOptions=None, ffmpeg_path: Path=None):
+    frames = process_result.frames
+    icc_profile = process_result.icc_profile
+    is_color = process_result.is_color
+    fps = animation_options.fps
+
     log_str = f"Save {len(frames)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
     logger.info(log_str)
 
@@ -443,7 +449,7 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
 
     image = frames[0]
 
-    duration = int(1000 / frame_duration)
+    duration = int(1000 / animation_options.fps)
 
     if apng_options != None:
         filename = f"{out_path}.apng"
@@ -522,12 +528,12 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
             '-f', 'rawvideo',
             '-pixel_format', 'rgb24' if is_color else 'gray',
             '-video_size', f'{image.width}x{image.height}',
-            '-r', str(frame_duration),
+            '-r', str(fps),
             '-i', 'pipe:0',
         ]
         output_options = [
             '-frames:v', str(video_length),
-            '-r', str(frame_duration),
+            '-r', str(fps),
         ]
         avc_options = [
             '-c:v', 'libx264',
