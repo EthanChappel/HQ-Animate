@@ -61,10 +61,17 @@ class Ui_ExportFrame(object):
 
         self.verticalLayout.addWidget(self.scrollArea)
 
+        self.options_frame = QFrame(ExportFrame)
+        self.options_frame.setObjectName(u"options_frame")
+        self.options_frame.setFrameShape(QFrame.Shape.NoFrame)
+        self.options_frame.setFrameShadow(QFrame.Shadow.Plain)
+        self.verticalLayout_5 = QVBoxLayout(self.options_frame)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(9, 0, 9, -1)
-        self.formats_stack = QStackedWidget(ExportFrame)
+        self.formats_stack = QStackedWidget(self.options_frame)
         self.formats_stack.setObjectName(u"formats_stack")
         sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         sizePolicy2.setHorizontalStretch(0)
@@ -593,7 +600,7 @@ class Ui_ExportFrame(object):
 
         self.horizontalLayout.addWidget(self.formats_stack)
 
-        self.parameters_group = QGroupBox(ExportFrame)
+        self.parameters_group = QGroupBox(self.options_frame)
         self.parameters_group.setObjectName(u"parameters_group")
         sizePolicy3.setHeightForWidth(self.parameters_group.sizePolicy().hasHeightForWidth())
         self.parameters_group.setSizePolicy(sizePolicy3)
@@ -644,17 +651,17 @@ class Ui_ExportFrame(object):
         self.horizontalLayout.addWidget(self.parameters_group)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.verticalLayout_5.addLayout(self.horizontalLayout)
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.horizontalLayout_4.setContentsMargins(9, -1, 9, -1)
-        self.output_name_label = QLabel(ExportFrame)
+        self.output_name_label = QLabel(self.options_frame)
         self.output_name_label.setObjectName(u"output_name_label")
 
         self.horizontalLayout_4.addWidget(self.output_name_label)
 
-        self.output_name_edit = QLineEdit(ExportFrame)
+        self.output_name_edit = QLineEdit(self.options_frame)
         self.output_name_edit.setObjectName(u"output_name_edit")
         sizePolicy9 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         sizePolicy9.setHorizontalStretch(1)
@@ -665,12 +672,12 @@ class Ui_ExportFrame(object):
         self.horizontalLayout_4.addWidget(self.output_name_edit)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_4)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_4)
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(9, -1, 9, -1)
-        self.back_button = QPushButton(ExportFrame)
+        self.back_button = QPushButton(self.options_frame)
         self.back_button.setObjectName(u"back_button")
         sizePolicy4.setHeightForWidth(self.back_button.sizePolicy().hasHeightForWidth())
         self.back_button.setSizePolicy(sizePolicy4)
@@ -681,12 +688,12 @@ class Ui_ExportFrame(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_7)
 
-        self.show_folder_check = QCheckBox(ExportFrame)
+        self.show_folder_check = QCheckBox(self.options_frame)
         self.show_folder_check.setObjectName(u"show_folder_check")
 
         self.horizontalLayout_2.addWidget(self.show_folder_check)
 
-        self.export_button = QPushButton(ExportFrame)
+        self.export_button = QPushButton(self.options_frame)
         self.export_button.setObjectName(u"export_button")
         sizePolicy4.setHeightForWidth(self.export_button.sizePolicy().hasHeightForWidth())
         self.export_button.setSizePolicy(sizePolicy4)
@@ -694,7 +701,10 @@ class Ui_ExportFrame(object):
         self.horizontalLayout_2.addWidget(self.export_button)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_2)
+
+
+        self.verticalLayout.addWidget(self.options_frame)
 
 #if QT_CONFIG(shortcut)
         self.label_7.setBuddy(self.apng_optimize_check)
