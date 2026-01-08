@@ -204,12 +204,13 @@ class ProcessOptions:
 
 @dataclass(frozen=True)
 class AnimationOptions:
+    fps: int = 10
     animation_mode: AnimationMode = AnimationMode.Loop
 
 
 @dataclass(frozen=True)
 class ProcessResult:
-    image_paths: tuple[str] = tuple()
+    image_paths: tuple[Path] = tuple()
     newest_modified: float = 0
     derotation_options: DerotationOptions|None = None
     process_options: ProcessOptions|None = None
@@ -321,6 +322,7 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
 
     max_width = max(f.width for f in tar)
     max_height = max(f.height for f in tar)
+    max_dim = max(max_width, max_height)
     
     frames = []
     q1 = None
@@ -342,14 +344,14 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
             if frame.mode == 'P':
                 frame = frame.convert("RGBA")
                 
-            f = Image.new(frame.mode, (max_width, max_height), 'black')
+            f = Image.new(frame.mode, (max_dim, max_dim), 'black')
 
             if frame.mode == "RGBA":
                 bg = Image.new(frame.mode, (frame.width, frame.height), 'black')
                 frame = Image.alpha_composite(bg, frame).convert("RGB")
             
-            x_offset = (max_width - frame.width) // 2
-            y_offset = (max_height - frame.height) // 2
+            x_offset = (max_dim - frame.width) // 2
+            y_offset = (max_dim - frame.height) // 2
 
             f.paste(frame, (x_offset, y_offset))
 
@@ -432,7 +434,12 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
     return (frames, icc_profile, is_color)
 
 
-def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Path, frame_duration: int, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, video_options: VideoOptions=None, webm_options: WebMOptions=None, animation_options: AnimationOptions=None, ffmpeg_path: Path=None):
+def save_animations(process_result: ProcessResult, out_path: Path, apng_options: APNGOptions=None, avif_options: AVIFOptions=None, gif_options: GIFOptions=None, webp_options: WebPOptions=None, mp4_options: MP4Options=None, webm_options: WebMOptions=None, video_options: VideoOptions=None, animation_options: AnimationOptions=None, ffmpeg_path: Path=None):
+    frames = process_result.frames
+    icc_profile = process_result.icc_profile
+    is_color = process_result.is_color
+    fps = animation_options.fps
+
     log_str = f"Save {len(frames)} frames, Output={out_path}, GIF={gif_options != None}, WebP={webp_options != None}, APNG={apng_options != None}, AVIF={avif_options != None}, MP4={mp4_options != None}, WebM={webm_options != None}"
     logger.info(log_str)
 
@@ -443,7 +450,7 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
 
     image = frames[0]
 
-    duration = int(1000 / frame_duration)
+    duration = int(1000 / animation_options.fps)
 
     if apng_options != None:
         filename = f"{out_path}.apng"
@@ -522,12 +529,12 @@ def save_animations(frames: list, icc_profile: str, is_color: bool, out_path: Pa
             '-f', 'rawvideo',
             '-pixel_format', 'rgb24' if is_color else 'gray',
             '-video_size', f'{image.width}x{image.height}',
-            '-r', str(frame_duration),
+            '-r', str(fps),
             '-i', 'pipe:0',
         ]
         output_options = [
             '-frames:v', str(video_length),
-            '-r', str(frame_duration),
+            '-r', str(fps),
         ]
         avc_options = [
             '-c:v', 'libx264',

@@ -33,6 +33,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 from hq_animate import convert
 from hq_animate.mainframe import MainFrame
+from hq_animate.exportframe import ExportFrame
 from hq_animate.settings import Settings
 from hq_animate.settingsframe import SettingsFrame
 import hq_animate.resources_rc
@@ -69,7 +70,13 @@ class MainWindow(QMainWindow):
         self.main_frame.setting_changed.connect(self.save_settings)
         self.main_frame.settings_clicked.connect(self.show_settings)
         self.stack_frame.addWidget(self.main_frame)
-        
+
+        self.export_frame = ExportFrame(self)
+        self.export_frame.setting_changed.connect(self.save_settings)
+        self.export_frame.back_clicked.connect(self.show_main)
+        self.main_frame.convert_complete.connect(self.show_export)
+        self.stack_frame.addWidget(self.export_frame)
+
         self.settings_frame = SettingsFrame(self, ffmpeg_paths=ffmpeg_paths)
         self.settings_frame.setting_changed.connect(self.save_settings)
         self.settings_frame.back_clicked.connect(self.show_main)
@@ -82,33 +89,36 @@ class MainWindow(QMainWindow):
         logger.info("Switch to settings frame")
         self.stack_frame.setCurrentWidget(self.settings_frame)
     
+    def show_export(self, process_result: convert.ProcessResult):
+        logger.info("Switch to export frame")
+        self.stack_frame.setCurrentWidget(self.export_frame)
+    
     def save_settings(self):
         self.settings.field_derotation = self.main_frame.derotation_group.isChecked()
         self.settings.derotation_options = convert.DerotationOptions(self.main_frame.latitude_spin.value(), self.main_frame.longitude_spin.value(), self.main_frame.alt_tilt_spin.value(), self.main_frame.az_tilt_spin.value())
-        self.settings.frame_length = self.main_frame.duration_spinbox.value()
-        self.settings.animation_options = convert.AnimationOptions(convert.AnimationMode[self.main_frame.mode_combo.currentText()])
-        self.settings.show_folder = self.main_frame.show_folder_check.isChecked()
+        self.settings.animation_options = convert.AnimationOptions(self.export_frame.duration_spinbox.value(), convert.AnimationMode[self.export_frame.mode_combo.currentText()])
+        self.settings.show_folder = self.export_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 
-        self.settings.do_apng = self.main_frame.apng_check.isChecked()
-        self.settings.apng_options = convert.APNGOptions(self.main_frame.apng_compress_spinner.value(), self.main_frame.apng_optimize_check.isChecked())
+        self.settings.do_apng = self.export_frame.apng_check.isChecked()
+        self.settings.apng_options = convert.APNGOptions(self.export_frame.apng_compress_spinner.value(), self.export_frame.apng_optimize_check.isChecked())
 
-        self.settings.do_avif = self.main_frame.avif_check.isChecked()
-        self.settings.avif_options = convert.AVIFOptions(self.main_frame.avif_quality_spinner.value())
+        self.settings.do_avif = self.export_frame.avif_check.isChecked()
+        self.settings.avif_options = convert.AVIFOptions(self.export_frame.avif_quality_spinner.value())
 
-        self.settings.do_gif = self.main_frame.gif_check.isChecked()
-        self.settings.gif_options = convert.GIFOptions(self.main_frame.gif_optimize_check.isChecked())
+        self.settings.do_gif = self.export_frame.gif_check.isChecked()
+        self.settings.gif_options = convert.GIFOptions(self.export_frame.gif_optimize_check.isChecked())
 
-        self.settings.do_webp = self.main_frame.webp_check.isChecked()
-        self.settings.webp_options = convert.WebPOptions(self.main_frame.webp_quality_spinner.value(), self.main_frame.webp_lossless_check.isChecked())
+        self.settings.do_webp = self.export_frame.webp_check.isChecked()
+        self.settings.webp_options = convert.WebPOptions(self.export_frame.webp_quality_spinner.value(), self.export_frame.webp_lossless_check.isChecked())
 
-        self.settings.do_mp4 = self.main_frame.mp4_check.isChecked()
-        self.settings.mp4_options = convert.MP4Options(self.main_frame.mp4_quality_spinner.value(), convert.MP4Codec[self.main_frame.mp4_codec_combo.currentText()])
+        self.settings.do_mp4 = self.export_frame.mp4_check.isChecked()
+        self.settings.mp4_options = convert.MP4Options(self.export_frame.mp4_quality_spinner.value(), convert.MP4Codec[self.export_frame.mp4_codec_combo.currentText()])
 
-        self.settings.do_webm = self.main_frame.webm_check.isChecked()
-        self.settings.webm_options = convert.WebMOptions(self.main_frame.webm_quality_spinner.value(), convert.WebMCodec[self.main_frame.webm_codec_combo.currentText()])
+        self.settings.do_webm = self.export_frame.webm_check.isChecked()
+        self.settings.webm_options = convert.WebMOptions(self.export_frame.webm_quality_spinner.value(), convert.WebMCodec[self.export_frame.webm_codec_combo.currentText()])
 
-        self.settings.video_options = convert.VideoOptions(self.main_frame.loop_spinner.value())
+        self.settings.video_options = convert.VideoOptions(self.export_frame.loop_spinner.value())
 
         self.settings.save()
         self.settings_updated.emit()
