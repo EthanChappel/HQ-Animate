@@ -141,7 +141,7 @@ Supported images or folders with multiple images can also be dropped anywhere on
            <item row="0" column="0">
             <widget class="QLabel" name="width_label">
              <property name="text">
-              <string>Width</string>
+              <string>&amp;Width</string>
              </property>
              <property name="buddy">
               <cstring>width_spinner</cstring>
@@ -173,7 +173,7 @@ Supported images or folders with multiple images can also be dropped anywhere on
            <item row="1" column="0">
             <widget class="QLabel" name="height_label">
              <property name="text">
-              <string>Height</string>
+              <string>&amp;Height</string>
              </property>
              <property name="buddy">
               <cstring>height_spinner</cstring>
@@ -250,7 +250,7 @@ Supported images or folders with multiple images can also be dropped anywhere on
            <item row="2" column="0">
             <widget class="QLabel" name="average_label">
              <property name="text">
-              <string>Average</string>
+              <string>&amp;Average</string>
              </property>
              <property name="buddy">
               <cstring>average_spinner</cstring>
@@ -288,7 +288,7 @@ No effect if set to 1.</string>
            <item row="4" column="0">
             <widget class="QLabel" name="subtract_label">
              <property name="text">
-              <string>Subtract</string>
+              <string>Su&amp;btract</string>
              </property>
              <property name="buddy">
               <cstring>subtract_check</cstring>
@@ -337,7 +337,7 @@ No effect if set to 1.</string>
            <item row="5" column="0">
             <widget class="QLabel" name="spread_label">
              <property name="text">
-              <string>Spread</string>
+              <string>S&amp;pread</string>
              </property>
              <property name="buddy">
               <cstring>spread_spinner</cstring>
@@ -370,7 +370,7 @@ No effect if set to 1.</string>
            <item row="0" column="0">
             <widget class="QLabel" name="rotate_label">
              <property name="text">
-              <string>Rotate</string>
+              <string>&amp;Rotate</string>
              </property>
              <property name="buddy">
               <cstring>rotate_spinner</cstring>
@@ -447,7 +447,7 @@ No effect if set to 1.</string>
            </sizepolicy>
           </property>
           <property name="title">
-           <string>Alt-az field d&amp;erotation</string>
+           <string>Alt-az field &amp;derotation</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -511,7 +511,7 @@ No effect if set to 1.</string>
            <item row="2" column="0">
             <widget class="QLabel" name="longitude_label">
              <property name="text">
-              <string>Lo&amp;ngitude</string>
+              <string>Lon&amp;gitude</string>
              </property>
              <property name="buddy">
               <cstring>longitude_spin</cstring>
@@ -568,7 +568,7 @@ No effect if set to 1.</string>
            <item row="3" column="0">
             <widget class="QLabel" name="alt_tilt_label">
              <property name="text">
-              <string>North tilt</string>
+              <string>N&amp;orth tilt</string>
              </property>
              <property name="buddy">
               <cstring>alt_tilt_spin</cstring>
@@ -578,7 +578,7 @@ No effect if set to 1.</string>
            <item row="4" column="0">
             <widget class="QLabel" name="az_tilt_label">
              <property name="text">
-              <string>East tilt</string>
+              <string>&amp;East tilt</string>
              </property>
              <property name="buddy">
               <cstring>az_tilt_spin</cstring>
@@ -658,7 +658,7 @@ No effect if set to 1.</string>
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Next</string>
+        <string>&amp;Next</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>

@@ -1121,7 +1121,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="mode_label">
           <property name="text">
-           <string>Mode</string>
+           <string>Mo&amp;de</string>
           </property>
           <property name="buddy">
            <cstring>mode_combo</cstring>
@@ -1180,7 +1180,7 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
         <item row="2" column="0">
          <widget class="QLabel" name="loop_label">
           <property name="text">
-           <string>Loop</string>
+           <string>&amp;Loop</string>
           </property>
           <property name="buddy">
            <cstring>loop_spinner</cstring>
@@ -1222,7 +1222,7 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
      <item>
       <widget class="QLabel" name="output_name_label">
        <property name="text">
-        <string>Name</string>
+        <string>&amp;Name</string>
        </property>
        <property name="buddy">
         <cstring>output_name_edit</cstring>
@@ -1261,7 +1261,7 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Back</string>
+        <string>&amp;Back</string>
        </property>
       </widget>
      </item>
@@ -1281,7 +1281,7 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
      <item>
       <widget class="QCheckBox" name="show_folder_check">
        <property name="text">
-        <string>Open when finished</string>
+        <string>&amp;Open when finished</string>
        </property>
       </widget>
      </item>
@@ -1294,7 +1294,7 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Export to folder</string>
+        <string>&amp;Export to folder</string>
        </property>
       </widget>
      </item>

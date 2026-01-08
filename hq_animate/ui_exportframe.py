@@ -764,7 +764,7 @@ class Ui_ExportFrame(object):
         self.webm_quality_label.setText(QCoreApplication.translate("ExportFrame", u"Quality", None))
         self.webm_back_button.setText(QCoreApplication.translate("ExportFrame", u"Back", None))
         self.parameters_group.setTitle(QCoreApplication.translate("ExportFrame", u"Animation", None))
-        self.mode_label.setText(QCoreApplication.translate("ExportFrame", u"Mode", None))
+        self.mode_label.setText(QCoreApplication.translate("ExportFrame", u"Mo&de", None))
 #if QT_CONFIG(tooltip)
         self.mode_combo.setToolTip(QCoreApplication.translate("ExportFrame", u"Type of animation to create.\n"
 "\n"
@@ -776,16 +776,16 @@ class Ui_ExportFrame(object):
 #if QT_CONFIG(tooltip)
         self.duration_spinbox.setToolTip(QCoreApplication.translate("ExportFrame", u"Number of frames to progress per one second.", None))
 #endif // QT_CONFIG(tooltip)
-        self.loop_label.setText(QCoreApplication.translate("ExportFrame", u"Loop", None))
+        self.loop_label.setText(QCoreApplication.translate("ExportFrame", u"&Loop", None))
 #if QT_CONFIG(tooltip)
         self.loop_spinner.setToolTip(QCoreApplication.translate("ExportFrame", u"Number of times to repeat animation for MP4 and WebM formats.", None))
 #endif // QT_CONFIG(tooltip)
-        self.output_name_label.setText(QCoreApplication.translate("ExportFrame", u"Name", None))
+        self.output_name_label.setText(QCoreApplication.translate("ExportFrame", u"&Name", None))
 #if QT_CONFIG(tooltip)
         self.output_name_edit.setToolTip(QCoreApplication.translate("ExportFrame", u"Base name for the output animations. File extensions will be added automatically.", None))
 #endif // QT_CONFIG(tooltip)
-        self.back_button.setText(QCoreApplication.translate("ExportFrame", u"Back", None))
-        self.show_folder_check.setText(QCoreApplication.translate("ExportFrame", u"Open when finished", None))
-        self.export_button.setText(QCoreApplication.translate("ExportFrame", u"Export to folder", None))
+        self.back_button.setText(QCoreApplication.translate("ExportFrame", u"&Back", None))
+        self.show_folder_check.setText(QCoreApplication.translate("ExportFrame", u"&Open when finished", None))
+        self.export_button.setText(QCoreApplication.translate("ExportFrame", u"&Export to folder", None))
     # retranslateUi
 
