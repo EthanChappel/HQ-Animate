@@ -7,30 +7,30 @@
             "name": "python3-astropy",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --verbose --use-deprecated=legacy-resolver --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"astropy>=7.1.1\" --no-build-isolation"
+                "pip3 install --verbose --use-deprecated=legacy-resolver --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"astropy>=7.2.0\" --no-build-isolation"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/93/9b/14fb6cf65bd18015c6fdab7c71e4ae00318dd325d0ed03441ff2bb2b913a/astropy-7.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
-                    "sha256": "31233556969351c68e104700dbb81e86b02447beeea70028d2d04cd9c2fedd6f",
+                    "url": "https://files.pythonhosted.org/packages/c3/1c/f06ad85180e7dd9855aa5ede901bfc2be858d7bee17d4e978a14c0ecec14/astropy-7.2.0-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+                    "sha256": "2f39ce2c80211fbceb005d377a5478cd0d66c42aa1498d252f2239fe5a025c24",
                     "only-arches": ["x86_64"]
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/9b/d0/d9d33e9cdc10010e3e2f1e30cb9748a77c3a5ca69d4f4fed82d03bcafd79/astropy-7.1.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
-                    "sha256": "f04b4bdef1990e0b4a5cbdd7871ff172e291b9d4ac27a411e240727e4a357616",
+                    "url": "https://files.pythonhosted.org/packages/be/ba/05e43b5a7d738316a097fa78524d3eaaff5986294b4a052d4adb3c45e7c0/astropy-7.2.0-cp311-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl",
+                    "sha256": "97c370421b9bb13d4c762c7af06d172bad7c01bd5bcf88314f6913c3c235b770",
                     "only-arches": ["aarch64"]
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/90/a4/07b5137c03d264c6a71129f502d73ec2ca2315389ffe5e7ceb7e48cc9a2c/astropy_iers_data-0.2025.10.27.0.39.10-py3-none-any.whl",
-                    "sha256": "aa91d24155eec2e7dafffd9ce0f046cd1fd6bcd995a76904aba3ef3f6836c4dc"
+                    "url": "https://files.pythonhosted.org/packages/57/61/2d06c08f022c9b617b79f6c55d88e596c1795a1d211e6bf584ac4b9e9506/astropy_iers_data-0.2026.1.5.0.43.43-py3-none-any.whl",
+                    "sha256": "fe2c35e9abc99142083d717ea76bf7bde373dc12e502aaeced28ae4ff9bfc345"
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/b5/f4/098d2270d52b41f1bd7db9fc288aaa0400cb48c2a3e2af6fa365d9720947/numpy-2.3.4.tar.gz",
-                    "sha256": "a7d018bfedb375a8d979ac758b120ba846a7fe764911a64465fd87b8729f4a6a"
+                    "url": "https://files.pythonhosted.org/packages/a4/7a/6a3d14e205d292b738db449d0de649b373a59edb0d0b4493821d0a3e8718/numpy-2.4.0.tar.gz",
+                    "sha256": "6e504f7b16118198f138ef31ba24d985b124c2c469fe8467007cf30fd992f934"
                 },
                 {
                     "type": "file",
@@ -48,19 +48,19 @@
             "name": "python3-pillow",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pillow>=12.0.0\" --no-build-isolation"
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"pillow>=12.1.0\" --no-build-isolation"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/4f/87/424511bdcd02c8d7acf9f65caa09f291a519b16bd83c3fb3374b3d4ae951/pillow-12.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
-                    "sha256": "b87843e225e74576437fd5b6a4c2205d422754f84a06942cfaf1dc32243e45a8",
+                    "url": "https://files.pythonhosted.org/packages/01/9a/632e58ec89a32738cabfd9ec418f0e9898a2b4719afc581f07c04a05e3c9/pillow-12.1.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+                    "sha256": "6741e6f3074a35e47c77b23a4e4f2d90db3ed905cb1c5e6e0d49bff2045632bc",
                     "only-arches": ["x86_64"]
                 },
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/a7/62/a22e8d3b602ae8cc01446d0c57a54e982737f44b6f2e1e019a925143771d/pillow-12.0.0-cp312-cp312-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
-                    "sha256": "55f818bd74fe2f11d4d7cbc65880a843c4075e0ac7226bc1a23261dbea531953",
+                    "url": "https://files.pythonhosted.org/packages/17/e8/538b24cb426ac0186e03f80f78bc8dc7246c667f58b540bdd57c71c9f79d/pillow-12.1.0-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl",
+                    "sha256": "e115c15e3bc727b1ca3e641a909f77f8ca72a64fff150f666fcc85e57701c26c",
                     "only-arches": ["aarch64"]
                 }
             ]
@@ -69,13 +69,13 @@
             "name": "python3-platformdirs",
             "buildsystem": "simple",
             "build-commands": [
-                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"platformdirs>=4.5.0\" --no-build-isolation"
+                "pip3 install --verbose --exists-action=i --no-index --find-links=\"file://${PWD}\" --prefix=${FLATPAK_DEST} \"platformdirs>=4.5.1\" --no-build-isolation"
             ],
             "sources": [
                 {
                     "type": "file",
-                    "url": "https://files.pythonhosted.org/packages/73/cb/ac7874b3e5d58441674fb70742e6c374b28b0c7cb988d37d991cde47166c/platformdirs-4.5.0-py3-none-any.whl",
-                    "sha256": "e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"
+                    "url": "https://files.pythonhosted.org/packages/cb/28/3bfe2fa5a7b9c46fe7e13c97bda14c895fb10fa2ebf1d0abb90e0cea7ee1/platformdirs-4.5.1-py3-none-any.whl",
+                    "sha256": "d03afa3963c806a9bed9d5125c8f4cb2fdaf74a55ab60e5d59b3fde758104d31"
                 }
             ]
         }
