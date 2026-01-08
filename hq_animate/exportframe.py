@@ -240,11 +240,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         self.update_ffmpeg_widgets()
 
     def on_export_start(self):
-        logger.info("Disable GUI while processing frames.")
         self.setting_changed.emit()
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        self.setEnabled(False)
-
         apng_options = None
         if self.apng_check.isChecked():
             apng_options = APNGOptions(self.apng_compress_spinner.value(), self.apng_optimize_check.isChecked())
@@ -302,6 +298,12 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         self.worker.error.connect(self.worker_thread.quit)
         self.worker.error.connect(self.worker.deleteLater)
         self.worker_thread.finished.connect(self.worker.deleteLater)
+
+        logger.info("Disable GUI while exporting frames.")
+        self.setting_changed.emit()
+        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        self.setEnabled(False)
+
         self.worker_thread.start()
 
     def on_export_end(self):
