@@ -80,13 +80,13 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.alt_tilt_spin.setValue(self.settings.derotation_options.altitude_tilt)
         self.az_tilt_spin.setValue(self.settings.derotation_options.azimuth_tilt)
 
-        self.derotation_group.toggled.connect(self.set_convert_button_state)
-        self.target_combo.currentIndexChanged.connect(self.set_convert_button_state)
+        self.derotation_group.toggled.connect(self.set_next_button_state)
+        self.target_combo.currentIndexChanged.connect(self.set_next_button_state)
 
         self.input_browse_button.clicked.connect(self.select_input_frames_dialog)
         self.derotation_group.toggled.connect(self.set_field_derotation_state)
         self.settings_button.clicked.connect(self.switch_to_settings_page)
-        self.convert_button.clicked.connect(self.on_convert_start)
+        self.next_button.clicked.connect(self.on_convert_start)
         self.supports_open = {ex for ex, f in Image.registered_extensions().items() if f in Image.OPEN}
         self.wildcards = " ".join(sorted({f"*{ex}" for ex in self.supports_open}))
 
@@ -97,7 +97,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.spread_spinner.setVisible(show_spread)
 
         self.set_field_derotation_state()
-        self.set_convert_button_state()
+        self.set_next_button_state()
 
         
     def select_input_frames_dialog(self, event):
@@ -142,7 +142,7 @@ class MainFrame(QFrame, Ui_MainFrame):
         if duration > 0:
             self.duration_set.emit(1000 / duration)
         
-        self.set_convert_button_state()
+        self.set_next_button_state()
     
     def switch_to_settings_page(self):
         self.settings_clicked.emit()
@@ -160,12 +160,12 @@ class MainFrame(QFrame, Ui_MainFrame):
         self.derotation_group.setEnabled(is_enabled)
         self.derotation_group.setChecked(is_checked)
     
-    def set_convert_button_state(self):
+    def set_next_button_state(self):
         has_input = self.frames_table.model().rowCount(0) > 0
         do_derotate = self.derotation_group.isChecked()
         derotate_and_target = (not do_derotate) or (do_derotate and not self.target_combo.currentText() not in convert.TARGETS.keys())
 
-        self.convert_button.setEnabled(has_input and derotate_and_target)
+        self.next_button.setEnabled(has_input and derotate_and_target)
     
     def view_frame(self, index):
         row = index.row()

@@ -333,13 +333,13 @@ class Ui_MainFrame(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
-        self.convert_button = QPushButton(MainFrame)
-        self.convert_button.setObjectName(u"convert_button")
-        sizePolicy1.setHeightForWidth(self.convert_button.sizePolicy().hasHeightForWidth())
-        self.convert_button.setSizePolicy(sizePolicy1)
-        self.convert_button.setAutoDefault(True)
+        self.next_button = QPushButton(MainFrame)
+        self.next_button.setObjectName(u"next_button")
+        sizePolicy1.setHeightForWidth(self.next_button.sizePolicy().hasHeightForWidth())
+        self.next_button.setSizePolicy(sizePolicy1)
+        self.next_button.setAutoDefault(True)
 
-        self.horizontalLayout_2.addWidget(self.convert_button)
+        self.horizontalLayout_2.addWidget(self.next_button)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -371,13 +371,13 @@ class Ui_MainFrame(object):
         QWidget.setTabOrder(self.longitude_spin, self.alt_tilt_spin)
         QWidget.setTabOrder(self.alt_tilt_spin, self.az_tilt_spin)
         QWidget.setTabOrder(self.az_tilt_spin, self.settings_button)
-        QWidget.setTabOrder(self.settings_button, self.convert_button)
+        QWidget.setTabOrder(self.settings_button, self.next_button)
 
         self.retranslateUi(MainFrame)
         self.subtract_check.toggled.connect(self.spread_label.setVisible)
         self.subtract_check.toggled.connect(self.spread_spinner.setVisible)
 
-        self.convert_button.setDefault(True)
+        self.next_button.setDefault(True)
 
 
         QMetaObject.connectSlotsByName(MainFrame)
@@ -450,6 +450,6 @@ class Ui_MainFrame(object):
 #endif // QT_CONFIG(tooltip)
         self.alt_tilt_spin.setSuffix(QCoreApplication.translate("MainFrame", u"\u00b0", None))
         self.settings_button.setText(QCoreApplication.translate("MainFrame", u"&Settings", None))
-        self.convert_button.setText(QCoreApplication.translate("MainFrame", u"&Convert", None))
+        self.next_button.setText(QCoreApplication.translate("MainFrame", u"Next", None))
     # retranslateUi
 

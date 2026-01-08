@@ -650,7 +650,7 @@ No effect if set to 1.</string>
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="convert_button">
+      <widget class="QPushButton" name="next_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -658,7 +658,7 @@ No effect if set to 1.</string>
         </sizepolicy>
        </property>
        <property name="text">
-        <string>&amp;Convert</string>
+        <string>Next</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>
@@ -687,7 +687,7 @@ No effect if set to 1.</string>
   <tabstop>alt_tilt_spin</tabstop>
   <tabstop>az_tilt_spin</tabstop>
   <tabstop>settings_button</tabstop>
-  <tabstop>convert_button</tabstop>
+  <tabstop>next_button</tabstop>
  </tabstops>
  <resources/>
  <connections>
