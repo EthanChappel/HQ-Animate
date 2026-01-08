@@ -122,6 +122,9 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         self.can_av1 = False
         self.can_vp9 = False
 
+        self.can_mp4 = False
+        self.can_webm = False
+
         parent.settings_updated.connect(self.update_settings)
 
         if self.settings.mp4_options:
@@ -156,9 +159,9 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         self.can_av1 = is_valid_ffmpeg["av1"]
         self.can_vp9 = is_valid_ffmpeg["vp9"]
 
-        can_mp4 = self.can_av1 or self.can_vp9 or self.can_avc
-        can_webm = self.can_av1 or self.can_vp9
-        can_video = can_mp4 or can_webm
+        self.can_mp4 = self.can_av1 or self.can_vp9 or self.can_avc
+        self.can_webm = self.can_av1 or self.can_vp9
+        can_video = self.can_mp4 or self.can_webm
         
         if not can_video:
             self.video_stack.setCurrentIndex(1)
@@ -166,19 +169,19 @@ class ExportFrame(QFrame, Ui_ExportFrame):
 
         self.video_stack.setCurrentIndex(0)
 
-        self.mp4_check.setVisible(can_mp4)
-        self.mp4_options_button.setVisible(can_mp4)
+        self.mp4_check.setVisible(self.can_mp4)
+        self.mp4_options_button.setVisible(self.can_mp4)
 
-        self.webm_check.setVisible(can_webm)
-        self.webm_options_button.setVisible(can_webm)
+        self.webm_check.setVisible(self.can_webm)
+        self.webm_options_button.setVisible(self.can_webm)
 
-        if not can_mp4:
+        if not self.can_mp4:
             self.mp4_check.setChecked(False)
-        if not can_webm:
+        if not self.can_webm:
             self.webm_check.setChecked(False)
 
-        self.mp4_codec_combo.setEnabled(can_mp4)
-        self.webm_codec_combo.setEnabled(can_webm)
+        self.mp4_codec_combo.setEnabled(self.can_mp4)
+        self.webm_codec_combo.setEnabled(self.can_webm)
 
         mp4_selection = self.mp4_codec_combo.currentText()
         webm_selection = self.webm_codec_combo.currentText()
@@ -258,11 +261,11 @@ class ExportFrame(QFrame, Ui_ExportFrame):
             gif_options = GIFOptions(self.gif_optimize_check.isChecked())
         
         mp4_options = None
-        if self.mp4_check.isChecked():
+        if self.mp4_check.isChecked() and self.can_mp4:
             mp4_options = MP4Options(self.mp4_quality_spinner.value(), MP4Codec[self.mp4_codec_combo.currentText()])
         
         webm_options = None
-        if self.webm_check.isChecked():
+        if self.webm_check.isChecked() and self.can_webm:
             webm_options = WebMOptions(self.webm_quality_spinner.value(), WebMCodec[self.webm_codec_combo.currentText()])
         
         video_options = VideoOptions(self.loop_spinner.value())
