@@ -322,6 +322,7 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
 
     max_width = max(f.width for f in tar)
     max_height = max(f.height for f in tar)
+    max_dim = max(max_width, max_height)
     
     frames = []
     q1 = None
@@ -343,14 +344,14 @@ def process_frames(tar: tuple[Frame], derotation_options: DerotationOptions=None
             if frame.mode == 'P':
                 frame = frame.convert("RGBA")
                 
-            f = Image.new(frame.mode, (max_width, max_height), 'black')
+            f = Image.new(frame.mode, (max_dim, max_dim), 'black')
 
             if frame.mode == "RGBA":
                 bg = Image.new(frame.mode, (frame.width, frame.height), 'black')
                 frame = Image.alpha_composite(bg, frame).convert("RGB")
             
-            x_offset = (max_width - frame.width) // 2
-            y_offset = (max_height - frame.height) // 2
+            x_offset = (max_dim - frame.width) // 2
+            y_offset = (max_dim - frame.height) // 2
 
             f.paste(frame, (x_offset, y_offset))
 
