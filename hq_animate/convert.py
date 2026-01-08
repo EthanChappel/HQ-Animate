@@ -210,7 +210,7 @@ class AnimationOptions:
 
 @dataclass(frozen=True)
 class ProcessResult:
-    image_paths: tuple[str] = tuple()
+    image_paths: tuple[Path] = tuple()
     newest_modified: float = 0
     derotation_options: DerotationOptions|None = None
     process_options: ProcessOptions|None = None

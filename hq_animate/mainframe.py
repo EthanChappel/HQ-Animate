@@ -60,6 +60,8 @@ class MainFrame(QFrame, Ui_MainFrame):
         
         self.paths = []
 
+        self.initial_dir = str(Path.home())
+
         self.settings = parent.settings
 
         self.frames_table.setModel(TableModel(self.paths))
@@ -99,14 +101,12 @@ class MainFrame(QFrame, Ui_MainFrame):
 
         
     def select_input_frames_dialog(self, event):
-        initial_dir = ""
-        if len(initial_dir) == 0:
-            initial_dir = str(Path.home())
 
-        paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", initial_dir, f"Images ({self.wildcards})")
+        paths, _ = QFileDialog.getOpenFileNames(self, "Select animation frames...", self.initial_dir, f"Images ({self.wildcards})")
 
         if paths:
             self.set_input_frames(paths)
+            self.initial_dir = str(Path(paths[0]).parent)
 
     def set_input_frames(self, paths: list[str]):
         self.paths.clear()

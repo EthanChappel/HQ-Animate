@@ -272,7 +272,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
 
         animation_options = AnimationOptions(self.duration_spinbox.value(), AnimationMode[self.mode_combo.currentText()])
 
-        path = QFileDialog.getExistingDirectory(self, "Select output folder...", "")
+        path = QFileDialog.getExistingDirectory(self, "Select output folder...", str(self.process_result.image_paths[0].parent))
 
         if not path:
             return
