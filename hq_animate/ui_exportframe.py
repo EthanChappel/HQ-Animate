@@ -681,6 +681,11 @@ class Ui_ExportFrame(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_7)
 
+        self.show_folder_check = QCheckBox(ExportFrame)
+        self.show_folder_check.setObjectName(u"show_folder_check")
+
+        self.horizontalLayout_2.addWidget(self.show_folder_check)
+
         self.export_button = QPushButton(ExportFrame)
         self.export_button.setObjectName(u"export_button")
         sizePolicy4.setHeightForWidth(self.export_button.sizePolicy().hasHeightForWidth())
@@ -780,6 +785,7 @@ class Ui_ExportFrame(object):
         self.output_name_edit.setToolTip(QCoreApplication.translate("ExportFrame", u"Base name for the output animations. File extensions will be added automatically.", None))
 #endif // QT_CONFIG(tooltip)
         self.back_button.setText(QCoreApplication.translate("ExportFrame", u"Back", None))
+        self.show_folder_check.setText(QCoreApplication.translate("ExportFrame", u"Open when finished", None))
         self.export_button.setText(QCoreApplication.translate("ExportFrame", u"Export to folder", None))
     # retranslateUi
 

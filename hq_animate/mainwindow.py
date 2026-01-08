@@ -97,6 +97,7 @@ class MainWindow(QMainWindow):
         self.settings.field_derotation = self.main_frame.derotation_group.isChecked()
         self.settings.derotation_options = convert.DerotationOptions(self.main_frame.latitude_spin.value(), self.main_frame.longitude_spin.value(), self.main_frame.alt_tilt_spin.value(), self.main_frame.az_tilt_spin.value())
         self.settings.animation_options = convert.AnimationOptions(self.export_frame.duration_spinbox.value(), convert.AnimationMode[self.export_frame.mode_combo.currentText()])
+        self.settings.show_folder = self.export_frame.show_folder_check.isChecked()
         self.settings.ffmpeg_path = self.settings_frame.ffmpeg_path_combo.currentText()
 
         self.settings.do_apng = self.export_frame.apng_check.isChecked()

@@ -1279,6 +1279,13 @@ Rock will play the frames in normal order, followed by a repeat in reverse order
       </spacer>
      </item>
      <item>
+      <widget class="QCheckBox" name="show_folder_check">
+       <property name="text">
+        <string>Open when finished</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="export_button">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

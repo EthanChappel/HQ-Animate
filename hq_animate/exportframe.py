@@ -138,6 +138,8 @@ class ExportFrame(QFrame, Ui_ExportFrame):
 
         self.loop_spinner.setValue(self.settings.video_options.loop)
 
+        self.show_folder_check.setChecked(self.settings.show_folder)
+
         self.update_ffmpeg_widgets()
         self.set_export_button_state()
     
@@ -309,13 +311,25 @@ class ExportFrame(QFrame, Ui_ExportFrame):
 
         self.worker_thread.start()
 
-    def on_export_end(self):
+    def on_export_end(self, output_path: Path):
         logger.info("Enable GUI after processing frames.")
         
         self.export_complete.emit()
 
         QApplication.restoreOverrideCursor()
         self.setEnabled(True)
+
+        if not self.show_folder_check.isChecked():
+            return
+        
+        logger.info(f"Show folder: {output_path}")
+
+        if SYSTEM == 'Windows':
+            os.startfile(output_path)
+        elif SYSTEM == 'Darwin':
+            subprocess.Popen(('open', output_path))
+        else:
+            subprocess.Popen(('xdg-open', output_path))
     
     def on_export_error(self, error: str):
         QApplication.restoreOverrideCursor()
@@ -329,7 +343,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
 
 
 class ExportWorker(QObject):
-    finished = Signal()
+    finished = Signal(Path)
     error = Signal(str)
 
     def __init__(self, process_result: ProcessResult, out_path: Path, apng_options: APNGOptions|None, avif_options: AVIFOptions|None, gif_options: GIFOptions|None, webp_options: WebPOptions|None, mp4_options: MP4Options|None, webm_options: WebMOptions|None, video_options: VideoOptions|None, animation_options: AnimationOptions|None, ffmpeg_path: Path|None):
@@ -363,6 +377,6 @@ class ExportWorker(QObject):
                 self.ffmpeg_path,
             )
 
-            self.finished.emit()
+            self.finished.emit(self.out_path.parent)
         except Exception as e:
             self.error.emit(traceback.format_exc())
