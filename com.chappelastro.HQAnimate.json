@@ -6,7 +6,6 @@
     "base": "io.qt.PySide.BaseApp",
     "base-version": "6.10",
     "command": "hq-animate",
-    "license": "LICENSE",
     "build-options": {
         "env": {
             "BASEAPP_REMOVE_WEBENGINE": "1"
