@@ -1,29 +1,29 @@
 [tool.poetry]
 name = "HQ-Animate"
 packages = [{include = "hq_animate"}]
-version = "0.9.5"
+version = "0.10.1"
 license = "MIT"
 description = "Create high quality APNG and WebP animations from a sequence of images."
 authors = ["Ethan Chappel <EthanChappel@users.noreply.github.com>"]
 
 [project]
 name = "hq-animate"
-version = "0.9.5"
+version = "0.10.1"
 
 [project.gui-scripts]
 hq-animate = "hq_animate.__main__:main"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.14"
+python = ">=3.12,<3.15"
 pillow = "^12.1.0"
-numpy = "^2.4.0"
+numpy = "^2.4.2"
 astropy = "^7.2.0"
-pyside6-essentials = "^6.10.0"
+pyside6-essentials = "^6.10.2"
 platformdirs = "^4.5.1"
 
 [tool.poetry.group.dev.dependencies]
-cx_freeze = "^8.4.1"
-pip-licenses = "^5.5.0"
+cx_freeze = "^8.5.3"
+pip-licenses = "^5.5.1"
 
 [tool.setuptools]
 packages = ["hq_animate"]

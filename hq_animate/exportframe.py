@@ -307,7 +307,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         logger.info("Disable GUI while exporting frames.")
         self.setting_changed.emit()
         QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        self.setEnabled(False)
+        self.options_frame.setEnabled(False)
 
         self.worker_thread.start()
 
@@ -317,7 +317,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         self.export_complete.emit()
 
         QApplication.restoreOverrideCursor()
-        self.setEnabled(True)
+        self.options_frame.setEnabled(True)
 
         if not self.show_folder_check.isChecked():
             return
@@ -339,7 +339,7 @@ class ExportFrame(QFrame, Ui_ExportFrame):
         messagebox.exec()
 
         QApplication.restoreOverrideCursor()
-        self.setEnabled(True)
+        self.options_frame.setEnabled(True)
 
 
 class ExportWorker(QObject):

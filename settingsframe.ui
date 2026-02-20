@@ -91,7 +91,7 @@
      </property>
      <widget class="QWidget" name="about_tab">
       <attribute name="title">
-       <string>About</string>
+       <string>&amp;About</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <property name="leftMargin">
@@ -129,7 +129,7 @@
      </widget>
      <widget class="QWidget" name="libraries_tab">
       <attribute name="title">
-       <string>Third-party libraries</string>
+       <string>&amp;Third-party libraries</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <property name="leftMargin">
@@ -195,7 +195,7 @@
      <item>
       <widget class="QPushButton" name="open_logs_button">
        <property name="text">
-        <string>Open logs folder...</string>
+        <string>&amp;Open logs folder...</string>
        </property>
        <property name="autoDefault">
         <bool>true</bool>

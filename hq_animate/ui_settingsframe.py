@@ -150,9 +150,9 @@ class Ui_SettingsFrame(object):
         self.ffmpeg_browse_button.setToolTip(QCoreApplication.translate("SettingsFrame", u"Browse for FFmpeg executable file.", None))
 #endif // QT_CONFIG(tooltip)
         self.ffmpeg_browse_button.setText(QCoreApplication.translate("SettingsFrame", u"Browse...", None))
-        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.about_tab), QCoreApplication.translate("SettingsFrame", u"About", None))
-        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.libraries_tab), QCoreApplication.translate("SettingsFrame", u"Third-party libraries", None))
+        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.about_tab), QCoreApplication.translate("SettingsFrame", u"&About", None))
+        self.about_tab_widget.setTabText(self.about_tab_widget.indexOf(self.libraries_tab), QCoreApplication.translate("SettingsFrame", u"&Third-party libraries", None))
         self.back_button.setText(QCoreApplication.translate("SettingsFrame", u"&Back", None))
-        self.open_logs_button.setText(QCoreApplication.translate("SettingsFrame", u"Open logs folder...", None))
+        self.open_logs_button.setText(QCoreApplication.translate("SettingsFrame", u"&Open logs folder...", None))
     # retranslateUi
 
