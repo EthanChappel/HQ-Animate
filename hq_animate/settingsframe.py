@@ -99,13 +99,15 @@ class SettingsFrame(QFrame, Ui_SettingsFrame):
         log_file_path = None
         for handler in logger.handlers:
             if isinstance(handler, (logging.FileHandler)):
-                log_file_path = handler.baseFilename
+                log_file_path = Path(handler.baseFilename).parent
                 break
         
         logging.info(log_file_path)
         
         if SYSTEM == "Windows":
             subprocess.Popen(f"explorer /select,\"{log_file_path}\"", creationflags=subprocess.CREATE_NO_WINDOW)
+        else:
+            subprocess.Popen(("xdg-open", log_file_path))
 
     def ffmpeg_path_edited(self):
         self.setting_changed.emit()
