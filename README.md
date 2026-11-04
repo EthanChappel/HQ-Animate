@@ -3,7 +3,7 @@
     <img src="./icons/128x128/com.chappelastro.HQAnimate.png" alt="H Q Animate icon." />
 </p>
 
-<p align="center">Create high quality animations from a sequence of image files.</p>
+<p align="center">Create high quality planetary timelapses</p>
 
 <p align="center">
     <img src="./Screenshot.png" alt="Screenshot of H Q Animate window." />
