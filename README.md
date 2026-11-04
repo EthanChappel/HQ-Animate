@@ -1,26 +1,24 @@
+# HQ Animate
 <p align="center">
     <img src="./icons/128x128/com.chappelastro.HQAnimate.png" alt="H Q Animate icon." />
 </p>
 
-# <center>HQ Animate</center>
 <p align="center">Create high quality animations from a sequence of image files.</p>
 
-<center>
-    <img src="./Screenshot.png" alt="H Q Animate screenshot." />
-</center>
+<p align="center">
+    <img src="./Screenshot.png" alt="Screenshot of H Q Animate window." />
+</p>
 
 ## Installation
 
-Requires Python 3.12 or later.
+`uv` is recommended since it installs Python applications into isolated environments.
 
-### Install with `pipx`
-`pipx` is recommended since it installs Python applications into isolated environments.
+Installation instructions for `uv`: [https://docs.astral.sh/uv/getting-started/installation/](https://docs.astral.sh/uv/getting-started/installation/)
 
-Installation instructions for `pipx`: [https://pipx.pypa.io/stable/installation/](https://pipx.pypa.io/stable/installation/)
+Open a terminal and install HQ Animate with this command:
 
-Open a terminal and navigate to the project's root folder, where `pyproject.toml` is located, then run:
 ```
-pipx install https://github.com/EthanChappel/HQ-Animate/archive/refs/heads/main.tar.gz
+uv tool install https://github.com/EthanChappel/HQ-Animate.git
 ```
 
 #### Upgrade
@@ -28,24 +26,7 @@ pipx install https://github.com/EthanChappel/HQ-Animate/archive/refs/heads/main.
 To upgrade the program to the latest version, run:
 
 ```
-pipx upgrade hq-animate
-```
-
-### Install with `pip`
-Alternatively, install into the current Python environemt with `pip`.
-
-Open a terminal and navigate to the project's root folder, where pyproject.toml is located, then run:
-
-```
-pip install https://github.com/EthanChappel/HQ-Animate/archive/refs/heads/main.tar.gz
-```
-
-#### Upgrade
-
-To upgrade the program to the latest version, run:
-
-```
-pip install --upgrade hq-animate
+uv tool upgrade hq-animate
 ```
 
 ## Usage
